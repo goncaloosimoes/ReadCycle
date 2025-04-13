@@ -8,7 +8,7 @@ class ChatScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text('Some text here'),
+        title: Text('Olá outra vez!'),
       ),
       body: Center(
         child: Column(

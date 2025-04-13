@@ -13,50 +13,68 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
 
   int _selectedIdx = 0;
+  final int _numNotifications = 5; // modificar depois
 
-  final List<Widget> screenWidgtes = [
+  final List<Widget> screenWidgets = const [
     HomeScreen(),
     PostScreen(),
     ChatScreen(),
   ];
 
-  void changeIdx(int index) {
+  void _changeIdx(int index) {
     setState(() {
       _selectedIdx = index;
     });
   }
 
+  void _postBtnTap() {
+    setState(() {
+      _selectedIdx = 1;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: screenWidgtes[_selectedIdx],
-      bottomNavigationBar: NavigationBarTheme(
-        data: NavigationBarThemeData(
-          indicatorColor: Colors.deepPurple.shade100
+      return Scaffold(
+        body: screenWidgets[_selectedIdx],
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        floatingActionButton: SizedBox(
+          height: 70,
+          width: 70,
+          child: FloatingActionButton(
+            onPressed: _postBtnTap,
+            backgroundColor: Colors.purple.shade100,
+            shape: CircleBorder(),
+            child: Icon(Icons.add, size: 40,),
+          ),
         ),
-        child: NavigationBar(
-          // backgoundcolor
-          selectedIndex: _selectedIdx,
-          onDestinationSelected: changeIdx,
-          destinations: [
-            NavigationDestination(
-              icon: Icon(Icons.home),
-              selectedIcon: Icon(Icons.home_filled),
-              label: 'Home',
-            ),
-            NavigationDestination(
-              icon: Icon(Icons.add_outlined),
-              selectedIcon: Icon(Icons.add),
-              label: 'Add Book',
-            ),
-            NavigationDestination(
-              icon: Icon(Icons.chat_outlined),
-              selectedIcon: Icon(Icons.chat),
-              label: 'Chat',
-            ),
-          ],
+        bottomNavigationBar: BottomAppBar(
+          shape: CircularNotchedRectangle(),
+          notchMargin: 7,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              IconButton(
+                iconSize: 35,
+                icon: Icon(
+                  _selectedIdx == 0 ? Icons.home_filled : Icons.home_outlined
+                ),
+                onPressed: () => _changeIdx(0),
+              ),
+              SizedBox(width: 20,),
+              IconButton(
+                iconSize: 35,
+                icon: Badge(
+                  label: Text(_numNotifications.toString()),
+                  child: Icon(
+                    _selectedIdx == 2 ? Icons.chat : Icons.chat_outlined,
+                  ),
+                ),
+                onPressed: () => _changeIdx(2),
+              ),
+            ]
+          ),
         ),
-      ),
-    );
-  }
+      );
+    }
 }
