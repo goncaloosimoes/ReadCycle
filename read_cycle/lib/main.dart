@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:read_cycle/pages/home_page.dart';
+import 'package:read_cycle/main_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -12,11 +12,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
+      title: 'ReadCycle',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: const MyHomePage(title: 'ReadCycle'),
+      home: const MainScreen(),
     );
   }
 }
