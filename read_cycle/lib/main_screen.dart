@@ -27,12 +27,6 @@ class _MainScreenState extends State<MainScreen> {
     });
   }
 
-  void _postBtnTap() {
-    setState(() {
-      _selectedIdx = 1;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
       return Scaffold(
@@ -42,7 +36,7 @@ class _MainScreenState extends State<MainScreen> {
           height: 70,
           width: 70,
           child: FloatingActionButton(
-            onPressed: _postBtnTap,
+            onPressed: () => _changeIdx(1),
             backgroundColor: Colors.purple.shade100,
             shape: CircleBorder(),
             child: Icon(Icons.add, size: 40,),
