@@ -18,6 +18,7 @@ class Post {
 
   String get bookTitle => book.title;
   String get bookImage => book.coverImagePath;
+  String get bookAuthor => book.author;
   String get userName => user.name;
   String get userRating => user.rating;
 }

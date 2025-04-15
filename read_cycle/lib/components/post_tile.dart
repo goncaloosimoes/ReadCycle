@@ -27,6 +27,12 @@ class PostTile extends StatelessWidget {
               fontSize: 15,
             ),
           ),
+          Text(
+            post.bookAuthor,
+            style: TextStyle(
+              fontSize: 12
+            ),
+          ),
           SizedBox(
             width: 100,
             child: Row(
@@ -36,19 +42,24 @@ class PostTile extends StatelessWidget {
                   post.userName,
                   style: TextStyle(
                     color: const Color.fromARGB(255, 114, 114, 114),
+                    fontSize: 14,
                   ),
                 ),
-                Icon(
-                  Icons.star,
-                  color: Colors.amber,
-                  size: 20,
-                ),
-                Text(
-                  post.userRating,
-                  style: TextStyle(
-                    color: const Color.fromARGB(255, 114, 114, 114),
-                    fontWeight: FontWeight.bold,
-                  ),
+                Row(
+                 children: [
+                    Icon(
+                      Icons.star,
+                      color: Colors.amber,
+                      size: 20,
+                    ),
+                    Text(
+                      post.userRating,
+                      style: TextStyle(
+                        color: const Color.fromARGB(255, 114, 114, 114),
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),

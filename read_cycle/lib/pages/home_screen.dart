@@ -11,10 +11,10 @@ class HomeScreen extends StatefulWidget {
 
 
   @override
-  State<HomeScreen> createState() => MainState();
+  State<HomeScreen> createState() => _MainState();
 }
 
-class MainState extends State<HomeScreen> {
+class _MainState extends State<HomeScreen> {
   bool searchBarVisible = false;
 
   void toggleSearchBarVisibility() {
