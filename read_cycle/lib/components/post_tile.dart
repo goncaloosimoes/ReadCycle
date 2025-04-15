@@ -23,19 +23,33 @@ class PostTile extends StatelessWidget {
           ),
           Text(
             post.bookTitle,
+            style: TextStyle(
+              fontSize: 15,
+            ),
           ),
           SizedBox(
             width: 100,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(post.userName),
+                Text(
+                  post.userName,
+                  style: TextStyle(
+                    color: const Color.fromARGB(255, 114, 114, 114),
+                  ),
+                ),
                 Icon(
                   Icons.star,
                   color: Colors.amber,
                   size: 20,
                 ),
-                Text(post.userRating)
+                Text(
+                  post.userRating,
+                  style: TextStyle(
+                    color: const Color.fromARGB(255, 114, 114, 114),
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ],
             ),
           ),
