@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'chat_detail_screen.dart';
 
 class ChatScreen extends StatelessWidget {
   const ChatScreen({super.key});
@@ -6,15 +7,15 @@ class ChatScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<Map<String, dynamic>> chats = [
-      {'name': 'Chat 1', 'lastMessage': 'Última mensagem...', 'read': false},
-      {'name': 'Chat 2', 'lastMessage': 'Última mensagem...', 'read': true},
-      {'name': 'Chat 3', 'lastMessage': 'Última mensagem...', 'read': false},
+      {'name': 'Paulo Fonseca', 'lastMessage': 'Última mensagem...', 'read': false},
+      {'name': 'Martim Dias', 'lastMessage': 'Última mensagem...', 'read': true},
+      {'name': 'Joana Mateus', 'lastMessage': 'Última mensagem...', 'read': false},
     ];
 
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text('Chats Disponíveis'),
+        title: Text('Mensagens'),
         actions: [
           IconButton(
             icon: Icon(Icons.search),
@@ -66,7 +67,14 @@ class ChatScreen extends StatelessWidget {
                   color: Theme.of(context).primaryColor,
                 ),
                 onTap: () {
-                  // Ação ao clicar no chat
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder:
+                          (context) =>
+                              ChatDetailScreen(chatName: chats[index]['name']),
+                    ),
+                  );
                 },
               ),
             );
