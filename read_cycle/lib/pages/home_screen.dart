@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:read_cycle/classes/book.dart';
 import 'package:read_cycle/classes/post.dart';
 import 'package:read_cycle/classes/user.dart';
+import 'package:read_cycle/components/books_tile.dart';
 import 'package:read_cycle/components/post_tile.dart';
 import 'package:read_cycle/pages/profile_screen.dart';
 
@@ -70,6 +71,19 @@ class MainState extends State<HomeScreen> {
       ),
     ];
 
+    final List<PostTile> postTiles = [
+      PostTile(post: posts[0]),
+      PostTile(post: posts[1]),
+      PostTile(post: posts[2]),
+    ];
+
+    final List<BooksTile> bookTiles = [
+      BooksTile(title: 'Sugestões', postTiles: postTiles),
+      BooksTile(title: 'Ficção', postTiles: postTiles),
+      BooksTile(title: 'Biografias', postTiles: postTiles),
+      BooksTile(title: 'Comédia', postTiles: postTiles),
+    ];
+
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(65),
@@ -133,56 +147,10 @@ class MainState extends State<HomeScreen> {
           ),
         ),
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // sugestões
-          Padding(
-            padding: const EdgeInsets.only(left: 20, top: 20, bottom: 10),
-            child: Text(
-              'Sugestões',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
-                fontSize: 20,
-              ),
-            ),
-          ),
-          const SizedBox(height: 5),
-          SizedBox(
-            height: 200,
-            child: Expanded(
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: posts.length,
-                itemBuilder: (context, index) => PostTile(post: posts[index]),
-              ),
-            ),
-          ),
-          const SizedBox(height: 5),
-          Padding(
-            padding: const EdgeInsets.only(left: 20, top: 20, bottom: 10),
-            child: Text(
-              'Ficção',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
-                fontSize: 20,
-              ),
-            ),
-          ),
-          const SizedBox(height: 5),
-          SizedBox(
-            height: 200,
-            child: Expanded(
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: posts.length,
-                itemBuilder: (context, index) => PostTile(post: posts[index]),
-              ),
-            ),
-          ),
-        ],
+      body: ListView.builder(
+        scrollDirection: Axis.vertical,
+        itemCount: bookTiles.length,
+        itemBuilder: (context, index) => bookTiles[index],
       ),
     );
   }

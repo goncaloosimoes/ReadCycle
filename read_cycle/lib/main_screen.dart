@@ -37,7 +37,7 @@ class _MainScreenState extends State<MainScreen> {
           width: 70,
           child: FloatingActionButton(
             onPressed: () => _changeIdx(1),
-            backgroundColor: Colors.purple.shade100,
+            backgroundColor: const Color.fromARGB(255, 199, 156, 28),
             shape: CircleBorder(),
             child: Icon(Icons.add, size: 40,),
           ),
