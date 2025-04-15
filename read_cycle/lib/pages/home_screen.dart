@@ -73,23 +73,48 @@ class HomeScreen extends StatelessWidget {
         children: [
           // sugestões
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 25),
+            padding: const EdgeInsets.only(left: 20, top: 20, bottom: 10),
             child: Text(
               'Sugestões',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 color: Colors.black,
-                fontSize: 15,
+                fontSize: 20,
               ),
             ),
           ),
           const SizedBox(height: 5,),
-
-          Expanded(
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: posts.length,
-              itemBuilder: (context, index) => PostTile(post: posts[index]),
+          SizedBox(
+            height: 200,
+            child: Expanded(
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: posts.length,
+                itemBuilder: (context, index) => PostTile(post: posts[index]),
+              ),
+            ),
+          ),
+          const SizedBox(height:  5,),
+          Padding(
+            padding: const EdgeInsets.only(left: 20, top: 20, bottom: 10),
+            child: Text(
+              'Ficção',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
+                fontSize: 20,
+              ),
+            ),
+          ),
+          const SizedBox(height: 5,),
+          SizedBox(
+            height: 200,
+            child: Expanded(
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: posts.length,
+                itemBuilder: (context, index) => PostTile(post: posts[index]),
+              ),
             ),
           ),
         ],

@@ -9,7 +9,7 @@ class PostTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.grey.shade200,
+        color: const Color.fromARGB(255, 242, 241, 241),
         borderRadius: BorderRadius.circular(10)
       ),
       margin: EdgeInsets.only(left: 20),
@@ -22,7 +22,7 @@ class PostTile extends StatelessWidget {
             height: 100,
           ),
           Text(
-            post.bookTitle
+            post.bookTitle,
           ),
           SizedBox(
             width: 100,
@@ -30,7 +30,11 @@ class PostTile extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(post.userName),
-                Icon(Icons.star),
+                Icon(
+                  Icons.star,
+                  color: Colors.amber,
+                  size: 20,
+                ),
                 Text(post.userRating)
               ],
             ),
