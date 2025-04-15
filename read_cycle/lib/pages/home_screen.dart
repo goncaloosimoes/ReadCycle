@@ -1,11 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:read_cycle/classes/book.dart';
+import 'package:read_cycle/classes/post.dart';
+import 'package:read_cycle/classes/user.dart';
+import 'package:read_cycle/components/post_tile.dart';
 import 'package:read_cycle/pages/profile_screen.dart';
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+  HomeScreen({super.key});
+
+  final List<User> users = [
+    User(name: 'Emma', email: 'emma@email.com', profileImagePath: 'assets/images/persona2.jpg', rating: '4.5')
+  ];
+
+  final List<Book> books = [
+    Book(title: 'Ficciones', author: 'Jorge Luis Borges', pages: 203, genres: ['Fiction', 'Fantasy'], coverImagePath: 'assets/images/Ficciones.jpg', description: 'The seventeen pieces in Ficciones demonstrate the whirlwind of Borges\'s...')
+  ];
+
 
   @override
   Widget build(BuildContext context) {
+
+    final List<Post> posts = [
+      Post(user: users[0], book: books[0], location: 'Aveiro', date: DateTime.now(), imagePaths: []),
+      Post(user: users[0], book: books[0], location: 'Aveiro', date: DateTime.now(), imagePaths: []),
+      Post(user: users[0], book: books[0], location: 'Aveiro', date: DateTime.now(), imagePaths: [])
+    ];
+
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(65),
@@ -48,19 +68,31 @@ class HomeScreen extends StatelessWidget {
           ),
         ),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'Home Screen',
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // sugestões
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 25),
+            child: Text(
+              'Sugestões',
               style: TextStyle(
-                fontSize: 25,
-                fontWeight: FontWeight.bold
-              ),  
-            )
-          ],
-        ),
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
+                fontSize: 15,
+              ),
+            ),
+          ),
+          const SizedBox(height: 5,),
+
+          Expanded(
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: posts.length,
+              itemBuilder: (context, index) => PostTile(post: posts[index]),
+            ),
+          ),
+        ],
       ),
     );
   }
