@@ -5,25 +5,69 @@ import 'package:read_cycle/classes/user.dart';
 import 'package:read_cycle/components/post_tile.dart';
 import 'package:read_cycle/pages/profile_screen.dart';
 
-class HomeScreen extends StatelessWidget {
-  HomeScreen({super.key});
-
-  final List<User> users = [
-    User(name: 'Emma', email: 'emma@email.com', profileImagePath: 'assets/images/persona2.jpg', rating: '4.5')
-  ];
-
-  final List<Book> books = [
-    Book(title: 'Ficciones', author: 'Jorge Luis Borges', pages: 203, genres: ['Fiction', 'Fantasy'], coverImagePath: 'assets/images/Ficciones.jpg', description: 'The seventeen pieces in Ficciones demonstrate the whirlwind of Borges\'s...')
-  ];
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
 
 
   @override
-  Widget build(BuildContext context) {
+  State<HomeScreen> createState() => MainState();
+}
 
+class MainState extends State<HomeScreen> {
+  bool searchBarVisible = false;
+
+  void toggleSearchBarVisibility() {
+    searchBarVisible = !searchBarVisible;
+    if (searchBarVisible) {
+      print("show!");
+    }
+  }
+
+  final List<User> users = [
+    User(
+      name: 'Emma',
+      email: 'emma@email.com',
+      profileImagePath: 'assets/images/persona2.jpg',
+      rating: '4.5',
+    ),
+  ];
+
+  final List<Book> books = [
+    Book(
+      title: 'Ficciones',
+      author: 'Jorge Luis Borges',
+      pages: 203,
+      genres: ['Fiction', 'Fantasy'],
+      coverImagePath: 'assets/images/Ficciones.jpg',
+      description:
+          'The seventeen pieces in Ficciones demonstrate the whirlwind of Borges\'s...',
+    ),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
     final List<Post> posts = [
-      Post(user: users[0], book: books[0], location: 'Aveiro', date: DateTime.now(), imagePaths: []),
-      Post(user: users[0], book: books[0], location: 'Aveiro', date: DateTime.now(), imagePaths: []),
-      Post(user: users[0], book: books[0], location: 'Aveiro', date: DateTime.now(), imagePaths: [])
+      Post(
+        user: users[0],
+        book: books[0],
+        location: 'Aveiro',
+        date: DateTime.now(),
+        imagePaths: [],
+      ),
+      Post(
+        user: users[0],
+        book: books[0],
+        location: 'Aveiro',
+        date: DateTime.now(),
+        imagePaths: [],
+      ),
+      Post(
+        user: users[0],
+        book: books[0],
+        location: 'Aveiro',
+        date: DateTime.now(),
+        imagePaths: [],
+      ),
     ];
 
     return Scaffold(
@@ -41,26 +85,47 @@ class HomeScreen extends StatelessWidget {
                 children: [
                   Text(
                     'ReadCycle',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 25,
-                    ),
+                    style: TextStyle(color: Colors.black, fontSize: 25),
                   ),
-                  GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context, 
-                      MaterialPageRoute(builder: (context) => const ProfileScreen())
-                    );
-                  },
-                  child: CircleAvatar(
-                    radius: 30,
-                    backgroundColor: Colors.white,
-                    child: CircleAvatar(
-                        radius: 28,
-                        backgroundImage: AssetImage('assets/images/persona2.jpg'),
+                  Visibility(
+                    visible: searchBarVisible,
+                    child: TextField(
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        fillColor: Color.fromARGB(255, 0, 255, 255),
+                        hintText: 'Enter a search term',
                       ),
                     ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      IconButton(
+                        onPressed: toggleSearchBarVisibility,
+                        icon: const Icon(Icons.search),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const ProfileScreen(),
+                            ),
+                          );
+                        },
+                        child: CircleAvatar(
+                          radius: 30,
+                          backgroundColor: Colors.white,
+                          child: CircleAvatar(
+                            radius: 28,
+                            backgroundImage: AssetImage(
+                              'assets/images/persona2.jpg',
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
@@ -83,7 +148,7 @@ class HomeScreen extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(height: 5,),
+          const SizedBox(height: 5),
           SizedBox(
             height: 200,
             child: Expanded(
@@ -94,7 +159,7 @@ class HomeScreen extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(height:  5,),
+          const SizedBox(height: 5),
           Padding(
             padding: const EdgeInsets.only(left: 20, top: 20, bottom: 10),
             child: Text(
@@ -106,7 +171,7 @@ class HomeScreen extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(height: 5,),
+          const SizedBox(height: 5),
           SizedBox(
             height: 200,
             child: Expanded(
