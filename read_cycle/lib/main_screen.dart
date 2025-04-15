@@ -13,7 +13,7 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
 
   int _selectedIdx = 0;
-  final int _numNotifications = 5; // modificar depois
+  final int _numNotifications = 2; // modificar depois
 
   final List<Widget> screenWidgets = [
     HomeScreen(),
