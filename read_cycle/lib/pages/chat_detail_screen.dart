@@ -14,7 +14,7 @@ class ChatDetailScreen extends StatelessWidget {
             CircleAvatar(
               backgroundImage: AssetImage(
                 'assets/images/blank_profile.jpg',
-              ), // Substitua pelo caminho do avatar real
+              ),
               radius: 16,
             ),
             SizedBox(width: 8),
@@ -49,7 +49,7 @@ class ChatDetailScreen extends StatelessWidget {
               ),
               child: Text(
                 'Mensagem enviada',
-                style: TextStyle(fontSize: 16, color: Colors.white),
+                style: TextStyle(fontSize: 16, color: const Color.fromARGB(255, 0, 0, 0)),
               ),
             ),
           ),
@@ -63,7 +63,7 @@ class ChatDetailScreen extends StatelessWidget {
             Expanded(
               child: TextField(
                 decoration: InputDecoration(
-                  hintText: 'Digite uma mensagem',
+                  hintText: 'Escreva uma mensagem...',
                   border: OutlineInputBorder(),
                 ),
               ),
