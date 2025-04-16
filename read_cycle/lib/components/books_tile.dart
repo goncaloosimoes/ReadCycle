@@ -24,7 +24,6 @@ class BooksTile extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(height: 5,),
           SizedBox(
             height: 220,
             child: Expanded(
@@ -35,6 +34,7 @@ class BooksTile extends StatelessWidget {
               ),
             ),
           ),
+          SizedBox(height: 5,),
         ],
       );
   }

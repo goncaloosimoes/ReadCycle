@@ -14,4 +14,5 @@ class Book {
     required this.coverImagePath,
     required this.description
   });
+
 }
