@@ -19,8 +19,9 @@ class Post {
   String get bookTitle => book.title;
   String get bookImage => book.coverImagePath;
   String get bookAuthor => book.author;
+  int get bookPages => book.pages;
+  List<String> get bookGenres => book.genres;
   String get userName => user.name;
   String get userRating => user.rating;
-  List<String> get bookGenres => book.genres;
-  int get bookPages => book.pages;
+  String get userProfileImage => user.profileImagePath;
 }

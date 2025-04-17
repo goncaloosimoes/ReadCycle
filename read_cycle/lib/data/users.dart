@@ -10,7 +10,7 @@ final List<User> appUsers = [
     User(
       name: 'Gonçalo Silva',
       email: 'gonca@email.com',
-      profileImagePath: '',
+      profileImagePath: 'assets/images/blank_profile.jpg',
       rating: '4.9'
     ),
 ];

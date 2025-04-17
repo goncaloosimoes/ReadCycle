@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:read_cycle/classes/post.dart';
 import 'package:read_cycle/data/time.dart';
+import 'package:read_cycle/pages/others_profile_screen.dart';
 
 class BookDetailsScreen extends StatelessWidget {
 
@@ -19,9 +20,9 @@ class BookDetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(backgroundColor: Theme.of(context).colorScheme.inversePrimary,),
+      appBar: AppBar(),
       body: Padding(
-        padding: EdgeInsets.all(20),
+        padding: EdgeInsets.only(left: 20, right: 20, bottom: 20,),
         child: Column(
           children: [
             Row( // informações principais do livro
@@ -102,15 +103,102 @@ class BookDetailsScreen extends StatelessWidget {
                           }).toList(),
                         ),
                       ),
-                      const SizedBox(height: 8,),
+                      const SizedBox(height: 20,),
                       Text(
                         '${post.location}, ${calculateDays()}',
+                        style: TextStyle(
+                          fontSize: 14,
+                        ),
                       ),
                     ],
                   ),
                 ),
               ],
             ),
+            const SizedBox(height: 10,),
+            const Divider(),
+            const SizedBox(height: 10,),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const OthersProfileScreen(),
+                      ),
+                    );
+                  },
+                  child: CircleAvatar(
+                    radius: 40,
+                    backgroundColor: Colors.black,
+                    child: CircleAvatar(
+                      radius: 38,
+                      backgroundImage: AssetImage(
+                        post.userProfileImage,
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 8,),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      post.userName,
+                      style: TextStyle(
+                        fontSize: 18,
+                      ),
+                    ),
+                    Row(
+                      children: [
+                        Text(
+                          post.userRating,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontSize: 15
+                          ),
+                        ),
+                        Icon(
+                          Icons.star,
+                            color: Colors.amber,
+                            size: 20,
+                        )
+                      ],
+                    ),
+                  ],
+                ),
+                const Spacer(),
+                Container(
+                  margin: const EdgeInsets.only(left: 5,),
+                  child: ElevatedButton(
+                    onPressed: () => {/*depois ligar com chats*/},
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 10, right: 10),
+                      child: const Text(
+                        'Iniciar\nChat',
+                        textAlign: TextAlign.center,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(fontSize: 15),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 10,),
+            const Divider(),
+            const SizedBox(height: 10,),
           ],
         ),
       ),
