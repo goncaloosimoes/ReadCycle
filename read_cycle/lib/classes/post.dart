@@ -21,5 +21,6 @@ class Post {
   String get bookAuthor => book.author;
   String get userName => user.name;
   String get userRating => user.rating;
+  List<String> get bookGenres => book.genres;
   int get bookPages => book.pages;
 }
