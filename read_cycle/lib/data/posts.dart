@@ -10,6 +10,7 @@ final List<Post> appPosts = [
         location: 'Aveiro',
         date: DateTime.now(),
         imagePaths: [],
+        notes: '',
       ),
       Post(
         user: appUsers[0],
@@ -17,6 +18,7 @@ final List<Post> appPosts = [
         location: 'Aveiro',
         date: DateTime.now(),
         imagePaths: [],
+        notes: '',
       ),
       Post(
         user: appUsers[0],
@@ -24,6 +26,7 @@ final List<Post> appPosts = [
         location: 'Aveiro',
         date: DateTime.now(),
         imagePaths: [],
+        notes: '',
       ),
       Post(
         user: appUsers[1],
@@ -31,6 +34,7 @@ final List<Post> appPosts = [
         location: 'Aveiro',
         date: DateTime.now(),
         imagePaths: [],
+        notes: 'Livro em muito bom estado, praticamente novo!',
       ),
       Post(
         user: appUsers[1],
@@ -38,6 +42,7 @@ final List<Post> appPosts = [
         location: 'Aveiro',
         date: DateTime.now(),
         imagePaths: [],
+        notes: '',
       ),
       Post(
         user: appUsers[1],
@@ -45,6 +50,7 @@ final List<Post> appPosts = [
         location: 'Aveiro',
         date: DateTime.now(),
         imagePaths: [],
+        notes: '',
       ),
       Post(
         user: appUsers[1],
@@ -52,5 +58,6 @@ final List<Post> appPosts = [
         location: 'Aveiro',
         date: DateTime.now(),
         imagePaths: [],
+        notes: '',
       ),
     ];

@@ -7,13 +7,15 @@ class Post {
   String location;
   DateTime date;
   List<String> imagePaths;
+  String notes;
 
   Post({
     required this.user,
     required this.book,
     required this.location,
     required this.date,
-    required this.imagePaths
+    required this.imagePaths,
+    required this.notes,
   });
 
   String get bookTitle => book.title;
@@ -21,6 +23,8 @@ class Post {
   String get bookAuthor => book.author;
   int get bookPages => book.pages;
   List<String> get bookGenres => book.genres;
+  String get bookDescription => book.description;
+  String get postNotes => notes;
   String get userName => user.name;
   String get userRating => user.rating;
   String get userProfileImage => user.profileImagePath;

@@ -3,13 +3,25 @@ import 'package:read_cycle/classes/post.dart';
 import 'package:read_cycle/data/time.dart';
 import 'package:read_cycle/pages/others_profile_screen.dart';
 
-class BookDetailsScreen extends StatelessWidget {
-
+class BookDetailsScreen extends StatefulWidget {
   final Post post;
-
   const BookDetailsScreen({super.key, required this.post});
 
-  String calculateDays() {
+  @override
+  State<BookDetailsScreen> createState() => _BookDetailsScreen();
+}
+
+
+class _BookDetailsScreen extends State<BookDetailsScreen> {
+
+  bool isExpandedDescription = false;
+  bool isExpandedNotes = false;
+
+  @override
+  Widget build(BuildContext context) {
+    final Post post = widget.post;
+
+    String calculateDays() {
     final postDate = post.date;
     final difference = appStartTime.difference(postDate).inDays;
     if (difference == 0) return 'Hoje';  
@@ -17,13 +29,14 @@ class BookDetailsScreen extends StatelessWidget {
     return 'Há $difference dias';
   }
 
-  @override
-  Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
-      body: Padding(
+      appBar: AppBar(
+        elevation: 0,
+      ),
+      body: SingleChildScrollView(
         padding: EdgeInsets.only(left: 20, right: 20, bottom: 20,),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row( // informações principais do livro
               crossAxisAlignment: CrossAxisAlignment.start, 
@@ -196,7 +209,95 @@ class BookDetailsScreen extends StatelessWidget {
                 ),
               ],
             ),
+            const SizedBox(height: 25,),
+            const Text(
+              'Descrição',
+              style: TextStyle(
+                fontSize: 17,
+              ),
+            ),
+            const Divider(),
             const SizedBox(height: 10,),
+            LayoutBuilder(
+              builder: (context, constraints) {
+                final maxLines = isExpandedDescription ? null : 4;
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      post.bookDescription,
+                      style: TextStyle(fontSize: 14),
+                      maxLines: maxLines,
+                      overflow: isExpandedDescription ? TextOverflow.visible : TextOverflow.ellipsis,
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          isExpandedDescription = !isExpandedDescription;
+                        });
+                      },
+                      child: Text(
+                        isExpandedDescription ? 'Ver menos' : 'Ver mais',
+                        style: TextStyle(
+                          fontSize: 15,
+                          decoration: TextDecoration.underline,
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                      ),
+                    ),
+                  ],
+                );
+              },
+            ),
+            const SizedBox(height: 25,),
+            const Text(
+              'Notas',
+              style: TextStyle(
+                fontSize: 17,
+              ),
+            ),
+            const Divider(),
+            const SizedBox(height: 10,),
+            LayoutBuilder(
+              builder: (context, constraints) {
+                final hasNotes = post.postNotes.trim().isNotEmpty;
+                final text = hasNotes ? post.postNotes : 'Sem notas';
+                final maxLines = isExpandedNotes ? null : 4;
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      text,
+                      style: TextStyle(fontSize: 14),
+                      maxLines: maxLines,
+                      overflow: isExpandedNotes ? TextOverflow.visible : TextOverflow.ellipsis,
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          isExpandedNotes = !isExpandedNotes;
+                        });
+                      },
+                      child: Text(
+                        isExpandedNotes ? 'Ver menos' : 'Ver mais',
+                        style: TextStyle(
+                          fontSize: 15,
+                          decoration: TextDecoration.underline,
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                      ),
+                    ),
+                  ],
+                );
+              },
+            ),
+            const SizedBox(height: 25,),
+            const Text(
+              'Fotografias',
+              style: TextStyle(
+                fontSize: 17,
+              ),
+            ),
             const Divider(),
             const SizedBox(height: 10,),
           ],
