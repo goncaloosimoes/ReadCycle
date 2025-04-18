@@ -30,11 +30,11 @@ class PostTile extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Image.asset(
-                post.bookImage,
+                post.postBook.coverImagePath,
                 height: 110,
               ),
               Text(
-                post.bookTitle,
+                post.postBook.title,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
@@ -42,7 +42,7 @@ class PostTile extends StatelessWidget {
                 ),
               ),
               Text(
-                post.bookAuthor,
+                post.postBook.author,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
@@ -57,7 +57,7 @@ class PostTile extends StatelessWidget {
                     SizedBox(
                       width: 60,
                       child: Text(
-                        post.userName,
+                        post.postUser.rating,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
@@ -74,7 +74,7 @@ class PostTile extends StatelessWidget {
                           size: 20,
                         ),
                         Text(
-                          post.userRating,
+                          post.postUser.rating,
                           style: TextStyle(
                             color: const Color.fromARGB(255, 114, 114, 114),
                             fontWeight: FontWeight.bold,

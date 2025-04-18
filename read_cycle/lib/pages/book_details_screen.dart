@@ -54,7 +54,7 @@ class _BookDetailsScreen extends State<BookDetailsScreen> {
                           },
                           child: InteractiveViewer(
                             child: Image.asset(
-                              post.bookImage,
+                              post.postBook.coverImagePath,
                               fit: BoxFit.contain
                             ),
                           ),
@@ -63,7 +63,7 @@ class _BookDetailsScreen extends State<BookDetailsScreen> {
                     );
                   },
                   child: Image.asset(
-                    post.bookImage,
+                    post.postBook.coverImagePath,
                     height: 230,
                     width: 150,
                     fit: BoxFit.cover,
@@ -75,7 +75,7 @@ class _BookDetailsScreen extends State<BookDetailsScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        post.bookTitle,
+                        post.postBook.title,
                         maxLines: 2,
                         overflow: TextOverflow.visible,
                         style: TextStyle(
@@ -86,12 +86,12 @@ class _BookDetailsScreen extends State<BookDetailsScreen> {
                       ),
                       const SizedBox(height: 3,),
                       Text(
-                        post.bookAuthor,
+                        post.postBook.author,
                         style: TextStyle(fontSize: 17),
                       ),
                       const SizedBox(height: 4,),
                       Text(
-                        '${post.bookPages.toString()} páginas',
+                        '${post.postBook.pages.toString()} páginas',
                         style: TextStyle(fontSize: 14),
                       ),
                       Container( // generos do livro
@@ -99,7 +99,7 @@ class _BookDetailsScreen extends State<BookDetailsScreen> {
                         child: Wrap(
                           spacing: 8,
                           runSpacing: 4,
-                          children: post.bookGenres.map((genre) {
+                          children: post.postBook.genres.map((genre) {
                             return Container(
                               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                               decoration: BoxDecoration(
@@ -139,7 +139,7 @@ class _BookDetailsScreen extends State<BookDetailsScreen> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const OthersProfileScreen(),
+                        builder: (context) => OthersProfileScreen(user: post.postUser,),
                       ),
                     );
                   },
@@ -149,41 +149,42 @@ class _BookDetailsScreen extends State<BookDetailsScreen> {
                     child: CircleAvatar(
                       radius: 38,
                       backgroundImage: AssetImage(
-                        post.userProfileImage,
+                        post.postUser.profileImagePath,
                       ),
                     ),
                   ),
                 ),
                 const SizedBox(width: 8,),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      post.userName,
-                      style: TextStyle(
-                        fontSize: 18,
-                      ),
-                    ),
-                    Row(
-                      children: [
-                        Text(
-                          post.userRating,
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            fontSize: 15
-                          ),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        post.postUser.name,
+                        style: TextStyle(
+                          fontSize: 18,
                         ),
-                        Icon(
-                          Icons.star,
-                            color: Colors.amber,
-                            size: 20,
-                        )
-                      ],
-                    ),
-                  ],
+                      ),
+                      Row(
+                        children: [
+                          Text(
+                            post.postUser.rating,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              fontSize: 15
+                            ),
+                          ),
+                          Icon(
+                            Icons.star,
+                              color: Colors.amber,
+                              size: 20,
+                          )
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
-                const Spacer(),
                 Container(
                   margin: const EdgeInsets.only(left: 5,),
                   child: ElevatedButton(
@@ -225,7 +226,7 @@ class _BookDetailsScreen extends State<BookDetailsScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      post.bookDescription,
+                      post.postBook.description,
                       style: TextStyle(fontSize: 14),
                       maxLines: maxLines,
                       overflow: isExpandedDescription ? TextOverflow.visible : TextOverflow.ellipsis,

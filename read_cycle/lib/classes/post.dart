@@ -18,14 +18,7 @@ class Post {
     required this.notes,
   });
 
-  String get bookTitle => book.title;
-  String get bookImage => book.coverImagePath;
-  String get bookAuthor => book.author;
-  int get bookPages => book.pages;
-  List<String> get bookGenres => book.genres;
-  String get bookDescription => book.description;
   String get postNotes => notes;
-  String get userName => user.name;
-  String get userRating => user.rating;
-  String get userProfileImage => user.profileImagePath;
+  User get postUser => user;
+  Book get postBook => book;
 }
