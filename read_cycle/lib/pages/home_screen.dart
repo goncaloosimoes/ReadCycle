@@ -16,10 +16,12 @@ class _MainState extends State<HomeScreen> {
   bool searchBarVisible = false;
 
   void toggleSearchBarVisibility() {
-    searchBarVisible = !searchBarVisible;
-    if (searchBarVisible) {
-      print("show!");
-    }
+    setState(() {
+      searchBarVisible = !searchBarVisible;
+      if (searchBarVisible) {
+        print("show!");
+      }
+    });
   }
 
   @override
