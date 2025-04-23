@@ -58,18 +58,37 @@ class _MainState extends State<HomeScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Text(
-                    'ReadCycle',
-                    style: TextStyle(color: Colors.black, fontSize: 25),
-                  ),
-                  Visibility(
-                    visible: searchBarVisible,
-                    child: TextField(
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        fillColor: Color.fromARGB(255, 0, 255, 255),
-                        hintText: 'Enter a search term',
-                      ),
+                  SizedBox(
+                    width: 200, // enough width for interaction
+                    height: 60,
+                    child: Stack(
+                      alignment: AlignmentDirectional.centerStart,
+                      clipBehavior: Clip.none,
+                      children: [
+                        Text(
+                          'ReadCycle',
+                          style: TextStyle(color: Colors.black, fontSize: 25),
+                        ),
+                        Positioned(
+                          left: 20,
+                          width: 200,
+                          child: Visibility(
+                            visible: searchBarVisible,
+                            maintainSize: true,
+                            maintainState: true,
+                            maintainAnimation: true,
+                            child: TextField(
+                              decoration: InputDecoration(
+                                border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(20))),
+                                fillColor: Color.fromARGB(255, 241, 241, 241),
+                                filled: true,
+                                hintText: 'Enter a search term',
+                              ),
+                            ),
+                          ),
+                        ),
+
+                      ],
                     ),
                   ),
                   Row(
