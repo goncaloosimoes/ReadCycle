@@ -21,4 +21,5 @@ class Post {
   String get postNotes => notes;
   User get postUser => user;
   Book get postBook => book;
+  List<String> get postImages => imagePaths;
 }

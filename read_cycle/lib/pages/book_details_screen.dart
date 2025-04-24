@@ -301,6 +301,48 @@ class _BookDetailsScreen extends State<BookDetailsScreen> {
             ),
             const Divider(),
             const SizedBox(height: 10,),
+            SizedBox(
+            height: 220,
+            child: Expanded(
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: post.imagePaths.length,
+                itemBuilder: (context, index) {
+                  return Container(
+                    padding: EdgeInsets.only(right: 10),
+                    child: GestureDetector(
+                      onTap: () {
+                      showDialog(
+                        context: context,
+                        builder: (_) => Dialog(
+                          backgroundColor: Colors.transparent,
+                          insetPadding: EdgeInsets.all(10),
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: InteractiveViewer(
+                              child: Image.asset(
+                                  post.imagePaths[index],
+                                  fit: BoxFit.contain
+                                ),
+                              ),
+                            ),
+                          )
+                        );
+                      },
+                        child: Image.asset(
+                          post.imagePaths[index],
+                          height: 230,
+                          width: 150,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                  );
+                  },
+                ),
+              ),
+            ),
           ],
         ),
       ),

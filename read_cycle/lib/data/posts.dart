@@ -9,7 +9,7 @@ final List<Post> appPosts = [
         book: appFictionBooks[0],
         location: 'Aveiro',
         date: DateTime.now(),
-        imagePaths: [],
+        imagePaths: ['assets/images/placeholder.jpg', 'assets/images/placeholder.jpg'],
         notes: '',
       ),
       Post(
@@ -17,7 +17,7 @@ final List<Post> appPosts = [
         book: appFictionBooks[0],
         location: 'Aveiro',
         date: DateTime.now(),
-        imagePaths: [],
+        imagePaths: ['assets/images/placeholder.jpg'],
         notes: '',
       ),
       Post(
@@ -25,7 +25,7 @@ final List<Post> appPosts = [
         book: appFictionBooks[0],
         location: 'Aveiro',
         date: DateTime.now(),
-        imagePaths: [],
+        imagePaths: ['assets/images/placeholder.jpg', 'assets/images/placeholder.jpg'],
         notes: '',
       ),
       Post(
@@ -33,7 +33,7 @@ final List<Post> appPosts = [
         book: appFictionBooks[1],
         location: 'Aveiro',
         date: DateTime.now(),
-        imagePaths: [],
+        imagePaths: ['assets/images/placeholder.jpg', 'assets/images/placeholder.jpg', 'assets/images/placeholder.jpg'],
         notes: 'Livro em muito bom estado, praticamente novo!',
       ),
       Post(
@@ -41,7 +41,7 @@ final List<Post> appPosts = [
         book: appFictionBooks[2],
         location: 'Aveiro',
         date: DateTime.now(),
-        imagePaths: [],
+        imagePaths: ['assets/images/placeholder.jpg'],
         notes: '',
       ),
       Post(
@@ -49,7 +49,7 @@ final List<Post> appPosts = [
         book: appFictionBooks[3],
         location: 'Aveiro',
         date: DateTime.now(),
-        imagePaths: [],
+        imagePaths: ['assets/images/placeholder.jpg', 'assets/images/placeholder.jpg'],
         notes: '',
       ),
       Post(
@@ -57,7 +57,7 @@ final List<Post> appPosts = [
         book: appFictionBooks[4],
         location: 'Aveiro',
         date: DateTime.now(),
-        imagePaths: [],
+        imagePaths: ['assets/images/placeholder.jpg'],
         notes: '',
       ),
     ];
