@@ -21,14 +21,6 @@ class _BookDetailsScreen extends State<BookDetailsScreen> {
   Widget build(BuildContext context) {
     final Post post = widget.post;
 
-    String calculateDays() {
-    final postDate = post.date;
-    final difference = appStartTime.difference(postDate).inDays;
-    if (difference == 0) return 'Hoje';  
-    if (difference == 1) return 'Há 1 dia';
-    return 'Há $difference dias';
-  }
-
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -118,7 +110,7 @@ class _BookDetailsScreen extends State<BookDetailsScreen> {
                       ),
                       const SizedBox(height: 20,),
                       Text(
-                        '${post.location}, ${calculateDays()}',
+                        '${post.location}, ${calculateDays(post)}',
                         style: TextStyle(
                           fontSize: 14,
                         ),

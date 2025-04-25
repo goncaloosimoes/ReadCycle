@@ -33,8 +33,6 @@ class _MainState extends State<HomeScreen> {
       PostTile(post: appPosts[2]),
       PostTile(post: appPosts[3]),
       PostTile(post: appPosts[4]),
-      PostTile(post: appPosts[5]),
-      PostTile(post: appPosts[6]),
     ];
     
 

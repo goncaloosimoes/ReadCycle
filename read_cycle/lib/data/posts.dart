@@ -13,22 +13,6 @@ final List<Post> appPosts = [
         notes: '',
       ),
       Post(
-        user: appUsers[0],
-        book: appFictionBooks[0],
-        location: 'Aveiro',
-        date: DateTime.now(),
-        imagePaths: ['assets/images/placeholder.jpg'],
-        notes: '',
-      ),
-      Post(
-        user: appUsers[0],
-        book: appFictionBooks[0],
-        location: 'Aveiro',
-        date: DateTime.now(),
-        imagePaths: ['assets/images/placeholder.jpg', 'assets/images/placeholder.jpg'],
-        notes: '',
-      ),
-      Post(
         user: appUsers[1],
         book: appFictionBooks[1],
         location: 'Aveiro',
