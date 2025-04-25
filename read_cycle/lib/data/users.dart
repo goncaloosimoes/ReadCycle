@@ -7,7 +7,7 @@ User currentUser = User(
   location: '[Localização]', 
   profileImagePath: 'assets/images/blank_profile.jpg', 
   rating: '[Avaliação]', 
-  favGenres: ['Genero 1', 'Genero 2', 'Genero 3'], 
+  favGenres: [], 
   bio: '[Biografia]', 
   books: [appFictionBooks[0], appFictionBooks[1]], 
   numTrades: 0

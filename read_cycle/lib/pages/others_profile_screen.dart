@@ -156,7 +156,7 @@ class _OthersProfileScreen extends State<OthersProfileScreen> {
             ),
             const SizedBox(height: 20,),
             const Text(
-              'Generos Preferidos',
+              'Géneros Preferidos',
               style: TextStyle(
                 fontSize: 17,
               ),

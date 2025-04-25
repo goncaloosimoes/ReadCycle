@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:read_cycle/data/users.dart';
 import 'package:read_cycle/components/book_tile.dart';
+import 'package:read_cycle/data/book_genres.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -165,6 +166,73 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ],
             ),
             const SizedBox(height: 10,),
+            Row(
+              children: [
+                const Text(
+                  'Biografia',
+                  style: TextStyle(
+                    fontSize: 17,
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        TextEditingController biographyController = TextEditingController(text: currentUser.bio);
+                        return AlertDialog(
+                          title: const Text('Editar Biografia'),
+                          content: SingleChildScrollView(
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                const SizedBox(height: 15,),
+                                TextField(
+                                  controller: biographyController,
+                                  decoration: const InputDecoration(labelText: 'Biografia'),
+                                ),
+                              ],
+                            ),
+                          ),
+                          actions: [
+                            TextButton(
+                              child: const Text('Cancelar'),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                            ElevatedButton(
+                              style: ButtonStyle(
+                                backgroundColor: WidgetStateProperty.all(Colors.green.shade200)
+                              ),
+                              child: const Text('Guardar'),
+                              onPressed: () {
+                                setState(() {
+                                  currentUser.name = biographyController.text;
+                                });
+                                Navigator.of(context).pop();
+                              },
+                            )
+                          ],
+                        );
+                      }
+                    );
+                  },
+                  child: Container(
+                    margin: EdgeInsets.only(left: 8,),
+                    decoration: BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(
+                          color: Colors.black,
+                          width: 2,
+                        )
+                      ),
+                    ),
+                    child: Icon(Icons.edit, size: 17,)
+                  ),
+                ),
+              ],
+            ),
             const Divider(),
             const SizedBox(height: 10,),
             LayoutBuilder(
@@ -215,6 +283,63 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         fontSize: 20,
                       ),
                     ),
+                    GestureDetector(
+                      onTap: () {
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            TextEditingController locationController = TextEditingController(text: currentUser.location);
+                            return AlertDialog(
+                              title: const Text('Editar Localização'),
+                              content: SingleChildScrollView(
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    const SizedBox(height: 15,),
+                                    TextField(
+                                      controller: locationController,
+                                      decoration: const InputDecoration(labelText: 'Localização'),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              actions: [
+                                TextButton(
+                                  child: const Text('Cancelar'),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                                ElevatedButton(
+                                  style: ButtonStyle(
+                                    backgroundColor: WidgetStateProperty.all(Colors.green.shade200)
+                                  ),
+                                  child: const Text('Guardar'),
+                                  onPressed: () {
+                                    setState(() {
+                                      currentUser.name = locationController.text;
+                                    });
+                                    Navigator.of(context).pop();
+                                  },
+                                )
+                              ],
+                            );
+                          }
+                        );
+                      },
+                      child: Container(
+                        margin: EdgeInsets.only(left: 8,),
+                        decoration: BoxDecoration(
+                          border: Border(
+                            bottom: BorderSide(
+                              color: Colors.black,
+                              width: 2,
+                            )
+                          ),
+                        ),
+                        child: Icon(Icons.edit, size: 17,)
+                      ),
+                    ),
                   ],
                 ),
                 Row(
@@ -237,11 +362,87 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ],
             ),
             const SizedBox(height: 20,),
-            const Text(
-              'Generos Preferidos',
-              style: TextStyle(
-                fontSize: 17,
-              ),
+            Row(
+              children: [
+                const Text(
+                  'Géneros Preferidos',
+                  style: TextStyle(
+                    fontSize: 17,
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    List<String> selectedGenres = List.from(currentUser.favGenres);
+
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        return StatefulBuilder(
+                          builder: (context, setStateDialog) {
+                            return AlertDialog(
+                              title: const Text('Selecionar Géneros Preferidos'),
+                              content: SizedBox(
+                                width: double.maxFinite,
+                                child: ListView.builder(
+                                  itemCount: bookGenres.length,
+                                  itemBuilder: (context, index) {
+                                    String genre = bookGenres[index];
+                                    return CheckboxListTile(
+                                      title: Text(genre),
+                                      value: selectedGenres.contains(genre),
+                                      onChanged: (bool? value) {
+                                        setStateDialog(() {
+                                          if (value == true) {
+                                            selectedGenres.add(genre);
+                                          } else {
+                                            selectedGenres.remove(genre);
+                                          }
+                                        });
+                                      },
+                                    );
+                                  },
+                                ),
+                              ),
+                              actions: [
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: const Text('Cancelar'),
+                                ),
+                                ElevatedButton(
+                                  style: ButtonStyle(
+                                    backgroundColor: WidgetStateProperty.all(Colors.green.shade200),
+                                  ),
+                                  onPressed: () {
+                                    setState(() {
+                                      currentUser.favGenres = List.from(selectedGenres);
+                                    });
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: const Text('Guardar'),
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      }
+                    );
+                  },
+                  child: Container(
+                    margin: EdgeInsets.only(left: 8,),
+                    decoration: BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(
+                          color: Colors.black,
+                          width: 2,
+                        )
+                      ),
+                    ),
+                    child: Icon(Icons.edit, size: 17,)
+                  ),
+                ),
+              ],
             ),
             const Divider(),
             Container( // generos do livro
@@ -266,6 +467,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 }).toList(),
               ),
             ),
+            const SizedBox(height: 20,),
+            const Text(
+              'Lista de Desejos',
+              style: TextStyle(
+                fontSize: 17,
+              ),
+            ),
+            const Divider(),
             const SizedBox(height: 20,),
             const Text(
               'Livros',
