@@ -1,6 +1,18 @@
 import 'package:read_cycle/classes/user.dart';
 import 'package:read_cycle/data/fiction_books.dart';
 
+User currentUser = User(
+  name: '[Nome]', 
+  email: '[Email]', 
+  location: '[Localização]', 
+  profileImagePath: 'assets/images/blank_profile.jpg', 
+  rating: '[Avaliação]', 
+  favGenres: ['Genero 1', 'Genero 2', 'Genero 3'], 
+  bio: '[Biografia]', 
+  books: [appFictionBooks[0], appFictionBooks[1]], 
+  numTrades: 0
+);
+
 final List<User> appUsers = [
     User(
       name: 'Emma',

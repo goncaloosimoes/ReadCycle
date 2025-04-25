@@ -143,6 +143,7 @@ class _OthersProfileScreen extends State<OthersProfileScreen> {
                       width: 25,
                       height: 25,
                     ),
+                    SizedBox(width: 5,),
                     Text(
                       '${user.numTrades} trocas',
                       style: const TextStyle(

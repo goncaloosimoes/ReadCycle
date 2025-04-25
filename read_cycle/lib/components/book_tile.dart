@@ -28,15 +28,23 @@ class BookTile extends StatelessWidget {
         margin: EdgeInsets.symmetric(vertical: 8, horizontal: 10),
         decoration: BoxDecoration(
           color: const Color.fromARGB(255, 226, 226, 226),
-          borderRadius: BorderRadius.circular(2)
+          borderRadius: BorderRadius.circular(10)
         ),
         child: Row(
           children: [
-            Image.asset(
-              book.coverImagePath,
+            Container(
               height: 110,
               width: 80,
-              fit: BoxFit.cover,
+              decoration: BoxDecoration(
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(10),
+                  bottomLeft: Radius.circular(10)
+                ),
+                image: DecorationImage(
+                  image: AssetImage(book.coverImagePath),
+                  fit: BoxFit.cover,
+                ),
+              ),
             ),
             SizedBox(width: 10,),
             Expanded(
@@ -67,10 +75,18 @@ class BookTile extends StatelessWidget {
                       fontSize: 13
                     ),
                   ),
-                  Text(
-                    calculateDays(matchingPost),
-                    style: TextStyle(
-                      fontSize: 12,
+                  SizedBox(height: 8,),
+                  Align(
+                    alignment: Alignment.bottomRight,
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 10,),
+                      child: Text(
+                        calculateDays(matchingPost),
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
                     ),
                   ),
                 ],

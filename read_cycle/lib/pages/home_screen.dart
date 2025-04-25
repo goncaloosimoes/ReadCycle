@@ -3,6 +3,7 @@ import 'package:read_cycle/components/books_tile.dart';
 import 'package:read_cycle/components/post_tile.dart';
 import 'package:read_cycle/pages/profile_screen.dart';
 import 'package:read_cycle/data/posts.dart';
+import 'package:read_cycle/data/users.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -112,7 +113,7 @@ class _MainState extends State<HomeScreen> {
                           child: CircleAvatar(
                             radius: 28,
                             backgroundImage: AssetImage(
-                              'assets/images/persona2.jpg',
+                              currentUser.profileImagePath,
                             ),
                           ),
                         ),
