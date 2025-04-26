@@ -4,6 +4,7 @@ import 'package:read_cycle/components/post_tile.dart';
 import 'package:read_cycle/pages/profile_screen.dart';
 import 'package:read_cycle/data/posts.dart';
 import 'package:read_cycle/data/users.dart';
+import 'package:read_cycle/pages/search_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -36,7 +37,7 @@ class _MainState extends State<HomeScreen> {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => const ProfileScreen(),
+          builder: (context) => SearchScreen(_controller.text),
         ),
       );
     }
@@ -86,7 +87,7 @@ class _MainState extends State<HomeScreen> {
             elevation: 0,
             flexibleSpace: SafeArea(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
+                padding: const EdgeInsets.symmetric(horizontal: 25),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -104,7 +105,7 @@ class _MainState extends State<HomeScreen> {
                           ),
                           Positioned(
                             left: 20,
-                            width: 200,
+                            width: 180,
                             child: Visibility(
                               visible: searchBarVisible,
                               maintainSize: true,
@@ -114,6 +115,7 @@ class _MainState extends State<HomeScreen> {
                                 controller: _controller,
                                 decoration: InputDecoration(
                                   border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(20))),
+                                  
                                   fillColor: Color.fromARGB(255, 241, 241, 241),
                                   filled: true,
                                   hintText: 'Enter a search term',
