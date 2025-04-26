@@ -113,12 +113,21 @@ class _MainState extends State<HomeScreen> {
                               maintainAnimation: true,
                               child: TextField(
                                 controller: _controller,
+                                onSubmitted: (value) {
+                                  // Passar para a página de pesquisa
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => SearchScreen(_controller.text),
+                                    ),
+                                  );
+                                },
                                 decoration: InputDecoration(
                                   border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(20))),
                                   
                                   fillColor: Color.fromARGB(255, 241, 241, 241),
                                   filled: true,
-                                  hintText: 'Enter a search term',
+                                  hintText: 'Pesquisa...',
                                 ),
                               ),
                             ),

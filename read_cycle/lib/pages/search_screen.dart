@@ -43,7 +43,7 @@ class _MainState extends State<SearchScreen> {
                           border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(20))),
                           fillColor: Color.fromARGB(255, 241, 241, 241),
                           filled: true,
-                          hintText: 'Enter a search term',
+                          hintText: 'Pesquisa...',
                         ),
                       )
                     )
@@ -53,7 +53,17 @@ class _MainState extends State<SearchScreen> {
           ),
         )
       ),
-      body: Text(widget.searchText),
+      body: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+        child: Column(
+          children: [
+            Text(
+              "Resultados para \"${widget.searchText}\"",
+              style: TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
