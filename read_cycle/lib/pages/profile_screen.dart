@@ -208,7 +208,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               child: const Text('Guardar'),
                               onPressed: () {
                                 setState(() {
-                                  currentUser.name = biographyController.text;
+                                  currentUser.bio = biographyController.text;
                                 });
                                 Navigator.of(context).pop();
                               },
@@ -317,7 +317,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   child: const Text('Guardar'),
                                   onPressed: () {
                                     setState(() {
-                                      currentUser.name = locationController.text;
+                                      currentUser.location = locationController.text;
                                     });
                                     Navigator.of(context).pop();
                                   },
