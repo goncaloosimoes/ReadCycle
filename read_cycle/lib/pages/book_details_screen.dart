@@ -301,7 +301,7 @@ class _BookDetailsScreen extends State<BookDetailsScreen> {
                 itemCount: post.imagePaths.length,
                 itemBuilder: (context, index) {
                   return Container(
-                    padding: EdgeInsets.only(right: 10),
+                    padding: EdgeInsets.only(right: 5),
                     child: GestureDetector(
                       onTap: () {
                       showDialog(
