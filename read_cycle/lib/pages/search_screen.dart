@@ -52,6 +52,12 @@ class _MainState extends State<SearchScreen> {
   }
 
   @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(

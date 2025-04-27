@@ -6,6 +6,17 @@ class SearchResult extends StatelessWidget {
   final Post post;
   const SearchResult({super.key, required this.post});
 
+  String getPostDays() {
+    DateTime now = DateTime.now();
+    int daysDifference = post.date.difference(now).inDays;
+
+    if (daysDifference == 0) {
+      return "📅 Hoje";
+    }
+
+    return "📅 Há $daysDifference dias";
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -77,7 +88,7 @@ class SearchResult extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text("📍 ${post.location}"),
-                      Text("📅 há ${5} dias"),
+                      Text(getPostDays()),
                     ],
                   )
                 ),
