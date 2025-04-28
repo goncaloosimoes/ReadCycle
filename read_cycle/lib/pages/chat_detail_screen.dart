@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:read_cycle/components/book_small_tile.dart';
+import 'package:read_cycle/data/fiction_books.dart';
 
 class ChatDetailScreen extends StatefulWidget {
   final String chatName;
@@ -11,6 +13,24 @@ class ChatDetailScreen extends StatefulWidget {
 class _MainState extends State<ChatDetailScreen> {
 
   bool _tradeMenuOpen = false;
+
+  List<Widget> myBooks = [
+    BookSmallTile(book: appFictionBooks[0]),
+    BookSmallTile(book: appFictionBooks[1]),
+  ];
+
+  //List<Widget> myBooks = [
+  //  SizedBox(
+  //    width: 20,
+  //    height: 30,
+  //    child: ColoredBox(color: Colors.blue),
+  //  )
+  //];
+
+  List<Widget> otherBooks = [
+    BookSmallTile(book: appFictionBooks[3]),
+    BookSmallTile(book: appFictionBooks[2]),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -122,7 +142,7 @@ class _MainState extends State<ChatDetailScreen> {
                       height: 400,
                       color: Color.fromARGB(255, 246, 237, 218),
                       child: Padding(
-                        padding: EdgeInsets.only(left: 20, right: 20, top: 10),
+                        padding: EdgeInsets.only(left: 30, right: 30, top: 10),
                         child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
@@ -131,48 +151,88 @@ class _MainState extends State<ChatDetailScreen> {
                             children: [
                               Column(
                                 children: [
-                                  CircleAvatar(
-                                    backgroundImage: AssetImage('assets/images/blank_profile.jpg'),
-                                    radius: 16,
+                                  Padding(
+                                    padding: EdgeInsets.only(bottom: 10),
+                                    child: CircleAvatar(
+                                      backgroundImage: AssetImage('assets/images/blank_profile.jpg'),
+                                      radius: 16,
+                                    )
                                   ),
-                                  // Por aqui os meus livros
+                                  SizedBox(
+                                    width: 120,
+                                    height: 250,
+                                    child: ListView.builder(
+                                      itemCount: myBooks.length,
+                                      itemBuilder: (context, index) => myBooks[index],
+                                    )
+                                  )
                                 ],
                               ),
-                              VerticalDivider(
-                                width: 100,
-                                thickness: 5,
-                                indent: 20,
-                                endIndent: 20,
-                                color: Colors.red,
+                              SizedBox(
+                                height: 280,
+                                child: VerticalDivider(
+                                  width: 10,
+                                  thickness: 1,
+                                  color: Colors.black,
+                                ),
                               ),
                               Column(
                                 children: [
-                                  CircleAvatar(
-                                    backgroundImage: AssetImage('assets/images/blank_profile.jpg'),
-                                    radius: 16,
-                                    // Por aqui os livros da outra pessoa
+                                  Padding(
+                                    padding: EdgeInsets.only(bottom: 10),
+                                    child: CircleAvatar(
+                                      backgroundImage: AssetImage('assets/images/blank_profile.jpg'),
+                                      radius: 16,
+                                    )
+                                  ),
+                                  SizedBox(
+                                    width: 120,
+                                    height: 250,
+                                    child: ListView.builder(
+                                      itemCount: otherBooks.length,
+                                      itemBuilder: (context, index) => otherBooks[index],
                                   )
+                                  )
+                                  
                                 ],
                               ),
                             ],
                           ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              // Por aqui os botões de adicionar e aceitar
-                              TextButton(
-                                onPressed: () {
-                                  // Por função de adicionar
-                                },
-                                child: Text("Adicionar livros"),
-                              ),
-                              TextButton(
-                                onPressed: () {
-                                  // Por função de aceitar troca
-                                },
-                                child: Text("Aceitar troca"),
+                          Divider(
+                            height: 20,
+                            color: Color.fromARGB(0, 0, 0, 0),
+                          ),
+                          Expanded(
+                            child: Padding(
+                              padding: EdgeInsets.only(bottom: 20),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  // Por aqui os botões de adicionar e aceitar
+                                  TextButton(
+                                    style: TextButton.styleFrom(
+                                      backgroundColor: const Color.fromARGB(255, 221, 212, 192),
+                                      minimumSize: Size(150, 50),
+                                    ),
+                                    onPressed: () {
+                                      // Por função de adicionar
+                                    },
+                                    child: Text("Adicionar livros"),
+                                  ),
+                                  TextButton(
+                                    style: TextButton.styleFrom(
+                                      backgroundColor: Colors.green.shade200,
+                                      minimumSize: Size(150, 50),
+                                    ),
+                                    onPressed: () {
+                                      // Por função de aceitar troca
+                                    },
+                                    child: Text("Aceitar troca"),
+                                  )
+                                ],
                               )
-                            ],
+                            )
                           )
                         ],
                       )),
