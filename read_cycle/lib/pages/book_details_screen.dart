@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:read_cycle/classes/post.dart';
 import 'package:read_cycle/data/time.dart';
+import 'package:read_cycle/pages/chat_detail_screen.dart';
 import 'package:read_cycle/pages/others_profile_screen.dart';
 
 class BookDetailsScreen extends StatefulWidget {
@@ -180,7 +181,14 @@ class _BookDetailsScreen extends State<BookDetailsScreen> {
                 Container(
                   margin: const EdgeInsets.only(left: 5,),
                   child: ElevatedButton(
-                    onPressed: () => {/*depois ligar com chats*/},
+                    onPressed: () => {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ChatDetailScreen(chatUser: post.postUser,),
+                        ),
+                      )
+                    },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Theme.of(context).colorScheme.inversePrimary,
                       shape: RoundedRectangleBorder(

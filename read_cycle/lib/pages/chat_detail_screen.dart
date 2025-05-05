@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:read_cycle/classes/user.dart';
 import 'package:read_cycle/components/book_small_tile.dart';
 import 'package:read_cycle/data/fiction_books.dart';
+import 'package:read_cycle/data/users.dart';
 
 class ChatDetailScreen extends StatefulWidget {
-  final String chatName;
+  final User chatUser;
 
-  const ChatDetailScreen({super.key, required this.chatName});
+  const ChatDetailScreen({super.key, required this.chatUser});
 
   @override
   State<StatefulWidget> createState() => _MainState();
@@ -15,8 +17,7 @@ class _MainState extends State<ChatDetailScreen> {
   bool _tradeMenuOpen = false;
 
   List<Widget> myBooks = [
-    BookSmallTile(book: appFictionBooks[0]),
-    BookSmallTile(book: appFictionBooks[1]),
+    // Adicionar livros
   ];
 
   //List<Widget> myBooks = [
@@ -40,12 +41,12 @@ class _MainState extends State<ChatDetailScreen> {
           children: [
             CircleAvatar(
               backgroundImage: AssetImage(
-                'assets/images/blank_profile.jpg',
+                widget.chatUser.profileImagePath
               ),
               radius: 16,
             ),
             SizedBox(width: 8),
-            Text(widget.chatName),
+            Text(widget.chatUser.name),
           ],
         ),
         bottom: PreferredSize(
@@ -154,7 +155,7 @@ class _MainState extends State<ChatDetailScreen> {
                                   Padding(
                                     padding: EdgeInsets.only(bottom: 10),
                                     child: CircleAvatar(
-                                      backgroundImage: AssetImage('assets/images/blank_profile.jpg'),
+                                      backgroundImage: AssetImage(currentUser.profileImagePath),
                                       radius: 16,
                                     )
                                   ),
@@ -163,7 +164,10 @@ class _MainState extends State<ChatDetailScreen> {
                                     height: 250,
                                     child: ListView.builder(
                                       itemCount: myBooks.length,
-                                      itemBuilder: (context, index) => myBooks[index],
+                                      itemBuilder: (context, index) => Padding(
+                                        padding: EdgeInsets.only(bottom: 15),
+                                        child: myBooks[index],
+                                        ),
                                     )
                                   )
                                 ],
@@ -181,7 +185,7 @@ class _MainState extends State<ChatDetailScreen> {
                                   Padding(
                                     padding: EdgeInsets.only(bottom: 10),
                                     child: CircleAvatar(
-                                      backgroundImage: AssetImage('assets/images/blank_profile.jpg'),
+                                      backgroundImage: AssetImage(widget.chatUser.profileImagePath),
                                       radius: 16,
                                     )
                                   ),
@@ -190,7 +194,10 @@ class _MainState extends State<ChatDetailScreen> {
                                     height: 250,
                                     child: ListView.builder(
                                       itemCount: otherBooks.length,
-                                      itemBuilder: (context, index) => otherBooks[index],
+                                      itemBuilder: (context, index) => Padding(
+                                        padding: EdgeInsets.only(bottom: 15),
+                                        child: otherBooks[index],
+                                        ),
                                   )
                                   )
                                   
@@ -268,3 +275,4 @@ class _MainState extends State<ChatDetailScreen> {
     );
   }
 }
+

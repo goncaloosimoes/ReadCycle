@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:read_cycle/data/users.dart';
 import 'chat_detail_screen.dart';
 
 class ChatScreen extends StatelessWidget {
@@ -7,9 +8,8 @@ class ChatScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<Map<String, dynamic>> chats = [
-      {'name': 'Paulo Fonseca', 'lastMessage': 'Última mensagem...', 'read': false},
-      {'name': 'Martim Dias', 'lastMessage': 'Última mensagem...', 'read': true},
-      {'name': 'Joana Mateus', 'lastMessage': 'Última mensagem...', 'read': false},
+      {'user': appUsers[0], 'lastMessage': 'Última mensagem...', 'read': false},
+      {'user': appUsers[1], 'lastMessage': 'Última mensagem...', 'read': true},
     ];
 
     return Scaffold(
@@ -42,12 +42,12 @@ class ChatScreen extends StatelessWidget {
               child: ListTile(
                 leading: CircleAvatar(
                   backgroundImage: AssetImage(
-                    'assets/images/blank_profile.jpg',
+                    chats[index]['user'].profileImagePath,
                   ),
                   radius: 25,
                 ),
                 title: Text(
-                  chats[index]['name'],
+                  chats[index]['user'].name,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 18, // Aumentar o tamanho da fonte
@@ -72,7 +72,7 @@ class ChatScreen extends StatelessWidget {
                     MaterialPageRoute(
                       builder:
                           (context) =>
-                              ChatDetailScreen(chatName: chats[index]['name']),
+                              ChatDetailScreen(chatUser: chats[index]['user']),
                     ),
                   );
                 },
