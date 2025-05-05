@@ -245,7 +245,7 @@ class _MainState extends State<ChatDetailScreen> {
       ),
       
       bottomNavigationBar: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+        padding: EdgeInsets.only(left: 8.0, right: 8.0, bottom: MediaQuery.of(context).viewInsets.bottom + 30),
         child: Row(
           children: <Widget>[
             Expanded(
@@ -263,7 +263,7 @@ class _MainState extends State<ChatDetailScreen> {
               },
             ),
           ],
-        ),
+        ), 
       ),
     );
   }
