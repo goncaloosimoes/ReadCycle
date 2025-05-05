@@ -17,7 +17,7 @@ class _MainState extends State<ChatDetailScreen> {
   bool _tradeMenuOpen = false;
 
   List<Widget> myBooks = [
-    // Adicionar livros
+    // TODO: Adicionar livros
   ];
 
   //List<Widget> myBooks = [
@@ -56,7 +56,6 @@ class _MainState extends State<ChatDetailScreen> {
             height: 30,
             child: TextButton(
               onPressed: () {
-                // Abrir menu
                 setState(() {
                   _tradeMenuOpen = !_tradeMenuOpen;
                 });
@@ -122,7 +121,7 @@ class _MainState extends State<ChatDetailScreen> {
                         ),
                       ),
                     ),
-                    // Adicione mais mensagens conforme necessário
+                    // TODO: Adicione mais mensagens conforme necessário (criar widget mensagem)
                   ],
                 ),
               ),
@@ -216,14 +215,54 @@ class _MainState extends State<ChatDetailScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.end,
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
-                                  // Por aqui os botões de adicionar e aceitar
                                   TextButton(
                                     style: TextButton.styleFrom(
                                       backgroundColor: const Color.fromARGB(255, 221, 212, 192),
                                       minimumSize: Size(150, 50),
                                     ),
                                     onPressed: () {
-                                      // Por função de adicionar
+                                      showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          return StatefulBuilder(
+                                            builder: (context, setStateDialog) {
+                                              return AlertDialog(
+                                                title: const Text("Adicionar livros"),
+                                                content: SizedBox(
+                                                  width: double.maxFinite,
+                                                  height: 500,
+                                                  child: GridView.count(
+                                                    // crossAxisCount is the number of columns
+                                                    crossAxisCount: 2,
+                                                    // This creates two columns with two items in each column
+                                                    children: List.generate(currentUser.books.length, (index) {
+                                                      return BookSmallTile(book: currentUser.books[index]);
+                                                    }),
+                                                  )
+                                                ),
+                                                actions: [
+                                                  TextButton(
+                                                    onPressed: () {
+                                                      Navigator.of(context).pop();
+                                                    },
+                                                    child: const Text('Cancelar'),
+                                                  ),
+                                                  ElevatedButton(
+                                                    style: ButtonStyle(
+                                                      backgroundColor: WidgetStateProperty.all(Colors.green.shade200),
+                                                    ),
+                                                    onPressed: () {
+                                                      // TODO: Adicionar livros selecionados a myBooks
+                                                      Navigator.of(context).pop();
+                                                    },
+                                                    child: const Text('Guardar'),
+                                                  ),
+                                                ],
+                                              );
+                                            }
+                                          );
+                                        }
+                                      );
                                     },
                                     child: Text("Adicionar livros"),
                                   ),
@@ -233,7 +272,7 @@ class _MainState extends State<ChatDetailScreen> {
                                       minimumSize: Size(150, 50),
                                     ),
                                     onPressed: () {
-                                      // Por função de aceitar troca
+                                      // TODO: Por função de aceitar troca
                                     },
                                     child: Text("Aceitar troca"),
                                   )
@@ -266,7 +305,7 @@ class _MainState extends State<ChatDetailScreen> {
             IconButton(
               icon: Icon(Icons.send),
               onPressed: () {
-                // Ação ao enviar mensagem
+                // TODO: Ação ao enviar mensagem
               },
             ),
           ],
