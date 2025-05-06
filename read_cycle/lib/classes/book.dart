@@ -5,6 +5,7 @@ class Book {
   List<String> genres;
   String coverImagePath;
   String description;
+  String isbn;
 
   Book({
     required this.title,
@@ -12,7 +13,8 @@ class Book {
     required this.pages,
     required this.genres,
     required this.coverImagePath,
-    required this.description
+    required this.description,
+    this.isbn = ""
   });
 
 }
