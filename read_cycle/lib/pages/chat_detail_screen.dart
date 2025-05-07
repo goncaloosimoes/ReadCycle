@@ -22,6 +22,7 @@ class _MainState extends State<ChatDetailScreen> {
 
   // Livros que vão ser adicionados
   List<Book> booksToAdd = [];
+  List<Book> booksToAddBackup = [];
 
   List<Book> otherBooks = [
     appFictionBooks[3],
@@ -230,6 +231,9 @@ class _MainState extends State<ChatDetailScreen> {
                                           },
                                         );
                                       });
+                                      booksToAddBackup.clear();
+                                      booksToAddBackup.addAll(booksToAdd);
+                                      print("backkup: $booksToAddBackup");
                                       showDialog(
                                         context: context,
                                         builder: (context) {
@@ -251,6 +255,15 @@ class _MainState extends State<ChatDetailScreen> {
                                                 actions: [
                                                   TextButton(
                                                     onPressed: () {
+                                                      setState(() {
+                                                        print("clear");
+                                                        print("backup: $booksToAddBackup");
+                                                        myBooks.clear();
+                                                        myBooks.addAll(booksToAddBackup);
+                                                        print("myBooks: $myBooks");
+                                                        booksToAdd.clear(); booksToAdd.addAll(booksToAddBackup);
+                                                        print("booksToAdd: $booksToAdd");
+                                                      });
                                                       Navigator.of(context).pop();
                                                     },
                                                     child: const Text('Cancelar'),
