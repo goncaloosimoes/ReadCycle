@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:read_cycle/data/users.dart';
+import 'package:read_cycle/data/chats.dart';
 import 'chat_detail_screen.dart';
 
-class ChatScreen extends StatelessWidget {
+class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final List<Map<String, dynamic>> chats = [
-      {'user': appUsers[0], 'lastMessage': 'Última mensagem...', 'read': false},
-      {'user': appUsers[1], 'lastMessage': 'Última mensagem...', 'read': true},
-    ];
+  State<ChatScreen> createState() => _MainState();
+}
 
+class _MainState extends State<ChatScreen> {
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
@@ -42,22 +43,22 @@ class ChatScreen extends StatelessWidget {
               child: ListTile(
                 leading: CircleAvatar(
                   backgroundImage: AssetImage(
-                    chats[index]['user'].profileImagePath,
+                    chats[index].user.profileImagePath,
                   ),
                   radius: 25,
                 ),
                 title: Text(
-                  chats[index]['user'].name,
+                  chats[index].user.name,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 18, // Aumentar o tamanho da fonte
                   ),
                 ),
                 subtitle: Text(
-                  chats[index]['lastMessage'],
+                  (chats[index].messages.isNotEmpty) ? chats[index].lastMessage.text : '',
                   style: TextStyle(
                     fontWeight:
-                        chats[index]['read']
+                        chats[index].read
                             ? FontWeight.normal
                             : FontWeight.w900,
                   ),
@@ -67,14 +68,14 @@ class ChatScreen extends StatelessWidget {
                   color: Theme.of(context).primaryColor,
                 ),
                 onTap: () {
+                  chats[index].read = true;
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder:
-                          (context) =>
-                              ChatDetailScreen(chatUser: chats[index]['user']),
-                    ),
-                  );
+                      builder: (context) => ChatDetailScreen(chat: chats[index])),
+                  ).then((value) {
+                    setState(() {}); // Dá reload quando volta (para atualizar a última mensagem)
+                  });
                 },
               ),
             );

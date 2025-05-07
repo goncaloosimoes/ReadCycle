@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:read_cycle/classes/post.dart';
+import 'package:read_cycle/data/chats.dart';
 import 'package:read_cycle/data/time.dart';
 import 'package:read_cycle/pages/chat_detail_screen.dart';
 import 'package:read_cycle/pages/others_profile_screen.dart';
@@ -185,7 +186,7 @@ class _BookDetailsScreen extends State<BookDetailsScreen> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => ChatDetailScreen(chatUser: post.postUser,),
+                          builder: (context) => ChatDetailScreen(chat: chats.firstWhere((chat) => chat.user == post.postUser)),
                         ),
                       )
                     },

@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:read_cycle/classes/book.dart';
-import 'package:read_cycle/classes/user.dart';
+import 'package:read_cycle/classes/chat.dart';
+import 'package:read_cycle/classes/message.dart';
 import 'package:read_cycle/components/book_small_button.dart';
 import 'package:read_cycle/components/book_small_tile.dart';
+import 'package:read_cycle/components/message_widget.dart';
 import 'package:read_cycle/data/fiction_books.dart';
 import 'package:read_cycle/data/users.dart';
 
 class ChatDetailScreen extends StatefulWidget {
-  final User chatUser;
+  final Chat chat;
 
-  const ChatDetailScreen({super.key, required this.chatUser});
+  const ChatDetailScreen({super.key, required this.chat});
 
   @override
   State<StatefulWidget> createState() => _MainState();
@@ -17,6 +19,19 @@ class ChatDetailScreen extends StatefulWidget {
 class _MainState extends State<ChatDetailScreen> {
 
   bool _tradeMenuOpen = false;
+  final TextEditingController _textController = TextEditingController();
+  final ScrollController _scrollController = ScrollController();
+  
+  @override
+  void initState() {
+    super.initState();  
+  }
+
+  @override
+  void dispose() {
+    _textController.dispose();
+    super.dispose();
+  }
 
   List<Book> myBooks = [];
 
@@ -29,6 +44,28 @@ class _MainState extends State<ChatDetailScreen> {
     appFictionBooks[2],
   ];
 
+  void scrollChat() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _scrollController.animateTo(
+        _scrollController.position.maxScrollExtent,
+        duration: Duration(milliseconds: 300),
+        curve: Curves.easeOut,
+      );
+    });
+  }
+
+  void sendMessage() {
+    if (_textController.text.isEmpty) {
+      return;
+    }
+
+    setState(() {
+      widget.chat.messages.add(Message(text: _textController.text, fromUser: true));
+    });
+    _textController.clear();
+    scrollChat();
+  }
+
   @override
   Widget build(BuildContext context) {
     
@@ -38,12 +75,12 @@ class _MainState extends State<ChatDetailScreen> {
           children: [
             CircleAvatar(
               backgroundImage: AssetImage(
-                widget.chatUser.profileImagePath
+                widget.chat.user.profileImagePath
               ),
               radius: 16,
             ),
             SizedBox(width: 8),
-            Text(widget.chatUser.name),
+            Text(widget.chat.user.name),
           ],
         ),
         bottom: PreferredSize(
@@ -87,39 +124,13 @@ class _MainState extends State<ChatDetailScreen> {
             mainAxisSize: MainAxisSize.min,
             children: [
               Expanded(
-                child: ListView(
+                child: ListView.builder(
+                  controller: _scrollController,
                   padding: EdgeInsets.all(16.0),
-                  children: <Widget>[
-                    // Exemplo de mensagens
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Container(
-                        padding: EdgeInsets.all(12),
-                        margin: EdgeInsets.symmetric(vertical: 4),
-                        decoration: BoxDecoration(
-                          color: Colors.grey[300],
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: Text('Mensagem recebida', style: TextStyle(fontSize: 16)),
-                      ),
-                    ),
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: Container(
-                        padding: EdgeInsets.all(12),
-                        margin: EdgeInsets.symmetric(vertical: 4),
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).primaryColorLight,
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: Text(
-                          'Mensagem enviada',
-                          style: TextStyle(fontSize: 16, color: const Color.fromARGB(255, 0, 0, 0)),
-                        ),
-                      ),
-                    ),
-                    // TODO: Adicione mais mensagens conforme necessário (criar widget mensagem)
-                  ],
+                  itemCount: widget.chat.messages.length,
+                  itemBuilder: (context, index) {
+                    return MessageWidget(message: widget.chat.messages[index]);
+                  },
                 ),
               ),
             ],
@@ -181,7 +192,7 @@ class _MainState extends State<ChatDetailScreen> {
                                   Padding(
                                     padding: EdgeInsets.only(bottom: 10),
                                     child: CircleAvatar(
-                                      backgroundImage: AssetImage(widget.chatUser.profileImagePath),
+                                      backgroundImage: AssetImage(widget.chat.user.profileImagePath),
                                       radius: 16,
                                     )
                                   ),
@@ -233,7 +244,6 @@ class _MainState extends State<ChatDetailScreen> {
                                       });
                                       booksToAddBackup.clear();
                                       booksToAddBackup.addAll(booksToAdd);
-                                      print("backkup: $booksToAddBackup");
                                       showDialog(
                                         context: context,
                                         builder: (context) {
@@ -256,13 +266,9 @@ class _MainState extends State<ChatDetailScreen> {
                                                   TextButton(
                                                     onPressed: () {
                                                       setState(() {
-                                                        print("clear");
-                                                        print("backup: $booksToAddBackup");
                                                         myBooks.clear();
                                                         myBooks.addAll(booksToAddBackup);
-                                                        print("myBooks: $myBooks");
                                                         booksToAdd.clear(); booksToAdd.addAll(booksToAddBackup);
-                                                        print("booksToAdd: $booksToAdd");
                                                       });
                                                       Navigator.of(context).pop();
                                                     },
@@ -323,16 +329,20 @@ class _MainState extends State<ChatDetailScreen> {
           children: <Widget>[
             Expanded(
               child: TextField(
+                controller: _textController,
                 decoration: InputDecoration(
                   hintText: 'Escreva uma mensagem...',
                   border: OutlineInputBorder(),
                 ),
+                onSubmitted: (value) {
+                  sendMessage();
+                },
               ),
             ),
             IconButton(
               icon: Icon(Icons.send),
               onPressed: () {
-                // TODO: Ação ao enviar mensagem
+                sendMessage();
               },
             ),
           ],
