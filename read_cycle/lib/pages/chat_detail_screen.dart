@@ -5,7 +5,6 @@ import 'package:read_cycle/classes/message.dart';
 import 'package:read_cycle/components/book_small_button.dart';
 import 'package:read_cycle/components/book_small_tile.dart';
 import 'package:read_cycle/components/message_widget.dart';
-import 'package:read_cycle/data/fiction_books.dart';
 import 'package:read_cycle/data/users.dart';
 
 class ChatDetailScreen extends StatefulWidget {
@@ -24,7 +23,9 @@ class _MainState extends State<ChatDetailScreen> {
   
   @override
   void initState() {
-    super.initState();  
+    super.initState();
+    booksToAdd.addAll(widget.chat.myBooks);
+    booksToAddBackup.addAll(booksToAdd);
   }
 
   @override
@@ -33,16 +34,9 @@ class _MainState extends State<ChatDetailScreen> {
     super.dispose();
   }
 
-  List<Book> myBooks = [];
-
   // Livros que vão ser adicionados
   List<Book> booksToAdd = [];
   List<Book> booksToAddBackup = [];
-
-  List<Book> otherBooks = [
-    appFictionBooks[3],
-    appFictionBooks[2],
-  ];
 
   void scrollChat() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -140,184 +134,188 @@ class _MainState extends State<ChatDetailScreen> {
             top: 0,
             left: 0,
             right: 0,
-            child: AnimatedSize(
+            child: AnimatedSlide(
+              offset: _tradeMenuOpen ? Offset(0, 0) : Offset(0, -1),
               duration: Duration(milliseconds: 300),
               curve: Curves.fastOutSlowIn,
-              child: _tradeMenuOpen
-                  ? Padding(
-                    padding: EdgeInsetsDirectional.symmetric(horizontal: 20),
-                    child: Container(
-                      height: 400,
-                      color: Color.fromARGB(255, 246, 237, 218),
-                      child: Padding(
-                        padding: EdgeInsets.only(left: 30, right: 30, top: 10),
-                        child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Column(
-                                children: [
-                                  Padding(
-                                    padding: EdgeInsets.only(bottom: 10),
-                                    child: CircleAvatar(
-                                      backgroundImage: AssetImage(currentUser.profileImagePath),
-                                      radius: 16,
-                                    )
-                                  ),
-                                  SizedBox(
-                                    width: 120,
-                                    height: 250,
-                                    child: ListView.builder(
-                                      itemCount: myBooks.length,
-                                      itemBuilder: (context, index) => Padding(
-                                        padding: EdgeInsets.only(bottom: 15),
-                                        child: BookSmallTile(key: UniqueKey(), book: myBooks[index]),
-                                        ),
-                                    )
+              child: AnimatedOpacity(
+                opacity: _tradeMenuOpen ? 1 : 0,
+                duration: Duration(milliseconds: 300),
+                curve: Curves.fastOutSlowIn,
+                child: Padding(
+                  padding: EdgeInsetsDirectional.symmetric(horizontal: 20),
+                  child: Container(
+                    height: 400,
+                    color: Color.fromARGB(255, 246, 237, 218),
+                    child: Padding(
+                      padding: EdgeInsets.only(left: 30, right: 30, top: 10),
+                      child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Column(
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.only(bottom: 10),
+                                  child: CircleAvatar(
+                                    backgroundImage: AssetImage(currentUser.profileImagePath),
+                                    radius: 16,
                                   )
-                                ],
-                              ),
-                              SizedBox(
-                                height: 280,
-                                child: VerticalDivider(
-                                  width: 10,
-                                  thickness: 1,
-                                  color: Colors.black,
                                 ),
+                                SizedBox(
+                                  width: 120,
+                                  height: 250,
+                                  child: ListView.builder(
+                                    itemCount: widget.chat.myBooks.length,
+                                    itemBuilder: (context, index) => Padding(
+                                      padding: EdgeInsets.only(bottom: 15),
+                                      child: BookSmallTile(key: UniqueKey(), book: widget.chat.myBooks[index]),
+                                      ),
+                                  )
+                                )
+                              ],
+                            ),
+                            SizedBox(
+                              height: 280,
+                              child: VerticalDivider(
+                                width: 10,
+                                thickness: 1,
+                                color: Colors.black,
                               ),
-                              Column(
-                                children: [
-                                  Padding(
-                                    padding: EdgeInsets.only(bottom: 10),
-                                    child: CircleAvatar(
-                                      backgroundImage: AssetImage(widget.chat.user.profileImagePath),
-                                      radius: 16,
-                                    )
+                            ),
+                            Column(
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.only(bottom: 10),
+                                  child: CircleAvatar(
+                                    backgroundImage: AssetImage(widget.chat.user.profileImagePath),
+                                    radius: 16,
+                                  )
+                                ),
+                                SizedBox(
+                                  width: 120,
+                                  height: 250,
+                                  child: ListView.builder(
+                                    itemCount: widget.chat.otherBooks.length,
+                                    itemBuilder: (context, index) => Padding(
+                                      padding: EdgeInsets.only(bottom: 15),
+                                      child: BookSmallTile(book: widget.chat.otherBooks[index]),
+                                      ),
+                                )
+                                )
+                                
+                              ],
+                            ),
+                          ],
+                        ),
+                        Divider(
+                          height: 20,
+                          color: Color.fromARGB(0, 0, 0, 0),
+                        ),
+                        Expanded(
+                          child: Padding(
+                            padding: EdgeInsets.only(bottom: 20),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                TextButton(
+                                  style: TextButton.styleFrom(
+                                    backgroundColor: const Color.fromARGB(255, 221, 212, 192),
+                                    minimumSize: Size(120, 50),
                                   ),
-                                  SizedBox(
-                                    width: 120,
-                                    height: 250,
-                                    child: ListView.builder(
-                                      itemCount: otherBooks.length,
-                                      itemBuilder: (context, index) => Padding(
-                                        padding: EdgeInsets.only(bottom: 15),
-                                        child: BookSmallTile(book: otherBooks[index]),
-                                        ),
-                                  )
-                                  )
-                                  
-                                ],
-                              ),
-                            ],
-                          ),
-                          Divider(
-                            height: 20,
-                            color: Color.fromARGB(0, 0, 0, 0),
-                          ),
-                          Expanded(
-                            child: Padding(
-                              padding: EdgeInsets.only(bottom: 20),
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  TextButton(
-                                    style: TextButton.styleFrom(
-                                      backgroundColor: const Color.fromARGB(255, 221, 212, 192),
-                                      minimumSize: Size(120, 50),
-                                    ),
-                                    onPressed: () {
-                                      List<Widget> bookWidgets = List.generate(currentUser.books.length, (index) {
-                                        return BookSmallButton(
-                                          book: currentUser.books[index],
-                                          selected: booksToAdd.contains(currentUser.books[index]),
-                                          onSelectChange: (selected) {
-                                            if (selected) {
-                                              booksToAdd.add(currentUser.books[index]);
-                                            } else {
-                                              booksToAdd.remove(currentUser.books[index]);
-                                            }
-                                          },
-                                        );
-                                      });
-                                      booksToAddBackup.clear();
-                                      booksToAddBackup.addAll(booksToAdd);
-                                      showDialog(
-                                        context: context,
-                                        builder: (context) {
-                                          return StatefulBuilder(
-                                            builder: (context, setStateDialog) {
-                                              AlertDialog dialog = AlertDialog(
-                                                title: const Text("Adicionar livros"),
-                                                content: SizedBox(
-                                                  width: double.maxFinite,
-                                                  height: 500,
-                                                  child: GridView.count(
-                                                    // crossAxisCount is the number of columns
-                                                    crossAxisCount: 2,
-                                                    crossAxisSpacing: 12,
-                                                    // This creates two columns with two items in each column
-                                                    children: bookWidgets
-                                                  )
-                                                ),
-                                                actions: [
-                                                  TextButton(
-                                                    onPressed: () {
-                                                      setState(() {
-                                                        myBooks.clear();
-                                                        myBooks.addAll(booksToAddBackup);
-                                                        booksToAdd.clear(); booksToAdd.addAll(booksToAddBackup);
-                                                      });
-                                                      Navigator.of(context).pop();
-                                                    },
-                                                    child: const Text('Cancelar'),
-                                                  ),
-                                                  ElevatedButton(
-                                                    style: ButtonStyle(
-                                                      backgroundColor: WidgetStateProperty.all(Colors.green.shade200),
-                                                    ),
-                                                    onPressed: () {
-                                                      setState(() {
-                                                        myBooks.clear();
-                                                        myBooks.addAll(booksToAdd);
-                                                      });
-                                                      Navigator.of(context).pop();
-                                                    },
-                                                    child: const Text('Guardar'),
-                                                  ),
-                                                ],
-                                              );
-                                              return dialog;
-                                            }
-                                          );
-                                        }
+                                  onPressed: () {
+                                    List<Widget> bookWidgets = List.generate(currentUser.books.length, (index) {
+                                      return BookSmallButton(
+                                        book: currentUser.books[index],
+                                        selected: booksToAdd.contains(currentUser.books[index]),
+                                        onSelectChange: (selected) {
+                                          if (selected) {
+                                            booksToAdd.add(currentUser.books[index]);
+                                          } else {
+                                            booksToAdd.remove(currentUser.books[index]);
+                                          }
+                                        },
                                       );
-                                      setState(() {});
-                                      booksToAdd.clear();
-                                    },
-                                    child: Text("Adicionar livros"),
+                                    });
+                                    booksToAddBackup.clear();
+                                    booksToAddBackup.addAll(booksToAdd);
+                                    showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return StatefulBuilder(
+                                          builder: (context, setStateDialog) {
+                                            AlertDialog dialog = AlertDialog(
+                                              title: const Text("Adicionar livros"),
+                                              content: SizedBox(
+                                                width: double.maxFinite,
+                                                height: 500,
+                                                child: GridView.count(
+                                                  // crossAxisCount is the number of columns
+                                                  crossAxisCount: 2,
+                                                  crossAxisSpacing: 12,
+                                                  // This creates two columns with two items in each column
+                                                  children: bookWidgets
+                                                )
+                                              ),
+                                              actions: [
+                                                TextButton(
+                                                  onPressed: () {
+                                                    setState(() {
+                                                      widget.chat.myBooks.clear();
+                                                      widget.chat.myBooks.addAll(booksToAddBackup);
+                                                      booksToAdd.clear(); booksToAdd.addAll(booksToAddBackup);
+                                                    });
+                                                    Navigator.of(context).pop();
+                                                  },
+                                                  child: const Text('Cancelar'),
+                                                ),
+                                                ElevatedButton(
+                                                  style: ButtonStyle(
+                                                    backgroundColor: WidgetStateProperty.all(Colors.green.shade200),
+                                                  ),
+                                                  onPressed: () {
+                                                    setState(() {
+                                                      widget.chat.myBooks.clear();
+                                                      widget.chat.myBooks.addAll(booksToAdd);
+                                                    });
+                                                    Navigator.of(context).pop();
+                                                  },
+                                                  child: const Text('Guardar'),
+                                                ),
+                                              ],
+                                            );
+                                            return dialog;
+                                          }
+                                        );
+                                      }
+                                    );
+                                    setState(() {});
+                                    booksToAdd.clear();
+                                  },
+                                  child: Text("Adicionar livros"),
+                                ),
+                                TextButton(
+                                  style: TextButton.styleFrom(
+                                    backgroundColor: Colors.green.shade200,
+                                    minimumSize: Size(120, 50),
                                   ),
-                                  TextButton(
-                                    style: TextButton.styleFrom(
-                                      backgroundColor: Colors.green.shade200,
-                                      minimumSize: Size(120, 50),
-                                    ),
-                                    onPressed: () {
-                                      // TODO: Por função de aceitar troca
-                                    },
-                                    child: Text("Aceitar troca"),
-                                  )
-                                ],
-                              )
+                                  onPressed: () {
+                                    // TODO: Por função de aceitar troca
+                                  },
+                                  child: Text("Aceitar troca"),
+                                )
+                              ],
                             )
                           )
-                        ],
-                      )),
-                    ),
-                  )
-                  : SizedBox.shrink(),
+                        )
+                      ],
+                    )),
+                  ),
+                )
+              )
             ),
           )
         ],
