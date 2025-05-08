@@ -1,7 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:location_picker_flutter_map/location_picker_flutter_map.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
+import 'package:http/http.dart' as http;
 
 void main() {
   runApp(const MyApp());
@@ -27,7 +30,7 @@ class PostScreen extends StatefulWidget {
   const PostScreen({super.key});
 
   @override
-  _PostScreenState createState() => _PostScreenState();
+  State<PostScreen> createState() => _PostScreenState();
 }
 
 class _PostScreenState extends State<PostScreen> {
@@ -45,7 +48,7 @@ class _PostScreenState extends State<PostScreen> {
   final TextEditingController _locationController = TextEditingController();
   final TextEditingController _notesController = TextEditingController();
 
-  // Detalhes do livro específico para o ISBN 978-8186-734-896
+  // Detalhes do livro específico para o ISBN 978-0345-371-485
   final Map<String, String> _perryMasonBook = {
     'title': 'Perry Mason - The Case of the Demure Defendant',
     'author': 'Erle Stanley Gardner',
@@ -53,10 +56,17 @@ class _PostScreenState extends State<PostScreen> {
         'Janice Wainwright, uma jovem reservada, é acusada de matar seu chefe. Apesar das evidências contra ela, Perry Mason acredita em sua inocência. Investigando a fundo, ele descobre segredos perigosos e inimigos ocultos. No tribunal, cada movimento é decisivo para virar o jogo. Mason precisa provar a verdade antes que Janice seja condenada injustamente.',
     'pages': '276',
     'genre': 'Mistério, Thriller',
-    'isbn': '9788186734896',
+    'isbn': '9780345371485',
   };
 
-  void goToNextScreen() {
+  void goToNextScreen() async {
+    late final http.Response response;
+    if (!_isbnConfirmationScreen && _currentScreen == 1) {
+      // TODO: request http
+      final String isbn = _isbnController.text.replaceAll(RegExp(r'[- ]*'), '');  // Sem os traços/espaços
+      response = await http.get(Uri.parse('https://openlibrary.org/api/books?bibkeys=ISBN:$isbn&format=json&jscmd=data'));
+    }
+
     setState(() {
       if (_isbnConfirmationScreen) {
         _isbnConfirmationScreen = false;
@@ -68,18 +78,66 @@ class _PostScreenState extends State<PostScreen> {
           _currentScreen = 2; // Vai para inserção manual
         }
       } else if (_currentScreen == 1) {
-        // usar 00 para ser mais rapido testar
-        if (_isbnController.text == '9788186734896' || _isbnController.text == '00') {
-          _titleController.text = _perryMasonBook['title']!;
-          _authorController.text = _perryMasonBook['author']!;
-          _descriptionController.text = _perryMasonBook['description']!;
-          _pagesController.text = _perryMasonBook['pages']!;
-          _genreController.text = _perryMasonBook['genre']!;
-          _isbnConfirmationScreen = true;
+        // Colocaar dados nos campos
+        if (response.statusCode == 200 && response.body != '{}' && jsonDecode(response.body) != null) {
+          print(response.body);
+          final String isbn = _isbnController.text.replaceAll(RegExp(r'[- ]*'), '');  // Sem os traços/espaços
+          // Obter dados
+          final Map<String, dynamic>  jsonResponse = (jsonDecode(response.body) as Map<String, dynamic>)["ISBN:$isbn"];
+          
+          _titleController.text = jsonResponse["title"];
+          _authorController.text = jsonResponse['authors'][0]['name']; // Usar este como primeiro autor
+
+          // Se tem descrição, colocar
+          if (jsonResponse["description"] != null) {
+            if (jsonResponse["description"] is Map) { // Descrição é um mapa
+              _descriptionController.text = jsonResponse["description"]["value"];
+            } else { // Descrição é só uma string
+              _descriptionController.text = jsonResponse["description"];
+            }
+          } else {
+            _descriptionController.text = '';
+          }
+
+          // Se tem nº de páginas, colocar
+          if (jsonResponse["number_of_pages"] != null) {
+            _pagesController.text = (jsonResponse["number_of_pages"] as int).toString();
+          } else {
+            _pagesController.text = '';
+          }
+
+          // Se tem subjects/géneros, colocar o mais curto (provavelmente o que melhor descreve)
+          if (jsonResponse["subjects"] != null) {
+            List<dynamic> subjects = jsonResponse["subjects"] as List<dynamic>;
+            String smallestSubject = subjects[0]["name"];
+            for (Map subject in subjects) {
+              if (smallestSubject.split(' ').length > subject["name"].split(' ').length) {
+                smallestSubject = subject["name"];
+              }
+            }
+            _genreController.text = smallestSubject;
+          } else {
+            _genreController.text = '';
+          }
+
+          _currentScreen = 2; // Vai para inserção manual se ISBN não for reconhecido
+          // TODO: por imagem da cover
         } else {
-          _currentScreen =
-              2; // Vai para inserção manual se ISBN não for reconhecido
+          _currentScreen = 2; // Vai para inserção manual se ISBN não for reconhecido
         }
+
+        // usar 00 para ser mais rapido testar
+        //if (_isbnController.text == '9780345371485' || _isbnController.text == '00') {
+        //  _titleController.text = _perryMasonBook['title']!;
+        //  _authorController.text = _perryMasonBook['author']!;
+        //  _descriptionController.text = _perryMasonBook['description']!;
+        //  _pagesController.text = _perryMasonBook['pages']!;
+        //  _genreController.text = _perryMasonBook['genre']!;
+        //  _isbnConfirmationScreen = true;
+        //} else {
+        //  _currentScreen =
+        //      2; // Vai para inserção manual se ISBN não for reconhecido
+        //}
       } else if (_currentScreen == 2) {
         _currentScreen = 3; // Vai para localização
       } else if (_currentScreen == 3) {
@@ -391,7 +449,7 @@ class _PostScreenState extends State<PostScreen> {
                   );
 
                   setState(() {
-                    _locationController.text = '${pickedData.address}';
+                    _locationController.text = pickedData.address;
                     // Continua preenchendo o _locationController se precisar enviar depois
                   });
                 },
