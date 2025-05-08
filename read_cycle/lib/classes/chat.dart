@@ -9,6 +9,8 @@ class Chat {
   List<Book> otherBooks;
   List<Message> messages;
   Message get lastMessage => messages.last;
+  bool ready = false;
+  bool otherReady = false;
 
   Chat({
     required this.user,

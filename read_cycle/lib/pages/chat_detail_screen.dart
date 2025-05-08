@@ -159,9 +159,15 @@ class _MainState extends State<ChatDetailScreen> {
                               children: [
                                 Padding(
                                   padding: EdgeInsets.only(bottom: 10),
-                                  child: CircleAvatar(
-                                    backgroundImage: AssetImage(currentUser.profileImagePath),
-                                    radius: 16,
+                                  child: Row(
+                                    children: [
+                                      CircleAvatar(
+                                        backgroundImage: AssetImage(currentUser.profileImagePath),
+                                        radius: 16,
+                                      ),
+                                      SizedBox(width: 8),
+                                      Text((widget.chat.ready)?"✅ pronto!":""),
+                                    ],
                                   )
                                 ),
                                 SizedBox(
@@ -189,9 +195,15 @@ class _MainState extends State<ChatDetailScreen> {
                               children: [
                                 Padding(
                                   padding: EdgeInsets.only(bottom: 10),
-                                  child: CircleAvatar(
-                                    backgroundImage: AssetImage(widget.chat.user.profileImagePath),
-                                    radius: 16,
+                                  child: Row(
+                                    children: [
+                                      CircleAvatar(
+                                        backgroundImage: AssetImage(widget.chat.user.profileImagePath),
+                                        radius: 16,
+                                      ),
+                                      SizedBox(width: 8),
+                                      Text((widget.chat.otherReady)?"✅ pronto!":""),
+                                    ],
                                   )
                                 ),
                                 SizedBox(
@@ -280,6 +292,8 @@ class _MainState extends State<ChatDetailScreen> {
                                                     setState(() {
                                                       widget.chat.myBooks.clear();
                                                       widget.chat.myBooks.addAll(booksToAdd);
+                                                      widget.chat.ready = false;
+                                                      widget.chat.otherReady = false;
                                                     });
                                                     Navigator.of(context).pop();
                                                   },
@@ -299,13 +313,18 @@ class _MainState extends State<ChatDetailScreen> {
                                 ),
                                 TextButton(
                                   style: TextButton.styleFrom(
-                                    backgroundColor: Colors.green.shade200,
+                                    backgroundColor: (!widget.chat.ready)?Colors.green.shade200:Colors.red.shade200,
                                     minimumSize: Size(120, 50),
                                   ),
                                   onPressed: () {
-                                    // TODO: Por função de aceitar troca
+                                    setState(() {
+                                      widget.chat.ready = !widget.chat.ready;
+                                      if (widget.chat.ready && widget.chat.otherReady) {
+                                        // TODO: fazer aqui o 'troca a decorrer'
+                                      }
+                                    });
                                   },
-                                  child: Text("Aceitar troca"),
+                                  child: Text((!widget.chat.ready)?"Aceitar troca":"Rejeitar troca"),
                                 )
                               ],
                             )
