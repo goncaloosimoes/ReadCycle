@@ -1,10 +1,11 @@
+import 'package:read_cycle/classes/app_image.dart';
 import 'package:read_cycle/classes/book.dart';
 
 class User {
   String name;
   String email;
   String location;
-  String profileImagePath;
+  AppImage profileImage;
   String rating;
   List<String> favGenres;
   String bio;
@@ -15,7 +16,7 @@ class User {
     required this.name,
     required this.email,
     required this.location,
-    required this.profileImagePath,
+    required this.profileImage,
     required this.rating,
     required this.favGenres,
     required this.bio,

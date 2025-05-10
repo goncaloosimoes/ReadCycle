@@ -35,9 +35,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   backgroundColor: Colors.black,
                   child: CircleAvatar(
                     radius: 48,
-                    backgroundImage: AssetImage(
-                      currentUser.profileImagePath,
-                    ),
+                    backgroundImage: currentUser.profileImage.build(),
                   ),
                 ),
                 const SizedBox(width: 15,),
@@ -69,12 +67,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                           GestureDetector(
                                             onTap: () {
                                               setState(() {
-                                                currentUser.profileImagePath = 'assets/images/blank_profile.jpg';
+                                                currentUser.profileImage.asset = 'assets/images/blank_profile.jpg';
                                               });
                                             },
                                             child: CircleAvatar(
                                               radius: 40,
-                                              backgroundImage: AssetImage(currentUser.profileImagePath),
+                                              backgroundImage: currentUser.profileImage.build(),
                                             ),
                                           ),
                                           const SizedBox(height: 15,),

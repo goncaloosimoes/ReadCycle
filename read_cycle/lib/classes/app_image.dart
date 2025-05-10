@@ -4,8 +4,8 @@ import 'dart:io';
 import 'package:flutter/widgets.dart';
 
 class AppImage {
-  final String? asset;
-  final File? file;
+  String? asset;
+  File? file;
 
   AppImage.asset(this.asset) : file = null;
   AppImage.file(this.file) : asset = null;

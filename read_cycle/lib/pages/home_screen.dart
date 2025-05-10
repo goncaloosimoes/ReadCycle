@@ -158,9 +158,7 @@ class _MainState extends State<HomeScreen> {
                             backgroundColor: Colors.white,
                             child: CircleAvatar(
                               radius: 28,
-                              backgroundImage: AssetImage(
-                                currentUser.profileImagePath,
-                              ),
+                              backgroundImage: currentUser.profileImage.build(),
                             ),
                           ),
                         ),

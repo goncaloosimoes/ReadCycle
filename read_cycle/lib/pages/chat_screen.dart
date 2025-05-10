@@ -42,9 +42,7 @@ class _MainState extends State<ChatScreen> {
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: ListTile(
                 leading: CircleAvatar(
-                  backgroundImage: AssetImage(
-                    chats[index].user.profileImagePath,
-                  ),
+                  backgroundImage: chats[index].user.profileImage.build(),
                   radius: 25,
                 ),
                 title: Text(

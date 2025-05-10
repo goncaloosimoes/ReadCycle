@@ -68,9 +68,7 @@ class _MainState extends State<ChatDetailScreen> {
         title: Row(
           children: [
             CircleAvatar(
-              backgroundImage: AssetImage(
-                widget.chat.user.profileImagePath
-              ),
+              backgroundImage: widget.chat.user.profileImage.build(),
               radius: 16,
             ),
             SizedBox(width: 8),
@@ -162,7 +160,7 @@ class _MainState extends State<ChatDetailScreen> {
                                   child: Row(
                                     children: [
                                       CircleAvatar(
-                                        backgroundImage: AssetImage(currentUser.profileImagePath),
+                                        backgroundImage: currentUser.profileImage.build(),
                                         radius: 16,
                                       ),
                                       SizedBox(width: 8),
@@ -198,7 +196,7 @@ class _MainState extends State<ChatDetailScreen> {
                                   child: Row(
                                     children: [
                                       CircleAvatar(
-                                        backgroundImage: AssetImage(widget.chat.user.profileImagePath),
+                                        backgroundImage: widget.chat.user.profileImage.build(),
                                         radius: 16,
                                       ),
                                       SizedBox(width: 8),

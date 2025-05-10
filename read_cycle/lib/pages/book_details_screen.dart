@@ -142,9 +142,7 @@ class _BookDetailsScreen extends State<BookDetailsScreen> {
                     backgroundColor: Colors.black,
                     child: CircleAvatar(
                       radius: 38,
-                      backgroundImage: AssetImage(
-                        post.postUser.profileImagePath,
-                      ),
+                      backgroundImage: post.postUser.profileImage.build(),
                     ),
                   ),
                 ),

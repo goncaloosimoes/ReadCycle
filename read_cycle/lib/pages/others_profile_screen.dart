@@ -37,9 +37,7 @@ class _OthersProfileScreen extends State<OthersProfileScreen> {
                   backgroundColor: Colors.black,
                   child: CircleAvatar(
                     radius: 48,
-                    backgroundImage: AssetImage(
-                      user.profileImagePath,
-                    ),
+                    backgroundImage: user.profileImage.build(),
                   ),
                 ),
                 const SizedBox(width: 15,),

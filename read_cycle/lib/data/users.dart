@@ -1,3 +1,4 @@
+import 'package:read_cycle/classes/app_image.dart';
 import 'package:read_cycle/classes/user.dart';
 import 'package:read_cycle/data/fiction_books.dart';
 
@@ -5,7 +6,7 @@ User currentUser = User(
   name: '[Nome]', 
   email: '[Email]', 
   location: '[Localização]', 
-  profileImagePath: 'assets/images/blank_profile.jpg', 
+  profileImage: AppImage.asset('assets/images/blank_profile.jpg'), 
   rating: '[Avaliação]', 
   favGenres: [], 
   bio: '[Biografia]', 
@@ -18,7 +19,7 @@ final List<User> appUsers = [
       name: 'Emma',
       email: 'emma@email.com',
       location: 'Aveiro',
-      profileImagePath: 'assets/images/persona2.jpg',
+      profileImage: AppImage.asset('assets/images/persona2.jpg'),
       rating: '4.5',
       favGenres: ['Ficção', 'Romance', 'Biografia'],
       bio: 'Blogger de viagens',
@@ -29,7 +30,7 @@ final List<User> appUsers = [
       name: 'Gonçalo Silva',
       email: 'gonca@email.com',
       location: 'Aveiro',
-      profileImagePath: 'assets/images/blank_profile.jpg',
+      profileImage: AppImage.asset('assets/images/blank_profile.jpg'),
       rating: '4.9',
       favGenres: ['Ficção', 'Thriller', 'Romance'],
       bio: 'Olá! Sou o Gonçalo! E aqui estão escritas mais um monte de palavras que não dizem nada apenas servem para ver se o botão de ver mais está ou não a funcionar, acho que já deve ser suficiente.',
