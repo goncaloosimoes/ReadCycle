@@ -7,7 +7,7 @@ User currentUser = User(
   email: '[Email]', 
   location: '[Localização]', 
   profileImage: AppImage.asset('assets/images/blank_profile.jpg'), 
-  rating: '[Avaliação]', 
+  rating: '4.0',
   favGenres: [], 
   bio: '[Biografia]', 
   books: [appFictionBooks[0], appFictionBooks[1]], 

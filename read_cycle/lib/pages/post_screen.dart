@@ -11,26 +11,6 @@ import 'package:read_cycle/classes/post.dart';
 import 'package:read_cycle/data/posts.dart';
 import 'package:read_cycle/data/users.dart';
 
-void main() {
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'ReadCycle',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.amber),
-        useMaterial3: true,
-      ),
-      home: const PostScreen(),
-    );
-  }
-}
-
 class PostScreen extends StatefulWidget {
   const PostScreen({super.key});
 
@@ -216,7 +196,7 @@ class _PostScreenState extends State<PostScreen> {
     required VoidCallback onPressed,
   }) {
     return SizedBox(
-      width: 150,
+      width: 130,
       height: 50,
       child: ElevatedButton(
         onPressed: onPressed,
@@ -239,7 +219,7 @@ class _PostScreenState extends State<PostScreen> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const SizedBox(width: 150),
+            const SizedBox(width: 130, height: 50),
             _buildStyledButton(text: 'Seguinte', onPressed: goToNextScreen),
           ],
         ),
@@ -274,7 +254,7 @@ class _PostScreenState extends State<PostScreen> {
 
   Widget _buildMethodSelectionScreen() {
     return Padding(
-      padding: const EdgeInsets.only(top: 250.0),
+      padding: const EdgeInsets.all(25),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
@@ -447,58 +427,66 @@ class _PostScreenState extends State<PostScreen> {
 
   Widget _buildLocationNotesScreen() {
     return Padding(
-      padding: const EdgeInsets.all(25.0),
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'Localização',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 10),
-            // Mapa
-            Container(
-              height: 360,
-              child: FlutterLocationPicker(
-                // coordenadas iniciais no deti :)
-                initPosition: LatLong(40.63330334401945, -8.659509397102308),
-                initZoom: 11,
-                minZoomLevel: 5,
-                maxZoomLevel: 16,
-                trackMyPosition: false,
-                onPicked: (pickedData) {
-                  print(
-                    'Localização selecionada: ${pickedData.latLong.latitude}, ${pickedData.latLong.longitude}',
-                  );
+      padding: const EdgeInsets.only(top: 25.0, bottom: 25.0, left: 25.0, right: 5.0),  // Um pouco de padding à direto para a ScrollBar
+      child: Scrollbar(
+        thumbVisibility: true,
+        thickness: 8,
+        radius: Radius.circular(20),
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.only(right: 20.0),  // Resto do padding à direita
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'Localização',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 10),
+                // Mapa
+                Container(
+                  height: 360,
+                  child: FlutterLocationPicker(
+                    // coordenadas iniciais no deti :)
+                    initPosition: LatLong(40.63330334401945, -8.659509397102308),
+                    initZoom: 11,
+                    minZoomLevel: 5,
+                    maxZoomLevel: 16,
+                    trackMyPosition: false,
+                    onPicked: (pickedData) {
+                      print(
+                        'Localização selecionada: ${pickedData.latLong.latitude}, ${pickedData.latLong.longitude}',
+                      );
 
-                  setState(() {
-                    _locationController.text = pickedData.address;
-                    // Continua preenchendo o _locationController se precisar enviar depois
-                  });
-                },
-              ),
+                      setState(() {
+                        _locationController.text = pickedData.address;
+                        // Continua preenchendo o _locationController se precisar enviar depois
+                      });
+                    },
+                  ),
+                ),
+                const SizedBox(height: 20),
+                const Text(
+                  'Notas adicionais (opcional)',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
+                TextField(
+                  controller: _notesController,
+                  maxLines: 3,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    hintText: 'Ex: Estado do livro, condições de troca...',
+                    hintStyle: TextStyle(color: Colors.grey),
+                  ),
+                  
+                ),
+                const SizedBox(height: 10),
+                _buildNavigationButtons(),
+              ],
             ),
-            const SizedBox(height: 20),
-            const Text(
-              'Notas adicionais (opcional)',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-            ),
-            TextField(
-              controller: _notesController,
-              maxLines: 3,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: 'Ex: Estado do livro, condições de troca...',
-                hintStyle: TextStyle(color: Colors.grey),
-              ),
-              
-            ),
-            const SizedBox(height: 40),
-            _buildNavigationButtons(),
-          ],
+          )
         ),
-      ),
+      )
     );
   }
 
@@ -530,7 +518,7 @@ class _PostScreenState extends State<PostScreen> {
 
   Widget _buildPhotosScreen() {
     return Padding(
-      padding: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(25.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -813,8 +801,7 @@ class _PostScreenState extends State<PostScreen> {
   Widget _buildBookDetailsScreen() {
     return Padding(
       padding: const EdgeInsets.all(25.0),
-      child: SingleChildScrollView(
-        child: Column(
+      child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
@@ -910,11 +897,10 @@ class _PostScreenState extends State<PostScreen> {
                 hintStyle: TextStyle(color: Colors.grey),
               ),
             ),
-            const SizedBox(height: 40),
+            const Spacer(),
             _buildNavigationButtons(),
           ],
         ),
-      ),
     );
   }
 
