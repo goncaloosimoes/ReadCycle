@@ -64,8 +64,8 @@ class _MainState extends State<HomeScreen> {
     final List<BooksTile> bookTiles = [
       BooksTile(title: 'Sugestões', postTiles: postTiles),
       BooksTile(title: 'Ficção', postTiles: postTiles.sublist(3)),
-      BooksTile(title: 'Biografias', postTiles: postTiles),
-      BooksTile(title: 'Comédia', postTiles: postTiles),
+      BooksTile(title: 'Romance', postTiles: postTiles),
+      BooksTile(title: 'Thriller', postTiles: postTiles),
     ];
 
     return PopScope(
