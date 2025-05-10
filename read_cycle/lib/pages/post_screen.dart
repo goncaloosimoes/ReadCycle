@@ -62,7 +62,6 @@ class _PostScreenState extends State<PostScreen> {
   void goToNextScreen() async {
     late final http.Response response;
     if (!_isbnConfirmationScreen && _currentScreen == 1) {
-      // TODO: request http
       final String isbn = _isbnController.text.replaceAll(RegExp(r'[- ]*'), '');  // Sem os traços/espaços
       response = await http.get(Uri.parse('https://openlibrary.org/api/books?bibkeys=ISBN:$isbn&format=json&jscmd=data'));
     }
@@ -80,7 +79,6 @@ class _PostScreenState extends State<PostScreen> {
       } else if (_currentScreen == 1) {
         // Colocaar dados nos campos
         if (response.statusCode == 200 && response.body != '{}' && jsonDecode(response.body) != null) {
-          print(response.body);
           final String isbn = _isbnController.text.replaceAll(RegExp(r'[- ]*'), '');  // Sem os traços/espaços
           // Obter dados
           final Map<String, dynamic>  jsonResponse = (jsonDecode(response.body) as Map<String, dynamic>)["ISBN:$isbn"];
@@ -466,7 +464,9 @@ class _PostScreenState extends State<PostScreen> {
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
                 hintText: 'Ex: Estado do livro, condições de troca...',
+                hintStyle: TextStyle(color: Colors.grey),
               ),
+              
             ),
             const SizedBox(height: 40),
             _buildNavigationButtons(),
@@ -800,6 +800,7 @@ class _PostScreenState extends State<PostScreen> {
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
                 hintText: 'Digite o título do livro',
+                hintStyle: TextStyle(color: Colors.grey),
               ),
             ),
             const SizedBox(height: 15),
@@ -812,6 +813,7 @@ class _PostScreenState extends State<PostScreen> {
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
                 hintText: 'Digite o nome do autor',
+                hintStyle: TextStyle(color: Colors.grey),
               ),
             ),
             const SizedBox(height: 15),
@@ -834,8 +836,10 @@ class _PostScreenState extends State<PostScreen> {
                         decoration: const InputDecoration(
                           border: OutlineInputBorder(),
                           hintText: 'Número',
+                          hintStyle: TextStyle(color: Colors.grey),
                         ),
                         keyboardType: TextInputType.number,
+
                       ),
                     ],
                   ),
@@ -858,6 +862,7 @@ class _PostScreenState extends State<PostScreen> {
                         decoration: const InputDecoration(
                           border: OutlineInputBorder(),
                           hintText: 'Ex: Romance',
+                          hintStyle: TextStyle(color: Colors.grey),
                         ),
                       ),
                     ],
@@ -876,6 +881,7 @@ class _PostScreenState extends State<PostScreen> {
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
                 hintText: 'Digite uma descrição do livro e seu estado',
+                hintStyle: TextStyle(color: Colors.grey),
               ),
             ),
             const SizedBox(height: 40),

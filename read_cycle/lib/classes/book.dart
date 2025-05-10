@@ -1,9 +1,11 @@
+import 'package:read_cycle/classes/app_image.dart';
+
 class Book {
   String title;
   String author;
   int pages;
   List<String> genres;
-  String coverImagePath;
+  AppImage coverImage;
   String description;
   String isbn;
 
@@ -12,7 +14,7 @@ class Book {
     required this.author,
     required this.pages,
     required this.genres,
-    required this.coverImagePath,
+    required this.coverImage,
     required this.description,
     this.isbn = ""
   });

@@ -1,3 +1,4 @@
+import 'package:read_cycle/classes/app_image.dart';
 import 'package:read_cycle/classes/book.dart';
 import 'package:read_cycle/classes/user.dart';
 
@@ -6,7 +7,7 @@ class Post {
   Book book;
   String location;
   DateTime date;
-  List<String> imagePaths;
+  List<AppImage> images;
   String notes;
 
   Post({
@@ -14,12 +15,12 @@ class Post {
     required this.book,
     required this.location,
     required this.date,
-    required this.imagePaths,
+    required this.images,
     required this.notes,
   });
 
   String get postNotes => notes;
   User get postUser => user;
   Book get postBook => book;
-  List<String> get postImages => imagePaths;
+  List<AppImage> get postImages => images;
 }

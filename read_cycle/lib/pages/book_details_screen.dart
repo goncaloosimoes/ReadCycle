@@ -47,8 +47,8 @@ class _BookDetailsScreen extends State<BookDetailsScreen> {
                             Navigator.of(context).pop();
                           },
                           child: InteractiveViewer(
-                            child: Image.asset(
-                              post.postBook.coverImagePath,
+                            child: Image(
+                              image: post.postBook.coverImage.build(),
                               fit: BoxFit.contain
                             ),
                           ),
@@ -56,8 +56,8 @@ class _BookDetailsScreen extends State<BookDetailsScreen> {
                       )
                     );
                   },
-                  child: Image.asset(
-                    post.postBook.coverImagePath,
+                  child: Image(
+                    image: post.postBook.coverImage.build(),
                     height: 230,
                     width: 150,
                     fit: BoxFit.cover,
@@ -307,7 +307,7 @@ class _BookDetailsScreen extends State<BookDetailsScreen> {
             child: Expanded(
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
-                itemCount: post.imagePaths.length,
+                itemCount: post.images.length,
                 itemBuilder: (context, index) {
                   return Container(
                     padding: EdgeInsets.only(right: 5),
@@ -323,8 +323,8 @@ class _BookDetailsScreen extends State<BookDetailsScreen> {
                               Navigator.of(context).pop();
                             },
                             child: InteractiveViewer(
-                              child: Image.asset(
-                                  post.imagePaths[index],
+                              child: Image(
+                                  image: post.images[index].build(),
                                   fit: BoxFit.contain
                                 ),
                               ),
@@ -332,8 +332,8 @@ class _BookDetailsScreen extends State<BookDetailsScreen> {
                           )
                         );
                       },
-                        child: Image.asset(
-                          post.imagePaths[index],
+                        child: Image(
+                          image: post.images[index].build(),
                           height: 230,
                           width: 150,
                           fit: BoxFit.cover,

@@ -29,8 +29,8 @@ class PostTile extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Image.asset(
-                post.postBook.coverImagePath,
+              Image(
+                image: post.postBook.coverImage.build(),
                 height: 110,
               ),
               Text(

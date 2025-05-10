@@ -49,7 +49,7 @@ class _MainState extends State<BookSmallButton> {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
                     image: DecorationImage(
-                      image: AssetImage(widget.book.coverImagePath),
+                      image: widget.book.coverImage.build(),
                       fit: BoxFit.fitHeight,
                     ),
                   ),

@@ -41,7 +41,7 @@ class BookTile extends StatelessWidget {
                   bottomLeft: Radius.circular(10)
                 ),
                 image: DecorationImage(
-                  image: AssetImage(book.coverImagePath),
+                  image: book.coverImage.build(),
                   fit: BoxFit.cover,
                 ),
               ),

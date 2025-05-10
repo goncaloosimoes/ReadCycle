@@ -39,8 +39,8 @@ class SearchResult extends StatelessWidget {
                   flex: 3,
                   child: Padding(
                     padding: EdgeInsets.only(right: 10),
-                    child: Image.asset(
-                      post.book.coverImagePath,
+                    child: Image(
+                      image: post.book.coverImage.build(),
                       height: 120,
                     )
                   )
