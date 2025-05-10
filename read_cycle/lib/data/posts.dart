@@ -45,4 +45,12 @@ final List<Post> appPosts = [
         images: [AppImage.asset('assets/images/placeholder.jpg')],
         notes: '',
       ),
+      Post(
+        user: appUsers[1],
+        book: appFictionBooks[5],
+        location: 'Aveiro',
+        date: DateTime.now(),
+        images: [AppImage.asset('assets/images/placeholder.jpg')],
+        notes: '',
+      ),
     ];

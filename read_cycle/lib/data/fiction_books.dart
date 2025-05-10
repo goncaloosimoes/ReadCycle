@@ -44,11 +44,11 @@ final List<Book> appFictionBooks = [
       description: 'O início da jornada da assassina… com sangue, suor e lágrimas. Celaena Sardothien é a assassina mais temida de Adarlan. Embora trabalhe para a poderosa Guilda de Assassinos e para o seu ardiloso mestre, Arobynn Hamel, Celaena não se deixa vergar e confia apenas no seu colega assassino contratado, Sam. E quando Arobynn a envia em missões que a levam de ilhas remotas a desertos hostis, Celaena dá por si a contrariar as ordens do seu mestre e a questionar a sua própria lealdade.'
     ),
     Book(
-    title: 'Na rota de Vasco da Gama',
-    author: 'Geronimo Stilton',
-    pages: 128,
-    genres: ['Fiction', 'Mystery', 'Juvenile'],
-    coverImage: AppImage.asset('assets/books/fiction/geronimo.jpg'),
-    description: '«Com mil mozarelas, fomos convidados para ir a Lisboa, Portugal, para uma aventura extrarrática… refazer a viagem por mar do grande Vasco da Gama! Nem imaginam! Ao que parece, o famoso navegador português é antepassado dos Stiltons! E assim começa uma aventura de perder o fôlego!» ',
+      title: 'Na rota de Vasco da Gama',
+      author: 'Geronimo Stilton',
+      pages: 128,
+      genres: ['Fiction', 'Mystery', 'Juvenile'],
+      coverImage: AppImage.asset('assets/books/fiction/geronimo.jpg'),
+      description: '«Com mil mozarelas, fomos convidados para ir a Lisboa, Portugal, para uma aventura extrarrática… refazer a viagem por mar do grande Vasco da Gama! Nem imaginam! Ao que parece, o famoso navegador português é antepassado dos Stiltons! E assim começa uma aventura de perder o fôlego!» ',
     ),
   ];
