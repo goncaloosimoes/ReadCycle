@@ -44,11 +44,39 @@ class _PostScreenState extends State<PostScreen> {
     'isbn': '9780345371485',
   };
 
+  // Obter o primeiro url que funcione de uma lista (usar para obter a melhor imagem de cover da API)
+  Future<String> _findWorkingCover(List<String> coverUrls) async {
+    for (String url in coverUrls) {
+      print(url);
+      final response = await http.head(Uri.parse(url));
+      print(url);
+      if (response.statusCode == 200) {
+        print(url);
+        return url;
+      }
+    }
+    return "";
+  }
+
   void goToNextScreen() async {
     late final http.Response response;
     if (!_isbnConfirmationScreen && _currentScreen == 1) {
       final String isbn = _isbnController.text.replaceAll(RegExp(r'[- ]*'), '');  // Sem os traços/espaços
       response = await http.get(Uri.parse('https://openlibrary.org/api/books?bibkeys=ISBN:$isbn&format=json&jscmd=data'));
+
+      // Colocar a imagem de cover (não pode ser no setState porque não dá para fazer await lá)
+      if (response.statusCode == 200 && response.body != '{}' && jsonDecode(response.body) != null) {
+        final Map<String, dynamic>  jsonResponse = (jsonDecode(response.body) as Map<String, dynamic>)["ISBN:$isbn"];
+        print(jsonResponse["cover"]);
+        List<String> urlList = jsonResponse["cover"].values.toList(growable: false).reversed.toList(growable: false).cast<String>();
+        print(urlList);
+
+        if (_selectedImages.isEmpty) {
+          _selectedImages.add(AppImage.url(await _findWorkingCover(urlList)));
+        } else {
+          _selectedImages[0] = AppImage.url(await _findWorkingCover(urlList));
+        }
+      }
     }
 
     setState(() {
@@ -134,7 +162,7 @@ class _PostScreenState extends State<PostScreen> {
           author: _authorController.text,
           pages: int.parse(_pagesController.text),  // TODO: verificar valores
           genres: [_genreController.text],
-          coverImage: AppImage.file(File(_selectedImages[0].path)),
+          coverImage: _selectedImages[0],
           description: _descriptionController.text,
         );
     
@@ -144,7 +172,7 @@ class _PostScreenState extends State<PostScreen> {
             book: bookToAdd,
             location: _locationController.text,
             date: DateTime.now(),
-            images: [for (XFile file in _selectedImages) AppImage.file(File(file.path))],
+            images: [for (AppImage image in _selectedImages) image],
             notes: _notesController.text,
           )
         );
@@ -490,7 +518,7 @@ class _PostScreenState extends State<PostScreen> {
     );
   }
 
-  final List<XFile> _selectedImages = [];
+  final List<AppImage> _selectedImages = [];
 
   final ImagePicker _picker = ImagePicker();
 
@@ -500,7 +528,7 @@ class _PostScreenState extends State<PostScreen> {
       setState(() {
         if (_selectedImages.length < 6) {
           // limite 6 imagens
-          _selectedImages.add(image);
+          _selectedImages.add(AppImage.file(File(image.path)));
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Máximo de 6 imagens permitidas.')),
@@ -544,8 +572,8 @@ class _PostScreenState extends State<PostScreen> {
                     children: [
                       ClipRRect(
                         borderRadius: BorderRadius.circular(8),
-                        child: Image.file(
-                          File(_selectedImages[index].path),
+                        child: Image(
+                          image: _selectedImages[index].build(),
                           fit: BoxFit.cover,
                         ),
                       ),
@@ -717,8 +745,8 @@ class _PostScreenState extends State<PostScreen> {
                             padding: const EdgeInsets.only(right: 8.0),
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(8),
-                              child: Image.file(
-                                File(_selectedImages[index].path),
+                              child: Image(
+                                image: _selectedImages[index].build(),
                                 width: 100,
                                 height: 120,
                                 fit: BoxFit.cover,
