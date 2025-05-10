@@ -5,6 +5,11 @@ import 'package:location_picker_flutter_map/location_picker_flutter_map.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:http/http.dart' as http;
+import 'package:read_cycle/classes/app_image.dart';
+import 'package:read_cycle/classes/book.dart';
+import 'package:read_cycle/classes/post.dart';
+import 'package:read_cycle/data/posts.dart';
+import 'package:read_cycle/data/users.dart';
 
 void main() {
   runApp(const MyApp());
@@ -144,6 +149,27 @@ class _PostScreenState extends State<PostScreen> {
         _currentScreen = 5; // Vai para tela de confirmação final
       } else if (_currentScreen == 5) {
         // Postar livro e voltar para a tela inicial
+        Book bookToAdd = Book(
+          title: _titleController.text,
+          author: _authorController.text,
+          pages: int.parse(_pagesController.text),  // TODO: verificar valores
+          genres: [_genreController.text],
+          coverImage: AppImage.file(File(_selectedImages[0].path)),
+          description: _descriptionController.text,
+        );
+    
+        appPosts.add(
+          Post(
+            user: currentUser,
+            book: bookToAdd,
+            location: _locationController.text,
+            date: DateTime.now(),
+            images: [for (XFile file in _selectedImages) AppImage.file(File(file.path))],
+            notes: _notesController.text,
+          )
+        );
+        currentUser.books.add(bookToAdd);
+
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Livro postado com sucesso!')),
         );

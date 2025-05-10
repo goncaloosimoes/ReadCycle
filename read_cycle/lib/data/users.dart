@@ -23,7 +23,7 @@ final List<User> appUsers = [
       rating: '4.5',
       favGenres: ['Ficção', 'Romance', 'Biografia'],
       bio: 'Blogger de viagens',
-      books: [appFictionBooks[0]],
+      books: [appFictionBooks[2]],
       numTrades: 15,
     ),
     User(
@@ -34,7 +34,7 @@ final List<User> appUsers = [
       rating: '4.9',
       favGenres: ['Ficção', 'Thriller', 'Romance'],
       bio: 'Olá! Sou o Gonçalo! E aqui estão escritas mais um monte de palavras que não dizem nada apenas servem para ver se o botão de ver mais está ou não a funcionar, acho que já deve ser suficiente.',
-      books: appFictionBooks.sublist(1),
+      books: appFictionBooks.sublist(3),
       numTrades: 10,
     ),
 ];

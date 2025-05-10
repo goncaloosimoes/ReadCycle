@@ -4,9 +4,9 @@ import 'package:read_cycle/data/users.dart';
 import 'package:read_cycle/data/fiction_books.dart';
 
 
-final List<Post> appPosts = [
+List<Post> appPosts = [
       Post(
-        user: appUsers[0],
+        user: currentUser,
         book: appFictionBooks[0],
         location: 'Aveiro',
         date: DateTime.now(),
@@ -14,7 +14,7 @@ final List<Post> appPosts = [
         notes: '',
       ),
       Post(
-        user: appUsers[1],
+        user: currentUser,
         book: appFictionBooks[1],
         location: 'Aveiro',
         date: DateTime.now(),
@@ -22,7 +22,7 @@ final List<Post> appPosts = [
         notes: 'Livro em muito bom estado, praticamente novo!',
       ),
       Post(
-        user: appUsers[1],
+        user: appUsers[0],
         book: appFictionBooks[2],
         location: 'Aveiro',
         date: DateTime.now(),
