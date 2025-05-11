@@ -314,58 +314,6 @@ class _PostScreenState extends State<PostScreen> {
   }
 
   Widget _buildMethodSelectionScreen() {
-<<<<<<< HEAD
-    return Column(
-      children: [
-        Padding(
-          padding: EdgeInsets.only(top: 20),
-          child: StepIndicator(
-            currentPage: _getStepIndex(),
-            totalPages: _getTotalSteps(),
-          ),
-        ),
-        Expanded(
-          child: Padding(
-            padding: const EdgeInsets.all(25),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                const Text(
-                  'Selecione o método de\npostagem',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 20),
-                RadioListTile<String>(
-                  title: const Text('Inserir dados manualmente'),
-                  value: 'manual',
-                  groupValue: selectedOption,
-                  onChanged: (String? value) {
-                    setState(() {
-                      selectedOption = value!;
-                    });
-                  },
-                ),
-                RadioListTile<String>(
-                  title: const Text('Inserir ISBN'),
-                  value: 'isbn',
-                  groupValue: selectedOption,
-                  onChanged: (String? value) {
-                    setState(() {
-                      selectedOption = value!;
-                    });
-                  },
-                ),
-                const Spacer(),
-                _buildNavigationButtons(),
-              ],
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-=======
   return Padding(
     padding: const EdgeInsets.all(25),
     child: Column(
@@ -404,7 +352,6 @@ class _PostScreenState extends State<PostScreen> {
   );
   }
 
->>>>>>> bf1fd05d754cb85a99b79ff4539269e67ba9758e
 
   Widget _buildIsbnScreen() {
     return Column(
@@ -1011,7 +958,6 @@ class _PostScreenState extends State<PostScreen> {
             totalPages: _getTotalSteps(),
           ),
         ),
-<<<<<<< HEAD
         Expanded(
           child: Padding(
             padding: const EdgeInsets.all(25.0),
@@ -1117,34 +1063,14 @@ class _PostScreenState extends State<PostScreen> {
       ],
     );
   }
-=======
-      ),
-    ],
-  );
-}
-
-int _getTotalSteps() {
-  if (selectedOption == 'isbn') {
-    return 5;
-  }
-  return 4;
-}
->>>>>>> bf1fd05d754cb85a99b79ff4539269e67ba9758e
 
   int _getTotalSteps() {
     if (selectedOption == 'isbn') {
-      return 6;
+      return 5;
     }
-    return 5;
+    return 4;
   }
-<<<<<<< HEAD
-=======
-  if (selectedOption == 'isbn') {
-    return _currentScreen - 1;
-  }
-  return _currentScreen == 0 ? 0 : _currentScreen - 2;
-}
->>>>>>> bf1fd05d754cb85a99b79ff4539269e67ba9758e
+
 
   int _getStepIndex() {
     if (_isbnConfirmationScreen) {
