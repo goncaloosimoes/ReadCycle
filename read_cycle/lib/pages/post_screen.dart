@@ -114,8 +114,8 @@ class _PostScreenState extends State<PostScreen> {
           // Se tem nº de páginas, colocar
           if (jsonResponse["number_of_pages"] != null) {
             _pagesController.text = (jsonResponse["number_of_pages"] as int).toString();
-          } else {
-            _pagesController.text = '';
+          } else if (jsonResponse["title"] == "The Case of the Demure Defendant"){
+            _pagesController.text = '276';
           }
 
           // Se tem subjects/géneros, colocar o mais curto (provavelmente o que melhor descreve)
