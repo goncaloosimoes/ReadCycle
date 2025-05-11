@@ -949,120 +949,125 @@ class _PostScreenState extends State<PostScreen> {
 
   // Método para construir a tela de detalhes do livro
   Widget _buildBookDetailsScreen() {
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(top: 20),
-          child: StepIndicator(
-            currentPage: _getStepIndex(),
-            totalPages: _getTotalSteps(),
-          ),
-        ),
-        Expanded(
-          child: Padding(
-            padding: const EdgeInsets.all(25.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  'Título do livro',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                ),
-                TextField(
-                  controller: _titleController,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    hintText: 'Digite o título do livro',
-                    hintStyle: TextStyle(color: Colors.grey),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return SingleChildScrollView(
+          padding: const EdgeInsets.only(left: 25, right: 25, bottom: 25),
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              minHeight: constraints.maxHeight,
+            ),
+            child: IntrinsicHeight(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 20),
+                  StepIndicator(
+                    currentPage: _getStepIndex(),
+                    totalPages: _getTotalSteps(),
                   ),
-                ),
-                const SizedBox(height: 10),
-                const Text(
-                  'Autor',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                ),
-                TextField(
-                  controller: _authorController,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    hintText: 'Digite o nome do autor',
-                    hintStyle: TextStyle(color: Colors.grey),
+                  const SizedBox(height: 20),
+                  const Text(
+                    'Título do livro',
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
-                ),
-                const SizedBox(height: 10),
-                Row(
-                  children: [
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            'Páginas',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          TextField(
-                            controller: _pagesController,
-                            decoration: const InputDecoration(
-                              border: OutlineInputBorder(),
-                              hintText: 'Número',
-                              hintStyle: TextStyle(color: Colors.grey),
-                            ),
-                            keyboardType: TextInputType.number,
-                          ),
-                        ],
-                      ),
+                  TextField(
+                    controller: _titleController,
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      hintText: 'Digite o título do livro',
+                      hintStyle: TextStyle(color: Colors.grey),
                     ),
-                    const SizedBox(width: 15),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            'Gênero',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          TextField(
-                            controller: _genreController,
-                            decoration: const InputDecoration(
-                              border: OutlineInputBorder(),
-                              hintText: 'Ex: Romance',
-                              hintStyle: TextStyle(color: Colors.grey),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 10),
-                const Text(
-                  'Descrição',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                ),
-                TextField(
-                  controller: _descriptionController,
-                  maxLines: 5,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    hintText: 'Digite uma descrição do livro e seu estado',
-                    hintStyle: TextStyle(color: Colors.grey),
                   ),
-                ),
-                const SizedBox(height: 5),
-                _buildNavigationButtons(),
-              ],
+                  const SizedBox(height: 10),
+                  const Text(
+                    'Autor',
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  ),
+                  TextField(
+                    controller: _authorController,
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      hintText: 'Digite o nome do autor',
+                      hintStyle: TextStyle(color: Colors.grey),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              'Páginas',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            TextField(
+                              controller: _pagesController,
+                              decoration: const InputDecoration(
+                                border: OutlineInputBorder(),
+                                hintText: 'Número',
+                                hintStyle: TextStyle(color: Colors.grey),
+                              ),
+                              keyboardType: TextInputType.number,
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(width: 15),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              'Gênero',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            TextField(
+                              controller: _genreController,
+                              decoration: const InputDecoration(
+                                border: OutlineInputBorder(),
+                                hintText: 'Ex: Romance',
+                                hintStyle: TextStyle(color: Colors.grey),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 10),
+                  const Text(
+                    'Descrição',
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  ),
+                  TextField(
+                    controller: _descriptionController,
+                    maxLines: 5,
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      hintText: 'Digite uma descrição do livro e seu estado',
+                      hintStyle: TextStyle(color: Colors.grey),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  _buildNavigationButtons(),
+                ],
+              ),
             ),
           ),
-        ),
-      ],
+        );
+      },
     );
   }
+
 
   int _getTotalSteps() {
     if (selectedOption == 'isbn') {
@@ -1101,6 +1106,7 @@ class _PostScreenState extends State<PostScreen> {
     }
 
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(appBarTitle),
