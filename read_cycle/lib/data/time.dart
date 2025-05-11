@@ -9,3 +9,7 @@ String calculateDays(Post post) {
   if (difference == 1) return 'Há 1 dia';
   return 'Há $difference dias';
 }
+
+DateTime xDaysAgo(int days) {
+  return DateTime.now().subtract(Duration(days: days));
+}

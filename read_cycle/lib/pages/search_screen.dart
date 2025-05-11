@@ -30,7 +30,7 @@ class _MainState extends State<SearchScreen> {
     searchResults = [];
     
     // Listar posts relevantes
-    for (Post post in appPosts) {
+    for (Post post in fictionPosts) {
       if (searchText.toLowerCase().contains(post.book.title.toLowerCase())) {
         searchResults.add(SearchResult(post: post));
       }

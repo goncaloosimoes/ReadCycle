@@ -10,6 +10,7 @@ import 'package:read_cycle/classes/book.dart';
 import 'package:read_cycle/classes/post.dart';
 import 'package:read_cycle/data/posts.dart';
 import 'package:read_cycle/data/users.dart';
+import 'package:read_cycle/components/step_indicator.dart';
 
 class PostScreen extends StatefulWidget {
   const PostScreen({super.key});
@@ -165,7 +166,7 @@ class _PostScreenState extends State<PostScreen> {
           description: _descriptionController.text,
         );
     
-        appPosts.add(
+        fictionPosts.add(
           Post(
             user: currentUser,
             book: bookToAdd,
@@ -280,240 +281,293 @@ class _PostScreenState extends State<PostScreen> {
   }
 
   Widget _buildMethodSelectionScreen() {
-    return Padding(
-      padding: const EdgeInsets.all(25),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          const Text(
-            'Selecione o método de\npostagem',
-            textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(height: 20),
-          RadioListTile<String>(
-            title: const Text('Inserir dados manualmente'),
-            value: 'manual',
-            groupValue: selectedOption,
-            onChanged: (String? value) {
-              setState(() {
-                selectedOption = value!;
-              });
-            },
-          ),
-          RadioListTile<String>(
-            title: const Text('Inserir ISBN'),
-            value: 'isbn',
-            groupValue: selectedOption,
-            onChanged: (String? value) {
-              setState(() {
-                selectedOption = value!;
-              });
-            },
-          ),
-          const Spacer(),
-          _buildNavigationButtons(),
-        ],
+  return Column(
+    children: [
+      Padding(
+        padding: EdgeInsets.only(top: 20),
+        child: StepIndicator(
+          currentPage: _getStepIndex(),
+          totalPages: _getTotalSteps(),
+        ),
       ),
-    );
-  }
+      Expanded(
+        child: Padding(
+          padding: const EdgeInsets.all(25),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              const Text(
+                'Selecione o método de\npostagem',
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 20),
+              RadioListTile<String>(
+                title: const Text('Inserir dados manualmente'),
+                value: 'manual',
+                groupValue: selectedOption,
+                onChanged: (String? value) {
+                  setState(() {
+                    selectedOption = value!;
+                  });
+                },
+              ),
+              RadioListTile<String>(
+                title: const Text('Inserir ISBN'),
+                value: 'isbn',
+                groupValue: selectedOption,
+                onChanged: (String? value) {
+                  setState(() {
+                    selectedOption = value!;
+                  });
+                },
+              ),
+              const Spacer(),
+              _buildNavigationButtons(),
+            ],
+          ),
+        ),
+      ),
+    ],
+  );
+}
+
 
   Widget _buildIsbnScreen() {
-    return Padding(
-      padding: const EdgeInsets.all(25.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text(
-            'Insira o ISBN',
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+    return Column(
+      children: [
+        Padding(
+          padding: EdgeInsets.only(top: 20),
+          child: StepIndicator(
+            currentPage: _getStepIndex(),
+            totalPages: _getTotalSteps(),
           ),
-          const SizedBox(height: 10),
-          TextField(
-            controller: _isbnController,
-            decoration: const InputDecoration(
-              border: OutlineInputBorder(),
-              hintText: 'Digite o ISBN do livro',
-            ),
-            keyboardType: TextInputType.number,
-          ),
-          const SizedBox(height: 20),
-          const Text(
-            'O ISBN é um número único que identifica cada livro publicado. '
-            'Geralmente pode encontrá-lo na contracapa ou nas primeiras páginas.',
-            style: TextStyle(fontSize: 14, color: Colors.grey),
-          ),
-          const Spacer(),
-          _buildNavigationButtons(),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildIsbnConfirmationScreen() {
-    return Padding(
-      padding: const EdgeInsets.all(25.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text(
-            'Confirme os detalhes do livro',
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(height: 20),
-
-          // Card com os detalhes do livro
-          Card(
-            elevation: 4,
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    _perryMasonBook['title']!,
-                    style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-
-                  // Autor
-                  Row(
-                    children: [
-                      const Text(
-                        'Autor: ',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      Text(_perryMasonBook['author']!),
-                    ],
-                  ),
-                  const SizedBox(height: 5),
-
-                  // Número de páginas
-                  Row(
-                    children: [
-                      const Text(
-                        'Páginas: ',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      Text(_perryMasonBook['pages']!),
-                    ],
-                  ),
-                  const SizedBox(height: 5),
-
-                  // Gênero
-                  Row(
-                    children: [
-                      const Text(
-                        'Género(s): ',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      Text(_perryMasonBook['genre']!),
-                    ],
-                  ),
-                  const SizedBox(height: 5),
-
-                  // ISBN
-                  Row(
-                    children: [
-                      const Text(
-                        'ISBN: ',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      Text(_perryMasonBook['isbn']!),
-                    ],
-                  ),
-                  const SizedBox(height: 15),
-
-                  // Descrição
-                  const Text(
-                    'Descrição:',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(height: 5),
-                  Text(_perryMasonBook['description']!),
-                ],
-              ),
-            ),
-          ),
-
-          const Spacer(),
-          const Text(
-            'Confirme se as informações do livro estão corretas.',
-            style: TextStyle(color: Colors.grey),
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: 10),
-          _buildNavigationButtons(),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildLocationNotesScreen() {
-    return Padding(
-      padding: const EdgeInsets.only(top: 25.0, bottom: 25.0, left: 25.0, right: 5.0),  // Um pouco de padding à direto para a ScrollBar
-      child: Scrollbar(
-        thumbVisibility: true,
-        thickness: 8,
-        radius: Radius.circular(20),
-        child: SingleChildScrollView(
+        ),
+        Expanded(
           child: Padding(
-            padding: const EdgeInsets.only(right: 20.0),  // Resto do padding à direita
+            padding: const EdgeInsets.all(25.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Text(
-                  'Localização',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  'Insira o ISBN',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 10),
-                // Mapa
-                Container(
-                  height: 360,
-                  child: FlutterLocationPicker(
-                    // coordenadas iniciais no deti :)
-                    initPosition: LatLong(40.63330334401945, -8.659509397102308),
-                    initZoom: 11,
-                    minZoomLevel: 5,
-                    maxZoomLevel: 16,
-                    trackMyPosition: false,
-                    onPicked: (pickedData) {
-                      print(
-                        'Localização selecionada: ${pickedData.latLong.latitude}, ${pickedData.latLong.longitude}',
-                      );
-
-                      setState(() {
-                        _locationController.text = pickedData.address;
-                        // Continua preenchendo o _locationController se precisar enviar depois
-                      });
-                    },
+                TextField(
+                  controller: _isbnController,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    hintText: 'Digite o ISBN do livro',
                   ),
+                  keyboardType: TextInputType.number,
                 ),
                 const SizedBox(height: 20),
                 const Text(
-                  'Notas adicionais (opcional)',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  'O ISBN é um número único que identifica cada livro publicado. '
+                  'Geralmente pode encontrá-lo na contracapa ou nas primeiras páginas.',
+                  style: TextStyle(fontSize: 14, color: Colors.grey),
                 ),
-                TextField(
-                  controller: _notesController,
-                  maxLines: 3,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    hintText: 'Ex: Estado do livro, condições de troca...',
-                    hintStyle: TextStyle(color: Colors.grey),
+                const Spacer(),
+                _buildNavigationButtons(),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildIsbnConfirmationScreen() {
+    return Column(
+      children: [
+        Padding(
+          padding: EdgeInsets.only(top: 20),
+          child: StepIndicator(
+            currentPage: _getStepIndex(),
+            totalPages: _getTotalSteps(),
+          ),
+        ),
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.all(25.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'Confirme os detalhes do livro',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 20),
+          
+                // Card com os detalhes do livro
+                Card(
+                  elevation: 4,
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          _perryMasonBook['title']!,
+                          style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+          
+                        // Autor
+                        Row(
+                          children: [
+                            const Text(
+                              'Autor: ',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            Text(_perryMasonBook['author']!),
+                          ],
+                        ),
+                        const SizedBox(height: 5),
+          
+                        // Número de páginas
+                        Row(
+                          children: [
+                            const Text(
+                              'Páginas: ',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            Text(_perryMasonBook['pages']!),
+                          ],
+                        ),
+                        const SizedBox(height: 5),
+          
+                        // Gênero
+                        Row(
+                          children: [
+                            const Text(
+                              'Género(s): ',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            Text(_perryMasonBook['genre']!),
+                          ],
+                        ),
+                        const SizedBox(height: 5),
+          
+                        // ISBN
+                        Row(
+                          children: [
+                            const Text(
+                              'ISBN: ',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            Text(_perryMasonBook['isbn']!),
+                          ],
+                        ),
+                        const SizedBox(height: 15),
+          
+                        // Descrição
+                        const Text(
+                          'Descrição:',
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        const SizedBox(height: 5),
+                        Text(_perryMasonBook['description']!),
+                      ],
+                    ),
                   ),
-                  
+                ),
+          
+                const Spacer(),
+                const Text(
+                  'Confirme se as informações do livro estão corretas.',
+                  style: TextStyle(color: Colors.grey),
+                  textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 10),
                 _buildNavigationButtons(),
               ],
             ),
-          )
+          ),
         ),
-      )
+      ],
+    );
+  }
+
+  Widget _buildLocationNotesScreen() {
+    return Column(
+      children: [
+        Padding(
+          padding: EdgeInsets.only(top: 20),
+          child: StepIndicator(
+            currentPage: _getStepIndex(),
+            totalPages: _getTotalSteps(),
+          ),
+        ),
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.only(top: 25.0, bottom: 25.0, left: 25.0, right: 5.0),  // Um pouco de padding à direto para a ScrollBar
+            child: Scrollbar(
+              thumbVisibility: true,
+              thickness: 8,
+              radius: Radius.circular(20),
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 20.0),  // Resto do padding à direita
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'Localização',
+                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(height: 10),
+                      // Mapa
+                      Container(
+                        height: 360,
+                        child: FlutterLocationPicker(
+                          // coordenadas iniciais no deti :)
+                          initPosition: LatLong(40.63330334401945, -8.659509397102308),
+                          initZoom: 11,
+                          minZoomLevel: 5,
+                          maxZoomLevel: 16,
+                          trackMyPosition: false,
+                          onPicked: (pickedData) {
+                            print(
+                              'Localização selecionada: ${pickedData.latLong.latitude}, ${pickedData.latLong.longitude}',
+                            );
+          
+                            setState(() {
+                              _locationController.text = pickedData.address;
+                              // Continua preenchendo o _locationController se precisar enviar depois
+                            });
+                          },
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      const Text(
+                        'Notas adicionais (opcional)',
+                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                      ),
+                      TextField(
+                        controller: _notesController,
+                        maxLines: 3,
+                        decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                          hintText: 'Ex: Estado do livro, condições de troca...',
+                          hintStyle: TextStyle(color: Colors.grey),
+                        ),
+                        
+                      ),
+                      const SizedBox(height: 10),
+                      _buildNavigationButtons(),
+                    ],
+                  ),
+                )
+              ),
+            )
+          ),
+        ),
+      ],
     );
   }
 
@@ -544,246 +598,272 @@ class _PostScreenState extends State<PostScreen> {
   }
 
   Widget _buildPhotosScreen() {
-    return Padding(
-      padding: const EdgeInsets.all(25.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          const Text(
-            'Adicione fotos do livro',
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            textAlign: TextAlign.center,
+    return Column(
+      children: [
+        Padding(
+          padding: EdgeInsets.only(top: 20),
+          child: StepIndicator(
+            currentPage: _getStepIndex(),
+            totalPages: _getTotalSteps(),
           ),
-          const SizedBox(height: 16),
-          Expanded(
-            child: GridView.builder(
-              itemCount: 6, // Sempre mostra 6 slots
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 3,
-                crossAxisSpacing: 8,
-                mainAxisSpacing: 8,
-              ),
-              itemBuilder: (context, index) {
-                // Se temos uma imagem para este índice, mostra-a
-                if (index < _selectedImages.length) {
-                  return Stack(
-                    fit: StackFit.expand,
-                    children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(8),
-                        child: Image(
-                          image: _selectedImages[index].build(),
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                      Positioned(
-                        right: 0,
-                        child: GestureDetector(
-                          onTap: () => _removeImage(index),
-                          child: Container(
-                            decoration: const BoxDecoration(
-                              color: Colors.black54,
-                              borderRadius: BorderRadius.only(
-                                topRight: Radius.circular(8),
-                                bottomLeft: Radius.circular(8),
+        ),
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.all(25.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                const Text(
+                  'Adicione fotos do livro',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 16),
+                Expanded(
+                  child: GridView.builder(
+                    itemCount: 6, // Sempre mostra 6 slots
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 3,
+                      crossAxisSpacing: 8,
+                      mainAxisSpacing: 8,
+                    ),
+                    itemBuilder: (context, index) {
+                      // Se temos uma imagem para este índice, mostra-a
+                      if (index < _selectedImages.length) {
+                        return Stack(
+                          fit: StackFit.expand,
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(8),
+                              child: Image(
+                                image: _selectedImages[index].build(),
+                                fit: BoxFit.cover,
                               ),
                             ),
-                            child: const Icon(
-                              Icons.close,
-                              color: Colors.white,
-                              size: 20,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  );
-                }
-                // Caso contrário, mostra uma caixa vazia (placeholder)
-                else {
-                  return GestureDetector(
-                    onTap: () {
-                      if (_selectedImages.length < 6) {
-                        showModalBottomSheet(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return SafeArea(
-                              child: Wrap(
-                                children: [
-                                  ListTile(
-                                    leading: const Icon(Icons.photo_library),
-                                    title: const Text('Galeria'),
-                                    onTap: () {
-                                      Navigator.of(context).pop();
-                                      _pickImage(ImageSource.gallery);
-                                    },
+                            Positioned(
+                              right: 0,
+                              child: GestureDetector(
+                                onTap: () => _removeImage(index),
+                                child: Container(
+                                  decoration: const BoxDecoration(
+                                    color: Colors.black54,
+                                    borderRadius: BorderRadius.only(
+                                      topRight: Radius.circular(8),
+                                      bottomLeft: Radius.circular(8),
+                                    ),
                                   ),
-                                  ListTile(
-                                    leading: const Icon(Icons.camera_alt),
-                                    title: const Text('Câmera'),
-                                    onTap: () {
-                                      Navigator.of(context).pop();
-                                      _pickImage(ImageSource.camera);
-                                    },
+                                  child: const Icon(
+                                    Icons.close,
+                                    color: Colors.white,
+                                    size: 20,
                                   ),
-                                ],
+                                ),
                               ),
-                            );
-                          },
+                            ),
+                          ],
                         );
-                      } else {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('Máximo de 6 imagens permitidas.'),
+                      }
+                      // Caso contrário, mostra uma caixa vazia (placeholder)
+                      else {
+                        return GestureDetector(
+                          onTap: () {
+                            if (_selectedImages.length < 6) {
+                              showModalBottomSheet(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return SafeArea(
+                                    child: Wrap(
+                                      children: [
+                                        ListTile(
+                                          leading: const Icon(Icons.photo_library),
+                                          title: const Text('Galeria'),
+                                          onTap: () {
+                                            Navigator.of(context).pop();
+                                            _pickImage(ImageSource.gallery);
+                                          },
+                                        ),
+                                        ListTile(
+                                          leading: const Icon(Icons.camera_alt),
+                                          title: const Text('Câmera'),
+                                          onTap: () {
+                                            Navigator.of(context).pop();
+                                            _pickImage(ImageSource.camera);
+                                          },
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                },
+                              );
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text('Máximo de 6 imagens permitidas.'),
+                                ),
+                              );
+                            }
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.grey[200],
+                              borderRadius: BorderRadius.circular(8),
+                              border: Border.all(color: Colors.grey[400]!),
+                            ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.add_a_photo,
+                                  size: 32,
+                                  color: Colors.grey[600],
+                                ),
+                                const SizedBox(height: 4),
+                                Text(
+                                  "Foto ${index + 1}",
+                                  style: TextStyle(
+                                    color: Colors.grey[600],
+                                    fontSize: 12,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         );
                       }
                     },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.grey[200],
-                        borderRadius: BorderRadius.circular(8),
-                        border: Border.all(color: Colors.grey[400]!),
-                      ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.add_a_photo,
-                            size: 32,
-                            color: Colors.grey[600],
-                          ),
-                          const SizedBox(height: 4),
-                          Text(
-                            "Foto ${index + 1}",
-                            style: TextStyle(
-                              color: Colors.grey[600],
-                              fontSize: 12,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
-                }
-              },
+                  ),
+                ),
+                const SizedBox(height: 16),
+                _buildNavigationButtons(),
+              ],
             ),
           ),
-          const SizedBox(height: 16),
-          _buildNavigationButtons(),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
   Widget _buildFinalConfirmationScreen() {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'Confirmar publicação',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 20),
-
-            // Detalhes do livro
-            _buildSectionTitle('Detalhes do livro'),
-            _buildInfoCard(
-              children: [
-                _buildInfoItem('Título', _titleController.text),
-                _buildInfoItem('Autor', _authorController.text),
-                _buildInfoItem('Páginas', _pagesController.text),
-                _buildInfoItem('Género', _genreController.text),
-                if (_isbnController.text.isNotEmpty)
-                  _buildInfoItem('ISBN', _isbnController.text),
-                const SizedBox(height: 10),
-                const Text(
-                  'Descrição:',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-                Text(_descriptionController.text),
-              ],
-            ),
-
-            // Localização
-            _buildSectionTitle('Localização de troca'),
-            _buildInfoCard(
-              children: [
-                Text(
-                  _locationController.text.isEmpty
-                      ? 'Localização não especificada'
-                      : _locationController.text,
-                ),
-              ],
-            ),
-
-            // Notas adicionais
-            if (_notesController.text.isNotEmpty) ...[
-              _buildSectionTitle('Notas adicionais'),
-              _buildInfoCard(children: [Text(_notesController.text)]),
-            ],
-
-            // Imagens
-            _buildSectionTitle('Fotografias (${_selectedImages.length}/6)'),
-            Container(
-              height: 120,
-              child:
-                  _selectedImages.isEmpty
-                      ? const Center(
-                        child: Text('Nenhuma fotografia adicionada'),
-                      )
-                      : ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: _selectedImages.length,
-                        itemBuilder: (context, index) {
-                          return Padding(
-                            padding: const EdgeInsets.only(right: 8.0),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(8),
-                              child: Image(
-                                image: _selectedImages[index].build(),
-                                width: 100,
-                                height: 120,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-            ),
-
-            const SizedBox(height: 30),
-            // Aviso
-            Container(
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                color: Colors.amber.shade100,
-                borderRadius: BorderRadius.circular(8),
-                border: Border.all(color: Colors.amber),
-              ),
-              child: const Row(
+    return Column(
+      children: [
+        Padding(
+          padding: EdgeInsets.only(top: 20),
+          child: StepIndicator(
+            currentPage: _getStepIndex(),
+            totalPages: _getTotalSteps(),
+          ),
+        ),
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Icon(Icons.info_outline, color: Colors.amber),
-                  SizedBox(width: 8),
-                  Expanded(
-                    child: Text(
-                      'Ao publicar, o seu livro ficará visível para outros utilizadores que poderão entrar em contacto para troca.',
-                      style: TextStyle(fontSize: 12),
+                  const Text(
+                    'Confirmar publicação',
+                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 20),
+          
+                  // Detalhes do livro
+                  _buildSectionTitle('Detalhes do livro'),
+                  _buildInfoCard(
+                    children: [
+                      _buildInfoItem('Título', _titleController.text),
+                      _buildInfoItem('Autor', _authorController.text),
+                      _buildInfoItem('Páginas', _pagesController.text),
+                      _buildInfoItem('Género', _genreController.text),
+                      if (_isbnController.text.isNotEmpty)
+                        _buildInfoItem('ISBN', _isbnController.text),
+                      const SizedBox(height: 10),
+                      const Text(
+                        'Descrição:',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      Text(_descriptionController.text),
+                    ],
+                  ),
+          
+                  // Localização
+                  _buildSectionTitle('Localização de troca'),
+                  _buildInfoCard(
+                    children: [
+                      Text(
+                        _locationController.text.isEmpty
+                            ? 'Localização não especificada'
+                            : _locationController.text,
+                      ),
+                    ],
+                  ),
+          
+                  // Notas adicionais
+                  if (_notesController.text.isNotEmpty) ...[
+                    _buildSectionTitle('Notas adicionais'),
+                    _buildInfoCard(children: [Text(_notesController.text)]),
+                  ],
+          
+                  // Imagens
+                  _buildSectionTitle('Fotografias (${_selectedImages.length}/6)'),
+                  Container(
+                    height: 120,
+                    child:
+                        _selectedImages.isEmpty
+                            ? const Center(
+                              child: Text('Nenhuma fotografia adicionada'),
+                            )
+                            : ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: _selectedImages.length,
+                              itemBuilder: (context, index) {
+                                return Padding(
+                                  padding: const EdgeInsets.only(right: 8.0),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(8),
+                                    child: Image(
+                                      image: _selectedImages[index].build(),
+                                      width: 100,
+                                      height: 120,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                  ),
+          
+                  const SizedBox(height: 30),
+                  // Aviso
+                  Container(
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: Colors.amber.shade100,
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(color: Colors.amber),
+                    ),
+                    child: const Row(
+                      children: [
+                        Icon(Icons.info_outline, color: Colors.amber),
+                        SizedBox(width: 8),
+                        Expanded(
+                          child: Text(
+                            'Ao publicar, o seu livro ficará visível para outros utilizadores que poderão entrar em contacto para troca.',
+                            style: TextStyle(fontSize: 12),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
+                  const SizedBox(height: 20),
+          
+                  _buildNavigationButtons(),
                 ],
               ),
             ),
-            const SizedBox(height: 20),
-
-            _buildNavigationButtons(),
-          ],
+          ),
         ),
-      ),
+      ],
     );
   }
 
@@ -826,110 +906,138 @@ class _PostScreenState extends State<PostScreen> {
 
   // Método para construir a tela de detalhes do livro
   Widget _buildBookDetailsScreen() {
-    return Padding(
-      padding: const EdgeInsets.all(25.0),
-      child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'Título do livro',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-            ),
-            TextField(
-              controller: _titleController,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: 'Digite o título do livro',
-                hintStyle: TextStyle(color: Colors.grey),
-              ),
-            ),
-            const SizedBox(height: 15),
-            const Text(
-              'Autor',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-            ),
-            TextField(
-              controller: _authorController,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: 'Digite o nome do autor',
-                hintStyle: TextStyle(color: Colors.grey),
-              ),
-            ),
-            const SizedBox(height: 15),
-            Row(
-              children: [
-                // Campo para páginas
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        'Páginas',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      TextField(
-                        controller: _pagesController,
-                        decoration: const InputDecoration(
-                          border: OutlineInputBorder(),
-                          hintText: 'Número',
-                          hintStyle: TextStyle(color: Colors.grey),
-                        ),
-                        keyboardType: TextInputType.number,
-
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(width: 15),
-                // Campo para gênero
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        'Gênero',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      TextField(
-                        controller: _genreController,
-                        decoration: const InputDecoration(
-                          border: OutlineInputBorder(),
-                          hintText: 'Ex: Romance',
-                          hintStyle: TextStyle(color: Colors.grey),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 15),
-            const Text(
-              'Descrição',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-            ),
-            TextField(
-              controller: _descriptionController,
-              maxLines: 5,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: 'Digite uma descrição do livro e seu estado',
-                hintStyle: TextStyle(color: Colors.grey),
-              ),
-            ),
-            const Spacer(),
-            _buildNavigationButtons(),
-          ],
+  return Column(
+    children: [
+      Padding(
+        padding: const EdgeInsets.only(top: 20),
+        child: StepIndicator(
+          currentPage: _getStepIndex(),
+          totalPages: _getTotalSteps(),
         ),
-    );
+      ),
+      Expanded(
+        child: Padding(
+          padding: const EdgeInsets.all(25.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                'Título do livro',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+              TextField(
+                controller: _titleController,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: 'Digite o título do livro',
+                  hintStyle: TextStyle(color: Colors.grey),
+                ),
+              ),
+              const SizedBox(height: 10),
+              const Text(
+                'Autor',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+              TextField(
+                controller: _authorController,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: 'Digite o nome do autor',
+                  hintStyle: TextStyle(color: Colors.grey),
+                ),
+              ),
+              const SizedBox(height: 10),
+              Row(
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          'Páginas',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        TextField(
+                          controller: _pagesController,
+                          decoration: const InputDecoration(
+                            border: OutlineInputBorder(),
+                            hintText: 'Número',
+                            hintStyle: TextStyle(color: Colors.grey),
+                          ),
+                          keyboardType: TextInputType.number,
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(width: 15),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          'Gênero',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        TextField(
+                          controller: _genreController,
+                          decoration: const InputDecoration(
+                            border: OutlineInputBorder(),
+                            hintText: 'Ex: Romance',
+                            hintStyle: TextStyle(color: Colors.grey),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 10),
+              const Text(
+                'Descrição',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+              TextField(
+                controller: _descriptionController,
+                maxLines: 5,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: 'Digite uma descrição do livro e seu estado',
+                  hintStyle: TextStyle(color: Colors.grey),
+                ),
+              ),
+              const SizedBox(height: 5),
+              _buildNavigationButtons(),
+            ],
+          ),
+        ),
+      ),
+    ],
+  );
+}
+
+int _getTotalSteps() {
+  if (selectedOption == 'isbn') {
+    return 6;
   }
+  return 5;
+}
+
+int _getStepIndex() {
+  if (_isbnConfirmationScreen) {
+    return 1;
+  }
+  if (selectedOption == 'isbn') {
+    return _currentScreen;
+  }
+  return _currentScreen == 0 ? 0 : _currentScreen - 1;
+}
+
 
   @override
   Widget build(BuildContext context) {

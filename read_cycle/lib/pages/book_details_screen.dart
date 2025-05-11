@@ -148,33 +148,43 @@ class _BookDetailsScreen extends State<BookDetailsScreen> {
                 ),
                 const SizedBox(width: 8,),
                 Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        post.postUser.name,
-                        style: TextStyle(
-                          fontSize: 18,
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => OthersProfileScreen(user: post.postUser,),
                         ),
-                      ),
-                      Row(
-                        children: [
-                          Text(
-                            post.postUser.rating,
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                              fontSize: 15
-                            ),
+                      );
+                    },
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          post.postUser.name,
+                          style: TextStyle(
+                            fontSize: 18,
                           ),
-                          Icon(
-                            Icons.star,
-                              color: Colors.amber,
-                              size: 20,
-                          )
-                        ],
-                      ),
-                    ],
+                        ),
+                        Row(
+                          children: [
+                            Text(
+                              post.postUser.rating,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                fontSize: 15
+                              ),
+                            ),
+                            Icon(
+                              Icons.star,
+                                color: Colors.amber,
+                                size: 20,
+                            )
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                 ),
                 Container(
