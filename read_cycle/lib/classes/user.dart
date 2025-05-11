@@ -11,6 +11,7 @@ class User {
   String bio;
   List<Book> books;
   int numTrades;
+  List<String> wishlist;
 
   User({
     required this.name,
@@ -21,6 +22,7 @@ class User {
     required this.favGenres,
     required this.bio,
     required this.books,
-    required this.numTrades
+    required this.numTrades,
+    required this.wishlist
   }); 
 }

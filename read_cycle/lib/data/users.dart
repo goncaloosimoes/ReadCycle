@@ -11,7 +11,8 @@ User currentUser = User(
   favGenres: [], 
   bio: '[Biografia]', 
   books: [appFictionBooks[0], appFictionBooks[1]], 
-  numTrades: 0
+  numTrades: 0,
+  wishlist: [],
 );
 
 final List<User> appUsers = [
@@ -25,6 +26,7 @@ final List<User> appUsers = [
       bio: 'Blogger de viagens',
       books: [appFictionBooks[2]],
       numTrades: 15,
+      wishlist: [],
     ),
     User(
       name: 'Gonçalo Silva',
@@ -36,5 +38,6 @@ final List<User> appUsers = [
       bio: 'Olá! Sou o Gonçalo! E aqui estão escritas mais um monte de palavras que não dizem nada apenas servem para ver se o botão de ver mais está ou não a funcionar, acho que já deve ser suficiente.',
       books: appFictionBooks.sublist(3),
       numTrades: 10,
+      wishlist: [],
     ),
 ];

@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:read_cycle/classes/post.dart';
 import 'package:read_cycle/components/search_result.dart';
+import 'package:read_cycle/components/wishlist.dart';
 import 'package:read_cycle/data/posts.dart';
 
 class SearchScreen extends StatefulWidget {
@@ -14,14 +15,19 @@ class SearchScreen extends StatefulWidget {
 
 class _MainState extends State<SearchScreen> {
   String searchText = "";
+  bool addedToWishlist = false;
   final TextEditingController _controller = TextEditingController();
   List<SearchResult> searchResults = [];
 
   _MainState();
 
   void reloadPage() {
+    if (_controller.text.trim() == '') {
+      return;
+    }
     setState(() {
-      searchText = _controller.text;
+      addedToWishlist = false;
+      searchText = _controller.text.trim();
       getRelevantPosts();
     });
   }
@@ -47,6 +53,7 @@ class _MainState extends State<SearchScreen> {
     // Definir valores iniciais
     _controller.text = widget.searchText;
     searchText = widget.searchText;
+    addedToWishlist = false;
 
     getRelevantPosts();
   }
@@ -103,16 +110,57 @@ class _MainState extends State<SearchScreen> {
           scrollDirection: Axis.vertical,
           shrinkWrap: true,
           
-          itemCount: searchResults.length + 1,
+          itemCount: (searchResults.isEmpty) ? 2 : searchResults.length + 1,
           itemBuilder: (context, index) {
             if (index == 0) {
               return Padding(
                 padding: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
                 child: Text(
-                "Resultados para \"$searchText\"",
+                "${searchResults.length} Resultados para \"$searchText\"",
                 style: TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.bold),
-              ));
+                )
+              );
             }
+            // Quando não há resultados, mostrar opção da lista de desejos
+            if (searchResults.isEmpty) {
+              return GestureDetector(
+                onTap: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) => WishList(
+                      bookName: searchText,
+                      afterSave: () {
+                        // TODO: mostrar que foi adicionado
+                        setState(() {
+                          addedToWishlist = true;
+                        });
+                      }
+                    )
+                  );
+                },
+                child: Row(
+                  children: [
+                    // TODO: versão para quando já está na lista
+                    Text(
+                      (addedToWishlist)
+                      ? "\"$searchText\" adicionado à lista de desejos!"
+                      : "Adicionar \"$searchText\" à lista de desejos?"),
+                    Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        Icon(Icons.bookmark_outline),
+                        if (addedToWishlist)
+                          Icon(Icons.check, size: 11),
+                        if (!addedToWishlist)
+                          Icon(Icons.add, size: 11),
+                      ]
+                    )
+                  ],
+                )
+              );
+            }
+
+            // Retornar resultados normais
             return Padding(
               padding: EdgeInsets.only(bottom: 5),
               child: searchResults[index - 1]
