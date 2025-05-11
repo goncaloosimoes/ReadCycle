@@ -162,7 +162,7 @@ class _PostScreenState extends State<PostScreen> {
           author: _authorController.text,
           pages: int.parse(_pagesController.text),  // TODO: verificar valores
           genres: [_genreController.text],
-          coverImage: _selectedImages[0],
+          coverImage: (_selectedImages.isNotEmpty) ? _selectedImages[0] : AppImage.asset("assets/images/placeholder.jpg"),
           description: _descriptionController.text,
         );
     

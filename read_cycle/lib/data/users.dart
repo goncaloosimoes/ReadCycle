@@ -27,7 +27,7 @@ final List<User> appUsers = [
       rating: '4.5',
       favGenres: ['Ficção', 'Romance', 'Biografia'],
       bio: 'Blogger de viagens',
-      books: [appFictionBooks[0]],
+      books: [appFictionBooks[2], appFictionBooks[6]],
       numTrades: 15,
       wishlist: [],
     ),
