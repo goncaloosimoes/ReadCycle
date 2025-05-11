@@ -62,14 +62,29 @@ class _PostScreenState extends State<PostScreen> {
   void goToNextScreen() async {
     late final http.Response response;
     if (!_isbnConfirmationScreen && _currentScreen == 1) {
-      final String isbn = _isbnController.text.replaceAll(RegExp(r'[- ]*'), '');  // Sem os traços/espaços
-      response = await http.get(Uri.parse('https://openlibrary.org/api/books?bibkeys=ISBN:$isbn&format=json&jscmd=data'));
+      final String isbn = _isbnController.text.replaceAll(
+        RegExp(r'[- ]*'),
+        '',
+      ); // Sem os traços/espaços
+      response = await http.get(
+        Uri.parse(
+          'https://openlibrary.org/api/books?bibkeys=ISBN:$isbn&format=json&jscmd=data',
+        ),
+      );
 
       // Colocar a imagem de cover (não pode ser no setState porque não dá para fazer await lá)
-      if (response.statusCode == 200 && response.body != '{}' && jsonDecode(response.body) != null) {
-        final Map<String, dynamic>  jsonResponse = (jsonDecode(response.body) as Map<String, dynamic>)["ISBN:$isbn"];
+      if (response.statusCode == 200 &&
+          response.body != '{}' &&
+          jsonDecode(response.body) != null) {
+        final Map<String, dynamic> jsonResponse =
+            (jsonDecode(response.body) as Map<String, dynamic>)["ISBN:$isbn"];
         print(jsonResponse["cover"]);
-        List<String> urlList = jsonResponse["cover"].values.toList(growable: false).reversed.toList(growable: false).cast<String>();
+        List<String> urlList =
+            jsonResponse["cover"].values
+                .toList(growable: false)
+                .reversed
+                .toList(growable: false)
+                .cast<String>();
         print(urlList);
 
         if (_selectedImages.isEmpty) {
@@ -92,19 +107,29 @@ class _PostScreenState extends State<PostScreen> {
         }
       } else if (_currentScreen == 1) {
         // Colocaar dados nos campos
-        if (response.statusCode == 200 && response.body != '{}' && jsonDecode(response.body) != null) {
-          final String isbn = _isbnController.text.replaceAll(RegExp(r'[- ]*'), '');  // Sem os traços/espaços
+        if (response.statusCode == 200 &&
+            response.body != '{}' &&
+            jsonDecode(response.body) != null) {
+          final String isbn = _isbnController.text.replaceAll(
+            RegExp(r'[- ]*'),
+            '',
+          ); // Sem os traços/espaços
           // Obter dados
-          final Map<String, dynamic>  jsonResponse = (jsonDecode(response.body) as Map<String, dynamic>)["ISBN:$isbn"];
-          
+          final Map<String, dynamic> jsonResponse =
+              (jsonDecode(response.body) as Map<String, dynamic>)["ISBN:$isbn"];
+
           _titleController.text = jsonResponse["title"];
-          _authorController.text = jsonResponse['authors'][0]['name']; // Usar este como primeiro autor
+          _authorController.text =
+              jsonResponse['authors'][0]['name']; // Usar este como primeiro autor
 
           // Se tem descrição, colocar
           if (jsonResponse["description"] != null) {
-            if (jsonResponse["description"] is Map) { // Descrição é um mapa
-              _descriptionController.text = jsonResponse["description"]["value"];
-            } else { // Descrição é só uma string
+            if (jsonResponse["description"] is Map) {
+              // Descrição é um mapa
+              _descriptionController.text =
+                  jsonResponse["description"]["value"];
+            } else {
+              // Descrição é só uma string
               _descriptionController.text = jsonResponse["description"];
             }
           } else {
@@ -113,8 +138,10 @@ class _PostScreenState extends State<PostScreen> {
 
           // Se tem nº de páginas, colocar
           if (jsonResponse["number_of_pages"] != null) {
-            _pagesController.text = (jsonResponse["number_of_pages"] as int).toString();
-          } else if (jsonResponse["title"] == "The Case of the Demure Defendant"){
+            _pagesController.text =
+                (jsonResponse["number_of_pages"] as int).toString();
+          } else if (jsonResponse["title"] ==
+              "The Case of the Demure Defendant") {
             _pagesController.text = '276';
           }
 
@@ -123,7 +150,8 @@ class _PostScreenState extends State<PostScreen> {
             List<dynamic> subjects = jsonResponse["subjects"] as List<dynamic>;
             String smallestSubject = subjects[0]["name"];
             for (Map subject in subjects) {
-              if (smallestSubject.split(' ').length > subject["name"].split(' ').length) {
+              if (smallestSubject.split(' ').length >
+                  subject["name"].split(' ').length) {
                 smallestSubject = subject["name"];
               }
             }
@@ -132,9 +160,11 @@ class _PostScreenState extends State<PostScreen> {
             _genreController.text = '';
           }
 
-          _currentScreen = 2; // Vai para inserção manual se ISBN não for reconhecido
+          _currentScreen =
+              2; // Vai para inserção manual se ISBN não for reconhecido
         } else {
-          _currentScreen = 2; // Vai para inserção manual se ISBN não for reconhecido
+          _currentScreen =
+              2; // Vai para inserção manual se ISBN não for reconhecido
         }
 
         // usar 00 para ser mais rapido testar
@@ -160,12 +190,15 @@ class _PostScreenState extends State<PostScreen> {
         Book bookToAdd = Book(
           title: _titleController.text,
           author: _authorController.text,
-          pages: int.parse(_pagesController.text),  // TODO: verificar valores
+          pages: int.parse(_pagesController.text), // TODO: verificar valores
           genres: [_genreController.text],
-          coverImage: (_selectedImages.isNotEmpty) ? _selectedImages[0] : AppImage.asset("assets/images/placeholder.jpg"),
+          coverImage:
+              (_selectedImages.isNotEmpty)
+                  ? _selectedImages[0]
+                  : AppImage.asset("assets/images/placeholder.jpg"),
           description: _descriptionController.text,
         );
-    
+
         fictionPosts.add(
           Post(
             user: currentUser,
@@ -174,7 +207,7 @@ class _PostScreenState extends State<PostScreen> {
             date: DateTime.now(),
             images: [for (AppImage image in _selectedImages) image],
             notes: _notesController.text,
-          )
+          ),
         );
         currentUser.books.add(bookToAdd);
 
@@ -281,57 +314,56 @@ class _PostScreenState extends State<PostScreen> {
   }
 
   Widget _buildMethodSelectionScreen() {
-  return Column(
-    children: [
-      Padding(
-        padding: EdgeInsets.only(top: 20),
-        child: StepIndicator(
-          currentPage: _getStepIndex(),
-          totalPages: _getTotalSteps(),
-        ),
-      ),
-      Expanded(
-        child: Padding(
-          padding: const EdgeInsets.all(25),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              const Text(
-                'Selecione o método de\npostagem',
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 20),
-              RadioListTile<String>(
-                title: const Text('Inserir dados manualmente'),
-                value: 'manual',
-                groupValue: selectedOption,
-                onChanged: (String? value) {
-                  setState(() {
-                    selectedOption = value!;
-                  });
-                },
-              ),
-              RadioListTile<String>(
-                title: const Text('Inserir ISBN'),
-                value: 'isbn',
-                groupValue: selectedOption,
-                onChanged: (String? value) {
-                  setState(() {
-                    selectedOption = value!;
-                  });
-                },
-              ),
-              const Spacer(),
-              _buildNavigationButtons(),
-            ],
+    return Column(
+      children: [
+        Padding(
+          padding: EdgeInsets.only(top: 20),
+          child: StepIndicator(
+            currentPage: _getStepIndex(),
+            totalPages: _getTotalSteps(),
           ),
         ),
-      ),
-    ],
-  );
-}
-
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.all(25),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                const Text(
+                  'Selecione o método de\npostagem',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 20),
+                RadioListTile<String>(
+                  title: const Text('Inserir dados manualmente'),
+                  value: 'manual',
+                  groupValue: selectedOption,
+                  onChanged: (String? value) {
+                    setState(() {
+                      selectedOption = value!;
+                    });
+                  },
+                ),
+                RadioListTile<String>(
+                  title: const Text('Inserir ISBN'),
+                  value: 'isbn',
+                  groupValue: selectedOption,
+                  onChanged: (String? value) {
+                    setState(() {
+                      selectedOption = value!;
+                    });
+                  },
+                ),
+                const Spacer(),
+                _buildNavigationButtons(),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
 
   Widget _buildIsbnScreen() {
     return Column(
@@ -399,7 +431,7 @@ class _PostScreenState extends State<PostScreen> {
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 20),
-          
+
                 // Card com os detalhes do livro
                 Card(
                   elevation: 4,
@@ -416,7 +448,7 @@ class _PostScreenState extends State<PostScreen> {
                           ),
                         ),
                         const SizedBox(height: 10),
-          
+
                         // Autor
                         Row(
                           children: [
@@ -428,7 +460,7 @@ class _PostScreenState extends State<PostScreen> {
                           ],
                         ),
                         const SizedBox(height: 5),
-          
+
                         // Número de páginas
                         Row(
                           children: [
@@ -440,7 +472,7 @@ class _PostScreenState extends State<PostScreen> {
                           ],
                         ),
                         const SizedBox(height: 5),
-          
+
                         // Gênero
                         Row(
                           children: [
@@ -452,7 +484,7 @@ class _PostScreenState extends State<PostScreen> {
                           ],
                         ),
                         const SizedBox(height: 5),
-          
+
                         // ISBN
                         Row(
                           children: [
@@ -464,7 +496,7 @@ class _PostScreenState extends State<PostScreen> {
                           ],
                         ),
                         const SizedBox(height: 15),
-          
+
                         // Descrição
                         const Text(
                           'Descrição:',
@@ -476,7 +508,7 @@ class _PostScreenState extends State<PostScreen> {
                     ),
                   ),
                 ),
-          
+
                 const Spacer(),
                 const Text(
                   'Confirme se as informações do livro estão corretas.',
@@ -505,20 +537,30 @@ class _PostScreenState extends State<PostScreen> {
         ),
         Expanded(
           child: Padding(
-            padding: const EdgeInsets.only(top: 25.0, bottom: 25.0, left: 25.0, right: 5.0),  // Um pouco de padding à direto para a ScrollBar
+            padding: const EdgeInsets.only(
+              top: 25.0,
+              bottom: 25.0,
+              left: 25.0,
+              right: 5.0,
+            ), // Um pouco de padding à direto para a ScrollBar
             child: Scrollbar(
               thumbVisibility: true,
               thickness: 8,
               radius: Radius.circular(20),
               child: SingleChildScrollView(
                 child: Padding(
-                  padding: const EdgeInsets.only(right: 20.0),  // Resto do padding à direita
+                  padding: const EdgeInsets.only(
+                    right: 20.0,
+                  ), // Resto do padding à direita
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Text(
                         'Localização',
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                       const SizedBox(height: 10),
                       // Mapa
@@ -526,7 +568,10 @@ class _PostScreenState extends State<PostScreen> {
                         height: 360,
                         child: FlutterLocationPicker(
                           // coordenadas iniciais no deti :)
-                          initPosition: LatLong(40.63330334401945, -8.659509397102308),
+                          initPosition: LatLong(
+                            40.63330334401945,
+                            -8.659509397102308,
+                          ),
                           initZoom: 11,
                           minZoomLevel: 5,
                           maxZoomLevel: 16,
@@ -535,7 +580,7 @@ class _PostScreenState extends State<PostScreen> {
                             print(
                               'Localização selecionada: ${pickedData.latLong.latitude}, ${pickedData.latLong.longitude}',
                             );
-          
+
                             setState(() {
                               _locationController.text = pickedData.address;
                               // Continua preenchendo o _locationController se precisar enviar depois
@@ -546,25 +591,28 @@ class _PostScreenState extends State<PostScreen> {
                       const SizedBox(height: 20),
                       const Text(
                         'Notas adicionais (opcional)',
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                       TextField(
                         controller: _notesController,
                         maxLines: 3,
                         decoration: const InputDecoration(
                           border: OutlineInputBorder(),
-                          hintText: 'Ex: Estado do livro, condições de troca...',
+                          hintText:
+                              'Ex: Estado do livro, condições de troca...',
                           hintStyle: TextStyle(color: Colors.grey),
                         ),
-                        
                       ),
                       const SizedBox(height: 10),
                       _buildNavigationButtons(),
                     ],
                   ),
-                )
+                ),
               ),
-            )
+            ),
           ),
         ),
       ],
@@ -622,11 +670,12 @@ class _PostScreenState extends State<PostScreen> {
                 Expanded(
                   child: GridView.builder(
                     itemCount: 6, // Sempre mostra 6 slots
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 3,
-                      crossAxisSpacing: 8,
-                      mainAxisSpacing: 8,
-                    ),
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 3,
+                          crossAxisSpacing: 8,
+                          mainAxisSpacing: 8,
+                        ),
                     itemBuilder: (context, index) {
                       // Se temos uma imagem para este índice, mostra-a
                       if (index < _selectedImages.length) {
@@ -675,7 +724,9 @@ class _PostScreenState extends State<PostScreen> {
                                     child: Wrap(
                                       children: [
                                         ListTile(
-                                          leading: const Icon(Icons.photo_library),
+                                          leading: const Icon(
+                                            Icons.photo_library,
+                                          ),
                                           title: const Text('Galeria'),
                                           onTap: () {
                                             Navigator.of(context).pop();
@@ -698,7 +749,9 @@ class _PostScreenState extends State<PostScreen> {
                             } else {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
-                                  content: Text('Máximo de 6 imagens permitidas.'),
+                                  content: Text(
+                                    'Máximo de 6 imagens permitidas.',
+                                  ),
                                 ),
                               );
                             }
@@ -766,7 +819,7 @@ class _PostScreenState extends State<PostScreen> {
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 20),
-          
+
                   // Detalhes do livro
                   _buildSectionTitle('Detalhes do livro'),
                   _buildInfoCard(
@@ -785,7 +838,7 @@ class _PostScreenState extends State<PostScreen> {
                       Text(_descriptionController.text),
                     ],
                   ),
-          
+
                   // Localização
                   _buildSectionTitle('Localização de troca'),
                   _buildInfoCard(
@@ -797,15 +850,17 @@ class _PostScreenState extends State<PostScreen> {
                       ),
                     ],
                   ),
-          
-                  // Notas adicionais
+
+
                   if (_notesController.text.isNotEmpty) ...[
                     _buildSectionTitle('Notas adicionais'),
                     _buildInfoCard(children: [Text(_notesController.text)]),
                   ],
-          
+
                   // Imagens
-                  _buildSectionTitle('Fotografias (${_selectedImages.length}/6)'),
+                  _buildSectionTitle(
+                    'Fotografias (${_selectedImages.length}/6)',
+                  ),
                   Container(
                     height: 120,
                     child:
@@ -832,7 +887,7 @@ class _PostScreenState extends State<PostScreen> {
                               },
                             ),
                   ),
-          
+
                   const SizedBox(height: 30),
                   // Aviso
                   Container(
@@ -856,7 +911,7 @@ class _PostScreenState extends State<PostScreen> {
                     ),
                   ),
                   const SizedBox(height: 20),
-          
+
                   _buildNavigationButtons(),
                 ],
               ),
@@ -906,138 +961,137 @@ class _PostScreenState extends State<PostScreen> {
 
   // Método para construir a tela de detalhes do livro
   Widget _buildBookDetailsScreen() {
-  return Column(
-    children: [
-      Padding(
-        padding: const EdgeInsets.only(top: 20),
-        child: StepIndicator(
-          currentPage: _getStepIndex(),
-          totalPages: _getTotalSteps(),
-        ),
-      ),
-      Expanded(
-        child: Padding(
-          padding: const EdgeInsets.all(25.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text(
-                'Título do livro',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              ),
-              TextField(
-                controller: _titleController,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  hintText: 'Digite o título do livro',
-                  hintStyle: TextStyle(color: Colors.grey),
-                ),
-              ),
-              const SizedBox(height: 10),
-              const Text(
-                'Autor',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              ),
-              TextField(
-                controller: _authorController,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  hintText: 'Digite o nome do autor',
-                  hintStyle: TextStyle(color: Colors.grey),
-                ),
-              ),
-              const SizedBox(height: 10),
-              Row(
-                children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          'Páginas',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        TextField(
-                          controller: _pagesController,
-                          decoration: const InputDecoration(
-                            border: OutlineInputBorder(),
-                            hintText: 'Número',
-                            hintStyle: TextStyle(color: Colors.grey),
-                          ),
-                          keyboardType: TextInputType.number,
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(width: 15),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          'Gênero',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        TextField(
-                          controller: _genreController,
-                          decoration: const InputDecoration(
-                            border: OutlineInputBorder(),
-                            hintText: 'Ex: Romance',
-                            hintStyle: TextStyle(color: Colors.grey),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 10),
-              const Text(
-                'Descrição',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              ),
-              TextField(
-                controller: _descriptionController,
-                maxLines: 5,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  hintText: 'Digite uma descrição do livro e seu estado',
-                  hintStyle: TextStyle(color: Colors.grey),
-                ),
-              ),
-              const SizedBox(height: 5),
-              _buildNavigationButtons(),
-            ],
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(top: 20),
+          child: StepIndicator(
+            currentPage: _getStepIndex(),
+            totalPages: _getTotalSteps(),
           ),
         ),
-      ),
-    ],
-  );
-}
-
-int _getTotalSteps() {
-  if (selectedOption == 'isbn') {
-    return 6;
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.all(25.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'Título do livro',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
+                TextField(
+                  controller: _titleController,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    hintText: 'Digite o título do livro',
+                    hintStyle: TextStyle(color: Colors.grey),
+                  ),
+                ),
+                const SizedBox(height: 10),
+                const Text(
+                  'Autor',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
+                TextField(
+                  controller: _authorController,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    hintText: 'Digite o nome do autor',
+                    hintStyle: TextStyle(color: Colors.grey),
+                  ),
+                ),
+                const SizedBox(height: 10),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            'Páginas',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          TextField(
+                            controller: _pagesController,
+                            decoration: const InputDecoration(
+                              border: OutlineInputBorder(),
+                              hintText: 'Número',
+                              hintStyle: TextStyle(color: Colors.grey),
+                            ),
+                            keyboardType: TextInputType.number,
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(width: 15),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            'Gênero',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          TextField(
+                            controller: _genreController,
+                            decoration: const InputDecoration(
+                              border: OutlineInputBorder(),
+                              hintText: 'Ex: Romance',
+                              hintStyle: TextStyle(color: Colors.grey),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 10),
+                const Text(
+                  'Descrição',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
+                TextField(
+                  controller: _descriptionController,
+                  maxLines: 5,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    hintText: 'Digite uma descrição do livro e seu estado',
+                    hintStyle: TextStyle(color: Colors.grey),
+                  ),
+                ),
+                const SizedBox(height: 5),
+                _buildNavigationButtons(),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
   }
-  return 5;
-}
 
-int _getStepIndex() {
-  if (_isbnConfirmationScreen) {
-    return 1;
+  int _getTotalSteps() {
+    if (selectedOption == 'isbn') {
+      return 6;
+    }
+    return 5;
   }
-  if (selectedOption == 'isbn') {
-    return _currentScreen;
-  }
-  return _currentScreen == 0 ? 0 : _currentScreen - 1;
-}
 
+  int _getStepIndex() {
+    if (_isbnConfirmationScreen) {
+      return 1;
+    }
+    if (selectedOption == 'isbn') {
+      return _currentScreen;
+    }
+    return _currentScreen == 0 ? 0 : _currentScreen - 1;
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -21,6 +21,7 @@ class _MainState extends State<ChatDetailScreen> {
   bool _tradeMenuOpen = false;
   final TextEditingController _textController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
+  bool _showHelpText = true;
   
   @override
   void initState() {
@@ -56,6 +57,7 @@ class _MainState extends State<ChatDetailScreen> {
 
     setState(() {
       widget.chat.messages.add(Message(text: _textController.text, fromUser: true));
+      _showHelpText = false; // Hide help text after sending the first message
     });
     _textController.clear();
     scrollChat();
@@ -117,23 +119,38 @@ class _MainState extends State<ChatDetailScreen> {
             ),
           ),
         ),
-      ),
-
-            
+      ),            
       body: Stack(
         children: [
-
           Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               Expanded(
-                child: ListView.builder(
-                  controller: _scrollController,
-                  padding: EdgeInsets.all(16.0),
-                  itemCount: widget.chat.messages.length,
-                  itemBuilder: (context, index) {
-                    return MessageWidget(message: widget.chat.messages[index]);
-                  },
+                child: Stack(
+                  children: [
+                    ListView.builder(
+                      controller: _scrollController,
+                      padding: EdgeInsets.all(16.0),
+                      itemCount: widget.chat.messages.length,
+                      itemBuilder: (context, index) {
+                        return MessageWidget(message: widget.chat.messages[index]);
+                      },
+                    ),
+                    if (_showHelpText) // desaparece se for enviada uma mensagem
+                      Center(
+                        child: Padding(
+                          padding: EdgeInsets.only(top: 80.0),
+                          child: Text(
+                            "Seleciona livros para trocar usando o menu acima. \nPara a data, hora, e local indica-os no chat!",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: Colors.grey,
+                              fontSize: 14,
+                            ),
+                          ),
+                        ),
+                      ),
+                  ],
                 ),
               ),
             ],
@@ -377,4 +394,3 @@ class _MainState extends State<ChatDetailScreen> {
     );
   }
 }
-
