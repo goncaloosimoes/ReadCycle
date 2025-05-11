@@ -23,7 +23,7 @@ final List<Book> romanceBooks = [
     author: 'José Saramago', 
     pages: 376, 
     genres: ['Ficção', 'Clássico', 'Literatura Portuguesa'], 
-    coverImage: AppImage.asset('assets/book/romance/convento.jpg'), 
+    coverImage: AppImage.asset('assets/books/romance/convento.jpg'), 
     description: 'Era uma vez um rei que fez promessa de levantar convento em Mafra. Era uma vez a gente que construiu esse convento. Era uma vez um soldado maneta e uma mulher que tinha poderes. Era uma vez um padre que queria voar e morreu doido.'
   ),
   Book(

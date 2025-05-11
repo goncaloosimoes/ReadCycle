@@ -6,6 +6,7 @@ import 'package:read_cycle/components/book_small_button.dart';
 import 'package:read_cycle/components/book_small_tile.dart';
 import 'package:read_cycle/components/message_widget.dart';
 import 'package:read_cycle/data/users.dart';
+import 'package:read_cycle/pages/others_profile_screen.dart';
 
 class ChatDetailScreen extends StatefulWidget {
   final Chat chat;
@@ -65,15 +66,25 @@ class _MainState extends State<ChatDetailScreen> {
     
     return Scaffold(
       appBar: AppBar(
-        title: Row(
-          children: [
-            CircleAvatar(
-              backgroundImage: widget.chat.user.profileImage.build(),
-              radius: 16,
-            ),
-            SizedBox(width: 8),
-            Text(widget.chat.user.name),
-          ],
+        title: GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => OthersProfileScreen(user: widget.chat.user),
+              ),
+            );
+          },
+          child: Row(
+            children: [
+              CircleAvatar(
+                backgroundImage: widget.chat.user.profileImage.build(),
+                radius: 16,
+              ),
+              SizedBox(width: 8),
+              Text(widget.chat.user.name),
+            ],
+          ),
         ),
         bottom: PreferredSize(
           preferredSize: Size(200, 30),

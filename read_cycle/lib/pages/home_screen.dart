@@ -51,21 +51,20 @@ class _MainState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    
-    final List<PostTile> postTiles = [
-      PostTile(post: appPosts[0]),
-      PostTile(post: appPosts[1]),
-      PostTile(post: appPosts[2]),
-      PostTile(post: appPosts[3]),
-      PostTile(post: appPosts[4]),
+
+    final List<PostTile> suggestionTiles = [
+      fictionTiles[2],
+      fictionTiles[3],
+      thrillerTiles[3],
+      thrillerTiles[2]
     ];
-    
 
     final List<BooksTile> bookTiles = [
-      BooksTile(title: 'Sugestões', postTiles: postTiles),
-      BooksTile(title: 'Ficção', postTiles: postTiles.sublist(3)),
-      BooksTile(title: 'Romance', postTiles: postTiles),
-      BooksTile(title: 'Thriller', postTiles: postTiles),
+      BooksTile(title: 'Sugestões', postTiles: suggestionTiles),
+      BooksTile(title: 'Ficção', postTiles: fictionTiles),
+      BooksTile(title: 'Romance', postTiles: romanceTiles),
+      BooksTile(title: 'Thriller', postTiles: thrillerTiles),
+      BooksTile(title: 'Poesia', postTiles: poetryTiles),
     ];
 
     return PopScope(

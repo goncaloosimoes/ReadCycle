@@ -11,7 +11,7 @@ class BookTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Post matchingPost = appPosts.firstWhere(
+    Post matchingPost = allPosts.firstWhere(
           (p) => p.postBook.title == book.title && p.postBook.author == book.author,
         );
     //print(matchingPost.book.title);
