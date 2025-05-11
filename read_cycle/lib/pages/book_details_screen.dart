@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:read_cycle/classes/post.dart';
 import 'package:read_cycle/data/chats.dart';
 import 'package:read_cycle/data/time.dart';
+import 'package:read_cycle/data/users.dart';
 import 'package:read_cycle/pages/chat_detail_screen.dart';
 import 'package:read_cycle/pages/others_profile_screen.dart';
+import 'package:read_cycle/pages/profile_screen.dart';
 
 class BookDetailsScreen extends StatefulWidget {
   final Post post;
@@ -133,7 +135,7 @@ class _BookDetailsScreen extends State<BookDetailsScreen> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => OthersProfileScreen(user: post.postUser,),
+                        builder: (context) => (post.postUser == currentUser) ? ProfileScreen() : OthersProfileScreen(user: post.postUser),
                       ),
                     );
                   },
