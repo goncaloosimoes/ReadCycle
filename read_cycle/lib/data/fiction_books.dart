@@ -51,4 +51,12 @@ final List<Book> appFictionBooks = [
       coverImage: AppImage.asset('assets/books/fiction/geronimo.jpg'),
       description: '«Com mil mozarelas, fomos convidados para ir a Lisboa, Portugal, para uma aventura extrarrática… refazer a viagem por mar do grande Vasco da Gama! Nem imaginam! Ao que parece, o famoso navegador português é antepassado dos Stiltons! E assim começa uma aventura de perder o fôlego!» ',
     ),
+    Book(
+      title: 'O Hobbit', 
+      author: 'J.R.R Tolkien', 
+      pages: 328, 
+      genres: ['Ficção', 'Clássico', 'Aventura', 'Fantasia'], 
+      coverImage: AppImage.asset('assets/books/fiction/hobbit.jpg'), 
+      description: 'Um clássico intemporal e um dos livros mais adorados e influentes do século xx. Esta é a história de como um Baggins viveu uma aventura e deu por si a fazer e a dizer coisas totalmente inesperadas... Bilbo Baggins goza de uma vida confortável, calma e pouco ambiciosa. Raramente viaja mais longe do que a despensa ou a adega do seu buraco de hobbit, em Fundo-do-Saco. Mas a sua tranquilidade é perturbada quando, um dia, o feiticeiro Gandalf e uma companhia de treze anões aparecem à sua porta, para o levar numa perigosa aventura. Eles têm um plano: saquear o tesouro guardado por Smaug, O Magnífico, um dragão enorme e muito perigoso…'
+    ),
   ];
