@@ -13,8 +13,9 @@ User currentUser = User(
   rating: '4.0',
   favGenres: [], 
   bio: '[Biografia]', 
-  books: [], 
-  numTrades: 0
+  books: [appFictionBooks[0], appFictionBooks[1]], 
+  numTrades: 0,
+  wishlist: [],
 );
 
 final List<User> appUsers = [
@@ -28,6 +29,7 @@ final List<User> appUsers = [
       bio: 'Blogger de viagens',
       books: [appFictionBooks[0]],
       numTrades: 15,
+      wishlist: [],
     ),
     User(
       name: 'Gonçalo Silva',
@@ -39,6 +41,7 @@ final List<User> appUsers = [
       bio: 'Olá! Sou o Gonçalo! E aqui estão escritas mais um monte de palavras que não dizem nada apenas servem para ver se o botão de ver mais está ou não a funcionar, acho que já deve ser suficiente.',
       books: [thrillerBooks[0], thrillerBooks[4], romanceBooks[0], romanceBooks[1]],
       numTrades: 10,
+      wishlist: [],
     ),
     User(
       name: 'António Santos', 
@@ -49,7 +52,8 @@ final List<User> appUsers = [
       favGenres: ['Thriller', 'Ficção Científica'], 
       bio: 'Olá! Sou o António!', 
       books: [thrillerBooks[1], thrillerBooks[2], appFictionBooks[2]], 
-      numTrades: 5
+      numTrades: 5,
+      wishlist: [],
     ),
     User(
       name: 'Gonçalo Simões', 
@@ -60,7 +64,8 @@ final List<User> appUsers = [
       favGenres: ['Ficção', 'Mistério'], 
       bio: 'Olá! Sou o Gonçalo!', 
       books: [appFictionBooks[1], appFictionBooks[3], appFictionBooks[4]], 
-      numTrades: 6
+      numTrades: 6,
+      wishlist: [],
     ),
     User(
       name: 'Joana', 
@@ -71,7 +76,8 @@ final List<User> appUsers = [
       favGenres: ['Romance', 'Poesia'], 
       bio: 'Sou a Joana e adoro ler romances.', 
       books: [romanceBooks[2], romanceBooks[3], romanceBooks[4], poetryBooks[3]], 
-      numTrades: 2
+      numTrades: 2,
+      wishlist: [],
     ),
     User(
       name: 'Manuel', 
@@ -82,7 +88,8 @@ final List<User> appUsers = [
       favGenres: ['Romance', 'Poesia'], 
       bio: 'Sou o Manuel e adoro poesia', 
       books: [poetryBooks[0], poetryBooks[1], poetryBooks[2], romanceBooks[6]], 
-      numTrades: 4
+      numTrades: 4,
+      wishlist: [],
     ),
     User(
       name: 'Ana', 
@@ -93,6 +100,7 @@ final List<User> appUsers = [
       favGenres: ['Thriller', 'Romance'], 
       bio: '', 
       books: [thrillerBooks[3], thrillerBooks[5], thrillerBooks[6], romanceBooks[5]], 
-      numTrades: 1
+      numTrades: 1,
+      wishlist: [],
     ),
 ];

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:read_cycle/components/wishlist.dart';
 import 'package:read_cycle/data/users.dart';
 import 'package:read_cycle/components/book_tile.dart';
 import 'package:read_cycle/data/book_genres.dart';
@@ -466,10 +467,81 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
             ),
             const SizedBox(height: 20,),
-            const Text(
-              'Lista de Desejos',
-              style: TextStyle(
-                fontSize: 17,
+            Row(
+              children: [
+                const Text(
+                  'Lista de Desejos',
+                  style: TextStyle(
+                    fontSize: 17,
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      builder: (context) => WishList(
+                        afterSave: () {
+                          setState(() {});
+                        },
+                      ),
+                    );
+                  },
+                  child: Container(
+                    margin: EdgeInsets.only(left: 8,),
+                    decoration: BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(
+                          color: Colors.black,
+                          width: 2,
+                        )
+                      ),
+                    ),
+                    child: Icon(Icons.edit, size: 17,)
+                  ),
+                )
+              ],
+            ),
+            const Divider(),
+            Container( // lista de desejos
+              margin: const EdgeInsets.symmetric(vertical: 8),
+              child: Wrap(
+                spacing: 5,
+                runSpacing: 5,
+                children: currentUser.wishlist.map((bookName) {
+                  return Stack(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                        decoration: BoxDecoration(
+                          color: Colors.grey.shade300,
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        child: Text(
+                          bookName,
+                          style: const TextStyle(
+                            fontSize: 15,
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        right: 0,
+                        top: 0,
+                        child: GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              currentUser.wishlist.removeWhere((text) => bookName == text);
+                            });
+                          },
+                          child: const Icon(
+                            Icons.close,
+                            size: 16,
+                            color: Colors.redAccent
+                          )
+                        )
+                      ),
+                    ],
+                  );
+                }).toList(),
               ),
             ),
             const Divider(),
