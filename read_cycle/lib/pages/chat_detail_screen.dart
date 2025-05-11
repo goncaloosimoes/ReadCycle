@@ -87,10 +87,10 @@ class _MainState extends State<ChatDetailScreen> {
           ),
         ),
         bottom: PreferredSize(
-          preferredSize: Size(200, 30),
+          preferredSize: Size(200, 40),
           child: SizedBox(
             width: 200,
-            height: 30,
+            height: 40,
             child: TextButton(
               onPressed: () {
                 setState(() {
@@ -98,22 +98,17 @@ class _MainState extends State<ChatDetailScreen> {
                 });
               },
               style: ButtonStyle(
-                backgroundColor: WidgetStateProperty.resolveWith((states) {
-                  Color color = Color.fromARGB(255, 246, 237, 218);
-                  if (states.contains(WidgetState.pressed)) {
-                    return color.withAlpha(220);
-                  } else if (states.contains(WidgetState.hovered)) {
-                    return color.withValues(alpha: 0.85);
-                  } else if (states.contains(WidgetState.disabled)) {
-                    return color.withValues(alpha: 0.4);
-                  }
-                  return color; // Default color
-                }),
-
+                backgroundColor: WidgetStateProperty.all(Color.fromARGB(255, 232, 205, 149)),
               ),
-              child: const Icon(
-                Icons.arrow_drop_down,
-              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text("Livros para trocar"),
+                  const Icon(
+                    Icons.arrow_drop_down,
+                  ),
+                ],
+              )
             ),
           ),
         ),
