@@ -48,11 +48,8 @@ class _PostScreenState extends State<PostScreen> {
   // Obter o primeiro url que funcione de uma lista (usar para obter a melhor imagem de cover da API)
   Future<String> _findWorkingCover(List<String> coverUrls) async {
     for (String url in coverUrls) {
-      print(url);
       final response = await http.head(Uri.parse(url));
-      print(url);
       if (response.statusCode == 200) {
-        print(url);
         return url;
       }
     }
@@ -61,6 +58,7 @@ class _PostScreenState extends State<PostScreen> {
 
   void goToNextScreen() async {
     late final http.Response response;
+    late final http.Response responseWorks;
     if (!_isbnConfirmationScreen && _currentScreen == 1) {
       final String isbn = _isbnController.text.replaceAll(
         RegExp(r'[- ]*'),
@@ -72,20 +70,37 @@ class _PostScreenState extends State<PostScreen> {
         ),
       );
 
+
       // Colocar a imagem de cover (não pode ser no setState porque não dá para fazer await lá)
-      if (response.statusCode == 200 &&
-          response.body != '{}' &&
-          jsonDecode(response.body) != null) {
+      if (response.statusCode == 200 && response.body != '{}' && jsonDecode(response.body) != null) {
         final Map<String, dynamic> jsonResponse =
             (jsonDecode(response.body) as Map<String, dynamic>)["ISBN:$isbn"];
-        print(jsonResponse["cover"]);
+
+        // Obter resposta da book edition API
+        var responseEdition = await http.get(
+          Uri.parse(
+            'https://openlibrary.org${jsonResponse["key"]}.json',
+          ),
+        );
+
+        if (responseEdition.statusCode == 200 && responseEdition.body != '{}' && jsonDecode(responseEdition.body) != null) {
+          final Map<String, dynamic> jsonResponseEdition =
+            (jsonDecode(responseEdition.body) as Map<String, dynamic>);
+
+          // Obter resposta da works API
+          responseWorks = await http.get(
+            Uri.parse(
+              'https://openlibrary.org${jsonResponseEdition["works"][0]["key"]}.json',
+            ),
+          );
+        }
+
         List<String> urlList =
             jsonResponse["cover"].values
-                .toList(growable: false)
-                .reversed
-                .toList(growable: false)
-                .cast<String>();
-        print(urlList);
+              .toList(growable: false)
+              .reversed
+              .toList(growable: false)
+              .cast<String>();
 
         if (_selectedImages.isEmpty) {
           _selectedImages.add(AppImage.url(await _findWorkingCover(urlList)));
@@ -122,18 +137,23 @@ class _PostScreenState extends State<PostScreen> {
           _authorController.text =
               jsonResponse['authors'][0]['name']; // Usar este como primeiro autor
 
-          // Se tem descrição, colocar
-          if (jsonResponse["description"] != null) {
-            if (jsonResponse["description"] is Map) {
-              // Descrição é um mapa
-              _descriptionController.text =
-                  jsonResponse["description"]["value"];
+          if (responseWorks.statusCode == 200 && responseWorks.body != '{}' && jsonDecode(responseWorks.body) != null) {
+            final Map<String, dynamic> jsonResponseWorks =
+            (jsonDecode(responseWorks.body) as Map<String, dynamic>);
+
+            // Se tem descrição, colocar
+            if (jsonResponseWorks["description"] != null) {
+              if (jsonResponseWorks["description"] is Map) {
+                // Descrição é um mapa
+                _descriptionController.text =
+                    jsonResponseWorks["description"]["value"];
+              } else {
+                // Descrição é só uma string
+                _descriptionController.text = jsonResponseWorks["description"];
+              }
             } else {
-              // Descrição é só uma string
-              _descriptionController.text = jsonResponse["description"];
+              _descriptionController.text = '';
             }
-          } else {
-            _descriptionController.text = '';
           }
 
           // Se tem nº de páginas, colocar
@@ -1053,7 +1073,7 @@ class _PostScreenState extends State<PostScreen> {
                     maxLines: 5,
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
-                      hintText: 'Digite uma descrição do livro e seu estado',
+                      hintText: 'Uma pequena descrição da história do livro',
                       hintStyle: TextStyle(color: Colors.grey),
                     ),
                   ),
