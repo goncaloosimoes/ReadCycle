@@ -10,6 +10,44 @@ import 'package:read_cycle/components/post_tile.dart';
 
 
 List<Post> fictionPosts = [
+
+  // O Hobbit
+  // Pedro
+  Post(
+    user: appUsers[8],
+    book: fictionBooks[6],
+    location: 'Aveiro',
+    date: DateTime.now(),
+    images: [AppImage.asset('assets/images/placeholder.jpg')],
+    notes: '',
+  ),
+  Post(
+    user: appUsers[0],
+    book: fictionBooks[6],
+    location: 'Aveiro',
+    date: xDaysAgo(2),
+    images: [AppImage.asset('assets/images/placeholder.jpg')],
+    notes: '',
+  ),
+  // Galileu
+  Post(
+    user: appUsers[9],
+    book: fictionBooks[6],
+    location: 'Aveiro',
+    date: xDaysAgo(3),
+    images: [AppImage.asset('assets/images/placeholder.jpg')],
+    notes: '',
+  ),
+  // Maria
+  Post(
+    user: appUsers[7],
+    book: fictionBooks[6],
+    location: 'Aveiro',
+    date: xDaysAgo(6),
+    images: [AppImage.asset('assets/images/placeholder.jpg'), AppImage.asset('assets/images/placeholder.jpg')],
+    notes: '',
+  ),
+  
   // CurrentUser
   Post(
     user: currentUser,
@@ -35,14 +73,6 @@ List<Post> fictionPosts = [
     location: 'Aveiro',
     date: DateTime.now(),
     images: [AppImage.asset('assets/images/placeholder.jpg'), AppImage.asset('assets/images/placeholder.jpg'), AppImage.asset('assets/images/placeholder.jpg')],
-    notes: '',
-  ),
-  Post(
-    user: appUsers[0],
-    book: fictionBooks[6],
-    location: 'Aveiro',
-    date: xDaysAgo(1),
-    images: [AppImage.asset('assets/images/placeholder.jpg')],
     notes: '',
   ),
 
@@ -76,36 +106,6 @@ List<Post> fictionPosts = [
   Post(
     user: appUsers[3],
     book: fictionBooks[4],
-    location: 'Aveiro',
-    date: xDaysAgo(2),
-    images: [AppImage.asset('assets/images/placeholder.jpg')],
-    notes: '',
-  ),
-
-  // Maria
-  Post(
-    user: appUsers[7],
-    book: fictionBooks[6],
-    location: 'Aveiro',
-    date: xDaysAgo(4),
-    images: [AppImage.asset('assets/images/placeholder.jpg'), AppImage.asset('assets/images/placeholder.jpg')],
-    notes: '',
-  ),
-  
-  // Pedro
-  Post(
-    user: appUsers[8],
-    book: fictionBooks[6],
-    location: 'Aveiro',
-    date: xDaysAgo(1),
-    images: [AppImage.asset('assets/images/placeholder.jpg')],
-    notes: '',
-  ),
-
-  // Galileu
-  Post(
-    user: appUsers[9],
-    book: fictionBooks[6],
     location: 'Aveiro',
     date: xDaysAgo(2),
     images: [AppImage.asset('assets/images/placeholder.jpg')],
