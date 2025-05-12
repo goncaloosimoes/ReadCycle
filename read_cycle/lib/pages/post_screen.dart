@@ -1082,9 +1082,9 @@ class _PostScreenState extends State<PostScreen> {
       return 1;
     }
     if (selectedOption == 'isbn') {
-      return _currentScreen;
+      return _currentScreen - 1;
     }
-    return _currentScreen == 0 ? 0 : _currentScreen - 1;
+    return _currentScreen == 0 ? 0 : _currentScreen - 2;
   }
 
   @override
