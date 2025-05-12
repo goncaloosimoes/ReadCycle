@@ -11,10 +11,18 @@ import 'package:read_cycle/components/post_tile.dart';
 
 List<Post> fictionPosts = [
   Post(
-    user: appUsers[0],
+    user: currentUser,
     book: fictionBooks[0],
     location: 'Aveiro',
-    date: xDaysAgo(7),
+    date: xDaysAgo(1),
+    images: [AppImage.asset('assets/images/placeholder.jpg'), AppImage.asset('assets/images/placeholder.jpg'), AppImage.asset('assets/images/placeholder.jpg'), AppImage.asset('assets/images/placeholder.jpg')],
+    notes: '',
+  ),
+  Post(
+    user: currentUser,
+    book: fictionBooks[1],
+    location: 'Aveiro',
+    date: xDaysAgo(1),
     images: [AppImage.asset('assets/images/placeholder.jpg'), AppImage.asset('assets/images/placeholder.jpg'), AppImage.asset('assets/images/placeholder.jpg'), AppImage.asset('assets/images/placeholder.jpg')],
     notes: '',
   ),
@@ -24,14 +32,6 @@ List<Post> fictionPosts = [
     location: 'Aveiro',
     date: DateTime.now(),
     images: [AppImage.asset('assets/images/placeholder.jpg'), AppImage.asset('assets/images/placeholder.jpg'), AppImage.asset('assets/images/placeholder.jpg')],
-    notes: '',
-  ),
-  Post(
-    user: appUsers[3],
-    book: fictionBooks[1],
-    location: 'Aveiro',
-    date: xDaysAgo(10),
-    images: [AppImage.asset('assets/images/placeholder.jpg')],
     notes: '',
   ),
   Post(
@@ -233,7 +233,7 @@ List<Post> poetryPosts = [
 ];
 
 
-List<PostTile> fictionTiles = fictionPosts.map((post) => PostTile(post: post)).toList();
+List<PostTile> fictionTiles = fictionPosts.map((post) => PostTile(post: post)).toList().sublist(2);
 List<PostTile> thrillerTiles = thrillerPosts.map((post) => PostTile(post: post)).toList();
 List<PostTile> romanceTiles = romancePosts.map((post) => PostTile(post: post)).toList();
 List<PostTile> poetryTiles = poetryPosts.map((post) => PostTile(post: post)).toList();

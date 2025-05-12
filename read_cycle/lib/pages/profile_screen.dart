@@ -553,14 +553,27 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
             ),
             const Divider(),
-            SizedBox(
-            height: 220,
-            child: ListView.builder(
-              scrollDirection: Axis.vertical,
-              itemCount: currentUser.books.length,
-              itemBuilder: (context, index) => BookTile(book: currentUser.books[index], user: currentUser,),
-              ),
-            ),
+            currentUser.books.isEmpty
+              ? Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Center(
+                    child: Text(
+                      "You currently don't have books.",
+                      style: TextStyle(fontSize: 16, color: Colors.grey),
+                    ),
+                  ),
+                )
+              : SizedBox(
+                  height: 220,
+                  child: ListView.builder(
+                    scrollDirection: Axis.vertical,
+                    itemCount: currentUser.books.length,
+                    itemBuilder: (context, index) => BookTile(
+                      book: currentUser.books[index],
+                      user: currentUser,
+                    ),
+                  ),
+                ),
           ],
         ),
       ),
