@@ -218,7 +218,7 @@ class _PostScreenState extends State<PostScreen> {
         Book bookToAdd = Book(
           title: _titleController.text,
           author: _authorController.text,
-          pages: int.parse(_pagesController.text), // TODO: verificar valores
+          pages: int.parse(_pagesController.text),
           genres: [_genreController.text],
           coverImage:
               (_selectedImages.isNotEmpty)
@@ -227,7 +227,7 @@ class _PostScreenState extends State<PostScreen> {
           description: _descriptionController.text,
         );
 
-        fictionPosts.add(
+        allPosts.add(
           Post(
             user: currentUser,
             book: bookToAdd,
