@@ -139,20 +139,26 @@ class _MainState extends State<SearchScreen> {
                   );
                 },
                 child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // TODO: versão para quando já está na lista
-                    Text(
-                      (addedToWishlist)
-                      ? "\"$searchText\" adicionado à lista de desejos!"
-                      : "Adicionar \"$searchText\" à lista de desejos?"),
+                    Expanded(
+                      child: Text(
+                        (addedToWishlist)
+                        ? "\"$searchText\" adicionado à lista de desejos!"
+                        : "Adicionar \"$searchText\" à lista de desejos?",
+                        maxLines: null,
+                        softWrap: true,
+                      ),
+                    ),
                     Stack(
                       alignment: Alignment.center,
                       children: [
-                        Icon(Icons.bookmark_outline),
+                        Icon(Icons.bookmark_outline, size: 36,),
                         if (addedToWishlist)
-                          Icon(Icons.check, size: 11),
+                          Icon(Icons.check, size: 18),
                         if (!addedToWishlist)
-                          Icon(Icons.add, size: 11),
+                          Icon(Icons.add, size: 18),
                       ]
                     )
                   ],

@@ -12,7 +12,7 @@ import 'package:read_cycle/components/post_tile.dart';
 List<Post> fictionPosts = [
   Post(
     user: appUsers[0],
-    book: appFictionBooks[0],
+    book: fictionBooks[0],
     location: 'Aveiro',
     date: xDaysAgo(7),
     images: [AppImage.asset('assets/images/placeholder.jpg'), AppImage.asset('assets/images/placeholder.jpg'), AppImage.asset('assets/images/placeholder.jpg'), AppImage.asset('assets/images/placeholder.jpg')],
@@ -20,7 +20,7 @@ List<Post> fictionPosts = [
   ),
   Post(
     user: appUsers[2],
-    book: appFictionBooks[2],
+    book: fictionBooks[2],
     location: 'Aveiro',
     date: DateTime.now(),
     images: [AppImage.asset('assets/images/placeholder.jpg'), AppImage.asset('assets/images/placeholder.jpg'), AppImage.asset('assets/images/placeholder.jpg')],
@@ -28,7 +28,7 @@ List<Post> fictionPosts = [
   ),
   Post(
     user: appUsers[3],
-    book: appFictionBooks[1],
+    book: fictionBooks[1],
     location: 'Aveiro',
     date: xDaysAgo(10),
     images: [AppImage.asset('assets/images/placeholder.jpg')],
@@ -36,7 +36,7 @@ List<Post> fictionPosts = [
   ),
   Post(
     user: appUsers[3],
-    book: appFictionBooks[3],
+    book: fictionBooks[3],
     location: 'Aveiro',
     date: xDaysAgo(2),
     images: [AppImage.asset('assets/images/placeholder.jpg')],
@@ -44,10 +44,34 @@ List<Post> fictionPosts = [
   ),
   Post(
     user: appUsers[3],
-    book: appFictionBooks[4],
+    book: fictionBooks[4],
     location: 'Aveiro',
     date: xDaysAgo(2),
     images: [AppImage.asset('assets/images/placeholder.jpg')],
+    notes: '',
+  ),
+  Post(
+    user: appUsers[8],
+    book: fictionBooks[6],
+    location: 'Aveiro',
+    date: xDaysAgo(1),
+    images: [AppImage.asset('assets/images/placeholder.jpg')],
+    notes: '',
+  ),
+  Post(
+    user: appUsers[9],
+    book: fictionBooks[6],
+    location: 'Aveiro',
+    date: xDaysAgo(2),
+    images: [AppImage.asset('assets/images/placeholder.jpg')],
+    notes: '',
+  ),
+  Post(
+    user: appUsers[7],
+    book: fictionBooks[6],
+    location: 'Aveiro',
+    date: xDaysAgo(4),
+    images: [AppImage.asset('assets/images/placeholder.jpg'), AppImage.asset('assets/images/placeholder.jpg')],
     notes: '',
   ),
 ];

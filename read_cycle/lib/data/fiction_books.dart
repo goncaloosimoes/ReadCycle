@@ -1,7 +1,7 @@
 import 'package:read_cycle/classes/app_image.dart';
 import 'package:read_cycle/classes/book.dart';
 
-final List<Book> appFictionBooks = [
+final List<Book> fictionBooks = [
     Book(
       title: 'Ficciones',
       author: 'Jorge Luis Borges',
