@@ -27,6 +27,6 @@ List<Chat> chats = [
         for (Book book in user.books) if (_random.nextBool()) book
       ],
       messages: [],
-      read: false,
+      read: true,
     ),
 ];

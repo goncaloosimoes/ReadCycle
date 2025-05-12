@@ -6,13 +6,13 @@ import 'package:read_cycle/data/romance_books.dart';
 import 'package:read_cycle/data/poetry_books.dart';
 
 User currentUser = User(
-  name: '[Nome]', 
-  email: '[Email]', 
-  location: '[Localização]', 
+  name: 'Eu', 
+  email: 'email@email.com', 
+  location: 'Aveiro', 
   profileImage: AppImage.asset('assets/images/blank_profile.jpg'), 
   rating: '4.0',
   favGenres: [], 
-  bio: '[Biografia]', 
+  bio: 'Olá!', 
   books: [fictionBooks[0], fictionBooks[1]], 
   numTrades: 0,
   wishlist: [],
@@ -63,7 +63,7 @@ final List<User> appUsers = [
       rating: '4.5', 
       favGenres: ['Ficção', 'Mistério'], 
       bio: 'Olá! Sou o Gonçalo!', 
-      books: [fictionBooks[1], fictionBooks[3], fictionBooks[4]], 
+      books: [fictionBooks[3], fictionBooks[4]], 
       numTrades: 6,
       wishlist: [],
     ),

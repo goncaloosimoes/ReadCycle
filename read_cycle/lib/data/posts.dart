@@ -10,6 +10,24 @@ import 'package:read_cycle/components/post_tile.dart';
 
 
 List<Post> fictionPosts = [
+  // CurrentUser
+  Post(
+    user: currentUser,
+    book: fictionBooks[0],
+    location: 'Aveiro',
+    date: xDaysAgo(4),
+    images: [AppImage.asset('assets/images/placeholder.jpg'), AppImage.asset('assets/images/placeholder.jpg'), AppImage.asset('assets/images/placeholder.jpg')],
+    notes: '',
+  ),
+  Post(
+    user: currentUser,
+    book: fictionBooks[1],
+    location: 'Aveiro',
+    date: xDaysAgo(2),
+    images: [AppImage.asset('assets/images/placeholder.jpg'), AppImage.asset('assets/images/placeholder.jpg'), AppImage.asset('assets/images/placeholder.jpg')],
+    notes: '',
+  ),
+
   // Emma
   Post(
     user: appUsers[0],
@@ -267,7 +285,7 @@ List<Post> poetryPosts = [
 ];
 
 
-List<PostTile> fictionTiles = fictionPosts.map((post) => PostTile(post: post)).toList();
+List<PostTile> fictionTiles = fictionPosts.map((post) => PostTile(post: post)).toList().sublist(2);
 List<PostTile> thrillerTiles = thrillerPosts.map((post) => PostTile(post: post)).toList();
 List<PostTile> romanceTiles = romancePosts.map((post) => PostTile(post: post)).toList();
 List<PostTile> poetryTiles = poetryPosts.map((post) => PostTile(post: post)).toList();

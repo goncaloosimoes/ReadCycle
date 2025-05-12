@@ -51,8 +51,8 @@ class _MainState extends State<HomeScreen> {
 
     final List<PostTile> suggestionTiles = [
       fictionTiles[2],
-      fictionTiles[3],
-      thrillerTiles[3],
+      thrillerTiles[0],
+      romanceTiles[4],
       thrillerTiles[2]
     ];
 
