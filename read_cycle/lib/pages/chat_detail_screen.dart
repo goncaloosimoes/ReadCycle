@@ -7,6 +7,7 @@ import 'package:read_cycle/components/book_small_tile.dart';
 import 'package:read_cycle/components/message_widget.dart';
 import 'package:read_cycle/data/users.dart';
 import 'package:read_cycle/pages/others_profile_screen.dart';
+import 'dart:async';
 
 class ChatDetailScreen extends StatefulWidget {
   final Chat chat;
@@ -22,6 +23,11 @@ class _MainState extends State<ChatDetailScreen> {
   final TextEditingController _textController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
   bool _showHelpText = true;
+
+  Timer? _replyTimer;
+  Timer? _typingTimer;
+  DateTime? _lastUserMessageTime;
+  bool _emmaReplied = false;
   
   @override
   void initState() {
@@ -50,18 +56,47 @@ class _MainState extends State<ChatDetailScreen> {
     });
   }
 
-  void sendMessage() {
-    if (_textController.text.isEmpty) {
-      return;
+    void sendMessage() {
+      if (_textController.text.isEmpty) return;
+
+      setState(() {
+        widget.chat.messages.add(
+          Message(text: _textController.text, fromUser: true),
+        );
+        _showHelpText = false;
+        _lastUserMessageTime = DateTime.now();
+        _emmaReplied = false;
+      });
+
+      _textController.clear();
+      scrollChat();
     }
 
-    setState(() {
-      widget.chat.messages.add(Message(text: _textController.text, fromUser: true));
-      _showHelpText = false; // Hide help text after sending the first message
-    });
-    _textController.clear();
-    scrollChat();
-  }
+    void _scheduleEmmaFollowUp({String message = "Está combinado. Até já!"}) {
+      _replyTimer?.cancel();
+
+      _replyTimer = Timer(Duration(seconds: 6), () {
+        if (!_emmaReplied && mounted) {
+          setState(() {
+            widget.chat.messages.add(
+              Message(text: message, fromUser: false),
+            );
+            _emmaReplied = true;
+          });
+          scrollChat();
+        }
+      });
+    }
+
+    void _startTypingTimeout() {
+      _typingTimer?.cancel();
+
+      _typingTimer = Timer(Duration(seconds: 4), () {
+        if (mounted && _textController.text.isEmpty) {
+          _scheduleEmmaFollowUp();
+        }
+      });
+    }
 
   @override
   Widget build(BuildContext context) {
@@ -338,12 +373,30 @@ class _MainState extends State<ChatDetailScreen> {
                                     minimumSize: Size(120, 50),
                                   ),
                                   onPressed: () {
+                                    bool newReady = !widget.chat.ready;
+
                                     setState(() {
-                                      widget.chat.ready = !widget.chat.ready;
-                                      if (widget.chat.ready && widget.chat.otherReady) {
-                                        // TODO: fazer aqui o 'troca a decorrer'
-                                      }
+                                      widget.chat.ready = newReady;
                                     });
+
+                                    _scheduleEmmaFollowUp(
+                                      message: "Olá, esse livro parece-me muito interessante! Acho que vou querer lê-lo",
+                                    );
+
+                                    // Simulate Emma confirming after 3 seconds
+                                    if (newReady) {
+                                      Timer(Duration(seconds: 2), () {
+                                        if (!mounted) return;
+                                        setState(() {
+                                          widget.chat.otherReady = true;
+                                        });
+                                      });
+                                    } else {
+                                      // If user unchecks readiness, Emma "unconfirms" too
+                                      setState(() {
+                                        widget.chat.otherReady = false;
+                                      });
+                                    }
                                   },
                                   child: Text((!widget.chat.ready)?"Aceitar troca":"Rejeitar troca"),
                                 )
@@ -372,6 +425,9 @@ class _MainState extends State<ChatDetailScreen> {
                   hintText: 'Escreva uma mensagem...',
                   border: OutlineInputBorder(),
                 ),
+                onChanged: (_) {
+                  _startTypingTimeout();
+                },
                 onSubmitted: (value) {
                   sendMessage();
                 },

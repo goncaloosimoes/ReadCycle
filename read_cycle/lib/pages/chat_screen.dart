@@ -21,20 +21,26 @@ class _MainState extends State<ChatScreen> {
     _sortChats();
   }
   
-  // Método para ordenar os chats pela data da última mensagem
   void _sortChats() {
-    // Cria uma cópia da lista original para não modificá-la diretamente
     sortedChats = List.from(chats);
-    
-    // Ordena os chats pela data da última mensagem, do mais recente para o mais antigo
+
     sortedChats.sort((a, b) {
-      if (a.messages.isEmpty) return 1; // Coloca chats vazios por último
+      if (a.user.name == 'Emma') return -1;
+      if (b.user.name == 'Emma') return 1;
+      return 0;
+    });
+
+    sortedChats.sort((a, b) {
+      if (a.user.name == 'Emma') return -1;
+      if (b.user.name == 'Emma') return 1;
+
+      if (a.messages.isEmpty) return 1;
       if (b.messages.isEmpty) return -1;
-      
-      // Compara o timestamp da última mensagem (número maior = mais recente)
+
       return b.lastMessage.timestamp - a.lastMessage.timestamp;
     });
   }
+
 
   @override
   Widget build(BuildContext context) {
