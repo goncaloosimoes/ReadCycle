@@ -43,12 +43,12 @@ class _MainState extends State<ChatScreen> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text('Mensagens'),
         actions: [
-          IconButton(
-            icon: Icon(Icons.search),
-            onPressed: () {
-              // Ação ao clicar no ícone de pesquisa
-            },
-          ),
+          //IconButton(
+          //  icon: Icon(Icons.search),
+          //  onPressed: () {
+          //    // Ação ao clicar no ícone de pesquisa
+          //  },
+          //),
           IconButton(
             icon: Icon(Icons.more_vert),
             onPressed: () {

@@ -14,7 +14,7 @@ class BookTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Post matchingPost = allPosts.firstWhere(
-          (p) => p.user == p.user
+          (p) => p.user == user && p.book == book
         );
     //print(matchingPost.book.title);
     return GestureDetector(

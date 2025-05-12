@@ -8,7 +8,7 @@ class SearchResult extends StatelessWidget {
 
   String getPostDays() {
     DateTime now = DateTime.now();
-    int daysDifference = post.date.difference(now).inDays;
+    int daysDifference = now.difference(post.date).inDays;
 
     if (daysDifference == 0) {
       return "📅 Hoje";
