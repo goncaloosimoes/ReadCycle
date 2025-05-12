@@ -23,6 +23,7 @@ class _PostScreenState extends State<PostScreen> {
   String selectedOption = 'manual';
   int _currentScreen = 0;
   bool _isbnConfirmationScreen = false;
+  bool isLoading = false;
 
   // Controladores para os campos de texto
   final TextEditingController _isbnController = TextEditingController();
@@ -60,6 +61,9 @@ class _PostScreenState extends State<PostScreen> {
     late final http.Response response;
     late final http.Response responseWorks;
     if (!_isbnConfirmationScreen && _currentScreen == 1) {
+      setState(() {
+        isLoading = true;
+      });
       final String isbn = _isbnController.text.replaceAll(
         RegExp(r'[- ]*'),
         '',
@@ -108,6 +112,10 @@ class _PostScreenState extends State<PostScreen> {
           _selectedImages[0] = AppImage.url(await _findWorkingCover(urlList));
         }
       }
+
+      setState(() {
+        isLoading = false;
+      });
     }
 
     setState(() {
@@ -1133,7 +1141,9 @@ class _PostScreenState extends State<PostScreen> {
         // Removida a seta de voltar da AppBar
         automaticallyImplyLeading: false,
       ),
-      body:
+      body: Stack(
+        alignment: Alignment.center,
+        children: [
           _currentScreen == 0
               ? _buildMethodSelectionScreen()
               : _isbnConfirmationScreen
@@ -1147,6 +1157,32 @@ class _PostScreenState extends State<PostScreen> {
               : _currentScreen == 4
               ? _buildPhotosScreen()
               : _buildFinalConfirmationScreen(),
+          
+          if (isLoading)
+            Positioned.fill(
+              child: Container(
+                alignment: Alignment.center,
+                color: Colors.black26, // Dark overlay
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    CircularProgressIndicator(),
+                    Padding(
+                      padding: EdgeInsets.only(top: 10),
+                      child: Text(
+                        "A procurar informações sobre o livro...",
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: Colors.grey[200],
+                        ),
+                      ),
+                    )
+                  ],
+                )
+              ),
+            ),
+        ],
+      ),
     );
   }
 
