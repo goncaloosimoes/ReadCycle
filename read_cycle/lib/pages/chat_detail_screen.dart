@@ -136,7 +136,7 @@ class _MainState extends State<ChatDetailScreen> {
                         child: Padding(
                           padding: EdgeInsets.only(top: 80.0),
                           child: Text(
-                            "Seleciona livros para trocar usando o menu acima. \nPara a data, hora, e local indica-os no chat!",
+                            "Seleciona livros para trocar usando o menu acima. \nPara outras informações, podes usar o chat!",
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               color: Colors.grey,
