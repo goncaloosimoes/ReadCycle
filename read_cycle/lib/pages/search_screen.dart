@@ -4,6 +4,7 @@ import 'package:read_cycle/classes/post.dart';
 import 'package:read_cycle/components/search_result.dart';
 import 'package:read_cycle/components/wishlist.dart';
 import 'package:read_cycle/data/posts.dart';
+import 'package:read_cycle/data/users.dart';
 
 class SearchScreen extends StatefulWidget {
   final String searchText;
@@ -51,9 +52,9 @@ class _MainState extends State<SearchScreen> {
     super.initState();
 
     // Definir valores iniciais
-    _controller.text = widget.searchText;
-    searchText = widget.searchText;
-    addedToWishlist = false;
+    _controller.text = widget.searchText.trim();
+    searchText = widget.searchText.trim();
+    addedToWishlist = currentUser.wishlist.contains(widget.searchText.trim());
 
     getRelevantPosts();
   }
@@ -130,7 +131,6 @@ class _MainState extends State<SearchScreen> {
                     builder: (context) => WishList(
                       bookName: searchText,
                       afterSave: () {
-                        // TODO: mostrar que foi adicionado
                         setState(() {
                           addedToWishlist = true;
                         });
@@ -141,24 +141,21 @@ class _MainState extends State<SearchScreen> {
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // TODO: versão para quando já está na lista
-                    Expanded(
-                      child: Text(
+                      Text(
                         (addedToWishlist)
                         ? "\"$searchText\" adicionado à lista de desejos!"
                         : "Adicionar \"$searchText\" à lista de desejos?",
                         maxLines: null,
                         softWrap: true,
                       ),
-                    ),
                     Stack(
                       alignment: Alignment.center,
                       children: [
-                        Icon(Icons.bookmark_outline, size: 36,),
+                        Icon(Icons.bookmark_outline, size: 26,),
                         if (addedToWishlist)
-                          Icon(Icons.check, size: 18),
+                          Icon(Icons.check, size: 12),
                         if (!addedToWishlist)
-                          Icon(Icons.add, size: 18),
+                          Icon(Icons.add, size: 12),
                       ]
                     )
                   ],

@@ -28,16 +28,13 @@ class _MainState extends State<HomeScreen> {
     if (!searchBarVisible) {
       setState(() {
         searchBarVisible = !searchBarVisible;
-        if (searchBarVisible) {
-          print("show!");
-        }
       });
     } else {
       // Passar para a página de pesquisa
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => SearchScreen(_controller.text),
+          builder: (context) => SearchScreen(_controller.text.trim()),
         ),
       );
     }
@@ -74,7 +71,6 @@ class _MainState extends State<HomeScreen> {
           // It actually popped
         } else {
           // It was canceled or not popped
-          print('Screen was popped with result: $result');
           hideSearchBar();
         }
       },
