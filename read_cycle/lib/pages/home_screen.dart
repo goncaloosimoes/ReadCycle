@@ -29,7 +29,7 @@ class _MainState extends State<HomeScreen> {
       setState(() {
         searchBarVisible = !searchBarVisible;
       });
-    } else {
+    } else if (_controller.text.trim().isNotEmpty) {
       // Passar para a página de pesquisa
       Navigator.push(
         context,

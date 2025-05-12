@@ -141,12 +141,15 @@ class _MainState extends State<SearchScreen> {
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                      Text(
-                        (addedToWishlist)
-                        ? "\"$searchText\" adicionado à lista de desejos!"
-                        : "Adicionar \"$searchText\" à lista de desejos?",
-                        maxLines: null,
-                        softWrap: true,
+                      SizedBox(
+                        width: 220,
+                        child: Text(
+                            (addedToWishlist)
+                            ? "\"$searchText\" adicionado à lista de desejos!"
+                            : "Adicionar \"$searchText\" à lista de desejos?",
+                            maxLines: null,
+                            softWrap: true,
+                          ),
                       ),
                     Stack(
                       alignment: Alignment.center,
