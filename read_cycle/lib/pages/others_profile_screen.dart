@@ -195,7 +195,7 @@ class _OthersProfileScreen extends State<OthersProfileScreen> {
             child: ListView.builder(
               scrollDirection: Axis.vertical,
               itemCount: user.books.length,
-              itemBuilder: (context, index) => BookTile(book: user.books[index],),
+              itemBuilder: (context, index) => BookTile(book: user.books[index], user: user,),
             ),
           ),
           ],

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:read_cycle/classes/book.dart';
+import 'package:read_cycle/classes/user.dart';
 import 'package:read_cycle/data/posts.dart';
 import 'package:read_cycle/pages/book_details_screen.dart';
 import 'package:read_cycle/data/time.dart';
@@ -7,12 +8,13 @@ import 'package:read_cycle/classes/post.dart';
 
 class BookTile extends StatelessWidget {
   final Book book;
-  const BookTile({super.key, required this.book,});
+  final User user;
+  const BookTile({super.key, required this.book, required this.user});
 
   @override
   Widget build(BuildContext context) {
     Post matchingPost = allPosts.firstWhere(
-          (p) => p.postBook.title == book.title && p.postBook.author == book.author,
+          (p) => p.user == p.user
         );
     //print(matchingPost.book.title);
     return GestureDetector(

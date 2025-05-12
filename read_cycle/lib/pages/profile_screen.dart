@@ -558,7 +558,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             child: ListView.builder(
               scrollDirection: Axis.vertical,
               itemCount: currentUser.books.length,
-              itemBuilder: (context, index) => BookTile(book: currentUser.books[index],),
+              itemBuilder: (context, index) => BookTile(book: currentUser.books[index], user: currentUser,),
               ),
             ),
           ],
