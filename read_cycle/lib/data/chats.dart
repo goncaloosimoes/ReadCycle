@@ -9,7 +9,7 @@ var _random = Random();
 int getNumNotifications() {
   int returnVal = 0;
   for (Chat chat in chats) {
-    if (chat.read) {
+    if (!chat.read) {
       returnVal++;
     }
   }

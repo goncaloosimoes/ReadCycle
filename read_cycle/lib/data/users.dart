@@ -103,7 +103,7 @@ final List<User> appUsers = [
       numTrades: 1,
       wishlist: [],
     ),
-    User( // asjbvsdbhvojhabvohvdahvbojdbhvoj
+    User(
       name: 'Maria', 
       email: 'maria@email.com', 
       location: 'Aveiro', 

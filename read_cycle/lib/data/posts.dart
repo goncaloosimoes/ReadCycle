@@ -10,14 +10,25 @@ import 'package:read_cycle/components/post_tile.dart';
 
 
 List<Post> fictionPosts = [
+  // Emma
   Post(
     user: appUsers[0],
-    book: fictionBooks[0],
+    book: fictionBooks[2],
     location: 'Aveiro',
-    date: xDaysAgo(7),
-    images: [AppImage.asset('assets/images/placeholder.jpg'), AppImage.asset('assets/images/placeholder.jpg'), AppImage.asset('assets/images/placeholder.jpg'), AppImage.asset('assets/images/placeholder.jpg')],
+    date: DateTime.now(),
+    images: [AppImage.asset('assets/images/placeholder.jpg'), AppImage.asset('assets/images/placeholder.jpg'), AppImage.asset('assets/images/placeholder.jpg')],
     notes: '',
   ),
+  Post(
+    user: appUsers[0],
+    book: fictionBooks[6],
+    location: 'Aveiro',
+    date: xDaysAgo(1),
+    images: [AppImage.asset('assets/images/placeholder.jpg')],
+    notes: '',
+  ),
+
+  // António Santos
   Post(
     user: appUsers[2],
     book: fictionBooks[2],
@@ -26,6 +37,8 @@ List<Post> fictionPosts = [
     images: [AppImage.asset('assets/images/placeholder.jpg'), AppImage.asset('assets/images/placeholder.jpg'), AppImage.asset('assets/images/placeholder.jpg')],
     notes: '',
   ),
+  
+  // Gonçalo Simões
   Post(
     user: appUsers[3],
     book: fictionBooks[1],
@@ -50,22 +63,8 @@ List<Post> fictionPosts = [
     images: [AppImage.asset('assets/images/placeholder.jpg')],
     notes: '',
   ),
-  Post(
-    user: appUsers[8],
-    book: fictionBooks[6],
-    location: 'Aveiro',
-    date: xDaysAgo(1),
-    images: [AppImage.asset('assets/images/placeholder.jpg')],
-    notes: '',
-  ),
-  Post(
-    user: appUsers[9],
-    book: fictionBooks[6],
-    location: 'Aveiro',
-    date: xDaysAgo(2),
-    images: [AppImage.asset('assets/images/placeholder.jpg')],
-    notes: '',
-  ),
+
+  // Maria
   Post(
     user: appUsers[7],
     book: fictionBooks[6],
@@ -74,11 +73,32 @@ List<Post> fictionPosts = [
     images: [AppImage.asset('assets/images/placeholder.jpg'), AppImage.asset('assets/images/placeholder.jpg')],
     notes: '',
   ),
+  
+  // Pedro
+  Post(
+    user: appUsers[8],
+    book: fictionBooks[6],
+    location: 'Aveiro',
+    date: xDaysAgo(1),
+    images: [AppImage.asset('assets/images/placeholder.jpg')],
+    notes: '',
+  ),
+
+  // Galileu
+  Post(
+    user: appUsers[9],
+    book: fictionBooks[6],
+    location: 'Aveiro',
+    date: xDaysAgo(2),
+    images: [AppImage.asset('assets/images/placeholder.jpg')],
+    notes: '',
+  ),
 ];
 
 
 
 List<Post> thrillerPosts = [
+  // Gonçalo Silva
   Post(
     user: appUsers[1], 
     book: thrillerBooks[0], 
@@ -95,6 +115,8 @@ List<Post> thrillerPosts = [
     images: [AppImage.asset('assets/images/placeholder.jpg')], 
     notes: ''
   ),
+
+  // António Santos
   Post(
     user: appUsers[2], 
     book: thrillerBooks[1], 
@@ -111,6 +133,8 @@ List<Post> thrillerPosts = [
     images: [AppImage.asset('assets/images/placeholder.jpg')], 
     notes: ''
   ),
+
+  // Thriller
   Post(
     user: appUsers[6], 
     book: thrillerBooks[3], 
@@ -138,6 +162,7 @@ List<Post> thrillerPosts = [
 ];
 
 List<Post> romancePosts = [
+  // Gonçalo Silva
   Post(
     user: appUsers[1], 
     book: romanceBooks[0], 
@@ -154,6 +179,8 @@ List<Post> romancePosts = [
     images: [AppImage.asset('assets/images/placeholder.jpg'),], 
     notes: ''
   ),
+
+  // Joana
   Post(
     user: appUsers[4], 
     book: romanceBooks[2], 
@@ -178,6 +205,8 @@ List<Post> romancePosts = [
     images: [AppImage.asset('assets/images/placeholder.jpg'), AppImage.asset('assets/images/placeholder.jpg'),], 
     notes: ''
   ),
+
+  // Manuel
   Post(
     user: appUsers[5], 
     book: romanceBooks[6], 
@@ -186,6 +215,8 @@ List<Post> romancePosts = [
     images: [AppImage.asset('assets/images/placeholder.jpg'), AppImage.asset('assets/images/placeholder.jpg'),], 
     notes: ''
   ),
+
+  // Ana
   Post(
     user: appUsers[6], 
     book: romanceBooks[5], 
@@ -198,6 +229,7 @@ List<Post> romancePosts = [
 
 
 List<Post> poetryPosts = [
+  // Joana
   Post(
     user: appUsers[4], 
     book: poetryBooks[3], 
@@ -206,6 +238,8 @@ List<Post> poetryPosts = [
     images: [AppImage.asset('assets/images/placeholder.jpg'), AppImage.asset('assets/images/placeholder.jpg'), AppImage.asset('assets/images/placeholder.jpg'),], 
     notes: ''
   ),
+
+  // Manuel
   Post(
     user: appUsers[5], 
     book: poetryBooks[0], 
