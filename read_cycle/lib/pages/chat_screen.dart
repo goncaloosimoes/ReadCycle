@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:read_cycle/data/chats.dart';
+import 'package:read_cycle/main.dart';
 import 'chat_detail_screen.dart';
 import 'package:read_cycle/classes/chat.dart';
 
@@ -93,6 +94,7 @@ class _MainState extends State<ChatScreen> {
                   setState(() {
                     sortedChats[index].read = true;
                   });
+                  mainScreenKey.currentState?.update(); // Atualizar o nº de notificações
                   Navigator.push(
                     context,
                     MaterialPageRoute(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:read_cycle/data/chats.dart';
 import 'package:read_cycle/pages/chat_screen.dart';
 import 'package:read_cycle/pages/home_screen.dart';
 import 'package:read_cycle/pages/post_screen.dart';
@@ -7,19 +8,23 @@ class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
 
   @override
-  State<MainScreen> createState() => _MainScreenState();
+  State<MainScreen> createState() => MainScreenState();
 }
 
-class _MainScreenState extends State<MainScreen> {
+class MainScreenState extends State<MainScreen> {
 
   int _selectedIdx = 0;
-  final int _numNotifications = 2; // modificar depois
-
+  
   final List<Widget> screenWidgets = [
     HomeScreen(),
     PostScreen(),
     ChatScreen(),
   ];
+
+  // Atualiza o state (usar para atualizar o nº de notificações)
+  void update() {
+    setState(() {});
+  }
 
   void _changeIdx(int index) {
     setState(() {
@@ -63,7 +68,8 @@ class _MainScreenState extends State<MainScreen> {
             IconButton(
               iconSize: 35,
               icon: Badge(
-                label: Text(_numNotifications.toString()),
+                isLabelVisible: getNumNotifications() > 0,
+                label: Text(getNumNotifications().toString()),
                 child: Icon(
                   _selectedIdx == 2 ? Icons.chat : Icons.chat_outlined,
                 ),
