@@ -542,96 +542,83 @@ class _PostScreenState extends State<PostScreen> {
   }
 
   Widget _buildLocationNotesScreen() {
-    return Column(
-      children: [
-        Padding(
-          padding: EdgeInsets.only(top: 20),
-          child: StepIndicator(
-            currentPage: _getStepIndex(),
-            totalPages: _getTotalSteps(),
-          ),
-        ),
-        Expanded(
-          child: Padding(
-            padding: const EdgeInsets.only(
-              top: 25.0,
-              bottom: 25.0,
-              left: 25.0,
-              right: 5.0,
-            ), // Um pouco de padding à direto para a ScrollBar
-            child: Scrollbar(
-              thumbVisibility: true,
-              thickness: 8,
-              radius: Radius.circular(20),
-              child: SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.only(
-                    right: 20.0,
-                  ), // Resto do padding à direita
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        'Localização',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: 10),
-                      // Mapa
-                      Container(
-                        height: 360,
-                        child: FlutterLocationPicker(
-                          // coordenadas iniciais no deti :)
-                          initPosition: LatLong(
-                            40.63330334401945,
-                            -8.659509397102308,
-                          ),
-                          initZoom: 11,
-                          minZoomLevel: 5,
-                          maxZoomLevel: 16,
-                          trackMyPosition: false,
-                          onPicked: (pickedData) {
-                            print(
-                              'Localização selecionada: ${pickedData.latLong.latitude}, ${pickedData.latLong.longitude}',
-                            );
-
-                            setState(() {
-                              _locationController.text = pickedData.address;
-                              // Continua preenchendo o _locationController se precisar enviar depois
-                            });
-                          },
-                        ),
-                      ),
-                      const SizedBox(height: 20),
-                      const Text(
-                        'Notas adicionais (opcional)',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      TextField(
-                        controller: _notesController,
-                        maxLines: 3,
-                        decoration: const InputDecoration(
-                          border: OutlineInputBorder(),
-                          hintText:
-                              'Ex: Estado do livro, condições de troca...',
-                          hintStyle: TextStyle(color: Colors.grey),
-                        ),
-                      ),
-                      const SizedBox(height: 10),
-                      _buildNavigationButtons(),
-                    ],
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return SingleChildScrollView(
+          padding: const EdgeInsets.only(left: 25, right: 25, bottom: 25),
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              minHeight: constraints.maxHeight,
+            ),
+            child: IntrinsicHeight(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 20),
+                  StepIndicator(
+                    currentPage: _getStepIndex(),
+                    totalPages: _getTotalSteps(),
                   ),
-                ),
+      
+                  const Text(
+                    'Localização',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  // Mapa
+                  Container(
+                    height: 360,
+                    child: FlutterLocationPicker(
+                      // coordenadas iniciais no deti :)
+                      initPosition: LatLong(
+                        40.63330334401945,
+                        -8.659509397102308,
+                      ),
+                      initZoom: 11,
+                      minZoomLevel: 5,
+                      maxZoomLevel: 16,
+                      trackMyPosition: false,
+                      onPicked: (pickedData) {
+                        print(
+                          'Localização selecionada: ${pickedData.latLong.latitude}, ${pickedData.latLong.longitude}',
+                        );
+
+                        setState(() {
+                          _locationController.text = pickedData.address;
+                          // Continua preenchendo o _locationController se precisar enviar depois
+                        });
+                      },
+                    ),
+                  ),
+                    // const Text(
+                    //   'Notas adicionais (opcional)',
+                    //   style: TextStyle(
+                    //     fontSize: 16,
+                    //     fontWeight: FontWeight.bold,
+                    //   ),
+                    // ),
+                    // TextField(
+                    //   controller: _notesController,
+                    //   maxLines: 3,
+                    //   decoration: const InputDecoration(
+                    //     border: OutlineInputBorder(),
+                    //     hintText:
+                    //         'Ex: Estado do livro, condições de troca...',
+                    //     hintStyle: TextStyle(color: Colors.grey),
+                    //   ),
+                    // ),
+                  //const Spacer(),
+                 const SizedBox(height: 90),
+                  _buildNavigationButtons(),
+                ],
               ),
             ),
           ),
-        ),
-      ],
+        );
+      },
     );
   }
 
@@ -800,6 +787,23 @@ class _PostScreenState extends State<PostScreen> {
                         );
                       }
                     },
+                  ),
+                ),
+                const Text(
+                  'Notas adicionais (opcional)',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                TextField(
+                  controller: _notesController,
+                  maxLines: 3,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    hintText:
+                        'Ex: Estado do livro, condições de troca...',
+                    hintStyle: TextStyle(color: Colors.grey),
                   ),
                 ),
                 const SizedBox(height: 16),
