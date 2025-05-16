@@ -34,22 +34,17 @@ class _MainState extends State<ChatDetailScreen> {
     super.initState();
     booksToAdd.addAll(widget.chat.myBooks);
     booksToAddBackup.addAll(booksToAdd);
-
-    // Adicionar listener para detectar quando o usuário começa a digitar
     _textController.addListener(_onTextChanged);
   }
 
   @override
   void dispose() {
-    // Remover o listener antes de descartar o controlador
     _textController.removeListener(_onTextChanged);
     _textController.dispose();
     super.dispose();
   }
 
-  // Método chamado quando o texto muda
   void _onTextChanged() {
-    // Se o menu de troca estiver aberto e o usuário começar a digitar, feche o menu
     if (_tradeMenuOpen && _textController.text.isNotEmpty) {
       setState(() {
         _tradeMenuOpen = false;
