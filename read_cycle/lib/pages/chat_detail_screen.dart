@@ -17,8 +17,8 @@ class ChatDetailScreen extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => _MainState();
 }
-class _MainState extends State<ChatDetailScreen> {
 
+class _MainState extends State<ChatDetailScreen> {
   bool _tradeMenuOpen = false;
   final TextEditingController _textController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
@@ -28,18 +28,33 @@ class _MainState extends State<ChatDetailScreen> {
   Timer? _typingTimer;
   DateTime? _lastUserMessageTime;
   bool _emmaReplied = false;
-  
+
   @override
   void initState() {
     super.initState();
     booksToAdd.addAll(widget.chat.myBooks);
     booksToAddBackup.addAll(booksToAdd);
+
+    // Adicionar listener para detectar quando o usuário começa a digitar
+    _textController.addListener(_onTextChanged);
   }
 
   @override
   void dispose() {
+    // Remover o listener antes de descartar o controlador
+    _textController.removeListener(_onTextChanged);
     _textController.dispose();
     super.dispose();
+  }
+
+  // Método chamado quando o texto muda
+  void _onTextChanged() {
+    // Se o menu de troca estiver aberto e o usuário começar a digitar, feche o menu
+    if (_tradeMenuOpen && _textController.text.isNotEmpty) {
+      setState(() {
+        _tradeMenuOpen = false;
+      });
+    }
   }
 
   // Livros que vão ser adicionados
@@ -56,51 +71,48 @@ class _MainState extends State<ChatDetailScreen> {
     });
   }
 
-    void sendMessage() {
-      if (_textController.text.isEmpty) return;
+  void sendMessage() {
+    if (_textController.text.isEmpty) return;
 
-      setState(() {
-        widget.chat.messages.add(
-          Message(text: _textController.text, fromUser: true),
-        );
-        _showHelpText = false;
-        _lastUserMessageTime = DateTime.now();
-        _emmaReplied = false;
-      });
+    setState(() {
+      widget.chat.messages.add(
+        Message(text: _textController.text, fromUser: true),
+      );
+      _showHelpText = false;
+      _lastUserMessageTime = DateTime.now();
+      _emmaReplied = false;
+    });
 
-      _textController.clear();
-      scrollChat();
-    }
+    _textController.clear();
+    scrollChat();
+  }
 
-    void _scheduleEmmaFollowUp({String message = "Está combinado. Até já!"}) {
-      _replyTimer?.cancel();
+  void _scheduleEmmaFollowUp({String message = "Está combinado. Até já!"}) {
+    _replyTimer?.cancel();
 
-      _replyTimer = Timer(Duration(seconds: 6), () {
-        if (!_emmaReplied && mounted) {
-          setState(() {
-            widget.chat.messages.add(
-              Message(text: message, fromUser: false),
-            );
-            _emmaReplied = true;
-          });
-          scrollChat();
-        }
-      });
-    }
+    _replyTimer = Timer(Duration(seconds: 6), () {
+      if (!_emmaReplied && mounted) {
+        setState(() {
+          widget.chat.messages.add(Message(text: message, fromUser: false));
+          _emmaReplied = true;
+        });
+        scrollChat();
+      }
+    });
+  }
 
-    void _startTypingTimeout() {
-      _typingTimer?.cancel();
+  void _startTypingTimeout() {
+    _typingTimer?.cancel();
 
-      _typingTimer = Timer(Duration(seconds: 4), () {
-        if (mounted && _textController.text.isEmpty) {
-          _scheduleEmmaFollowUp();
-        }
-      });
-    }
+    _typingTimer = Timer(Duration(seconds: 4), () {
+      if (mounted && _textController.text.isEmpty) {
+        _scheduleEmmaFollowUp();
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    
     return Scaffold(
       appBar: AppBar(
         title: GestureDetector(
@@ -108,7 +120,8 @@ class _MainState extends State<ChatDetailScreen> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => OthersProfileScreen(user: widget.chat.user),
+                builder:
+                    (context) => OthersProfileScreen(user: widget.chat.user),
               ),
             );
           },
@@ -135,21 +148,21 @@ class _MainState extends State<ChatDetailScreen> {
                 });
               },
               style: ButtonStyle(
-                backgroundColor: WidgetStateProperty.all(Color.fromARGB(255, 232, 205, 149)),
+                backgroundColor: WidgetStateProperty.all(
+                  Color.fromARGB(255, 232, 205, 149),
+                ),
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const Text("Livros para trocar"),
-                  const Icon(
-                    Icons.arrow_drop_down,
-                  ),
+                  const Icon(Icons.arrow_drop_down),
                 ],
-              )
+              ),
             ),
           ),
         ),
-      ),            
+      ),
       body: GestureDetector(
         onTap: () {
           setState(() {
@@ -169,7 +182,9 @@ class _MainState extends State<ChatDetailScreen> {
                         padding: EdgeInsets.all(16.0),
                         itemCount: widget.chat.messages.length,
                         itemBuilder: (context, index) {
-                          return MessageWidget(message: widget.chat.messages[index]);
+                          return MessageWidget(
+                            message: widget.chat.messages[index],
+                          );
                         },
                       ),
                       if (_showHelpText) // desaparece se for enviada uma mensagem
@@ -212,217 +227,307 @@ class _MainState extends State<ChatDetailScreen> {
                       child: Padding(
                         padding: EdgeInsets.only(left: 30, right: 30, top: 10),
                         child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Column(
-                                children: [
-                                  Padding(
-                                    padding: EdgeInsets.only(bottom: 10),
-                                    child: Row(
-                                      children: [
-                                        CircleAvatar(
-                                          backgroundImage: currentUser.profileImage.build(),
-                                          radius: 16,
-                                        ),
-                                        SizedBox(width: 8),
-                                        Text((widget.chat.ready)?"✅ pronto!":""),
-                                      ],
-                                    )
-                                  ),
-                                  SizedBox(
-                                    width: 120,
-                                    height: 250,
-                                    child: ListView.builder(
-                                      itemCount: widget.chat.myBooks.length,
-                                      itemBuilder: (context, index) => Padding(
-                                        padding: EdgeInsets.only(bottom: 15),
-                                        child: BookSmallTile(key: UniqueKey(), book: widget.chat.myBooks[index]),
-                                        ),
-                                    )
-                                  )
-                                ],
-                              ),
-                              SizedBox(
-                                height: 280,
-                                child: VerticalDivider(
-                                  width: 10,
-                                  thickness: 1,
-                                  color: Colors.black,
-                                ),
-                              ),
-                              Column(
-                                children: [
-                                  Padding(
-                                    padding: EdgeInsets.only(bottom: 10),
-                                    child: Row(
-                                      children: [
-                                        CircleAvatar(
-                                          backgroundImage: widget.chat.user.profileImage.build(),
-                                          radius: 16,
-                                        ),
-                                        SizedBox(width: 8),
-                                        Text((widget.chat.otherReady)?"✅ pronto!":""),
-                                      ],
-                                    )
-                                  ),
-                                  SizedBox(
-                                    width: 120,
-                                    height: 250,
-                                    child: ListView.builder(
-                                      itemCount: widget.chat.otherBooks.length,
-                                      itemBuilder: (context, index) => Padding(
-                                        padding: EdgeInsets.only(bottom: 15),
-                                        child: BookSmallTile(book: widget.chat.otherBooks[index]),
-                                        ),
-                                  )
-                                  )
-                                  
-                                ],
-                              ),
-                            ],
-                          ),
-                          Divider(
-                            height: 20,
-                            color: Color.fromARGB(0, 0, 0, 0),
-                          ),
-                          Expanded(
-                            child: Padding(
-                              padding: EdgeInsets.only(bottom: 20),
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  TextButton(
-                                    style: TextButton.styleFrom(
-                                      backgroundColor: const Color.fromARGB(255, 221, 212, 192),
-                                      minimumSize: Size(120, 50),
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Column(
+                                  children: [
+                                    Padding(
+                                      padding: EdgeInsets.only(bottom: 10),
+                                      child: Row(
+                                        children: [
+                                          CircleAvatar(
+                                            backgroundImage:
+                                                currentUser.profileImage
+                                                    .build(),
+                                            radius: 16,
+                                          ),
+                                          SizedBox(width: 8),
+                                          Text(
+                                            (widget.chat.ready)
+                                                ? "✅ pronto!"
+                                                : "",
+                                          ),
+                                        ],
+                                      ),
                                     ),
-                                    onPressed: () {
-                                      List<Widget> bookWidgets = List.generate(currentUser.books.length, (index) {
-                                        return BookSmallButton(
-                                          book: currentUser.books[index],
-                                          selected: booksToAdd.contains(currentUser.books[index]),
-                                          onSelectChange: (selected) {
-                                            if (selected) {
-                                              booksToAdd.add(currentUser.books[index]);
-                                            } else {
-                                              booksToAdd.remove(currentUser.books[index]);
-                                            }
+                                    SizedBox(
+                                      width: 120,
+                                      height: 250,
+                                      child: ListView.builder(
+                                        itemCount: widget.chat.myBooks.length,
+                                        itemBuilder:
+                                            (context, index) => Padding(
+                                              padding: EdgeInsets.only(
+                                                bottom: 15,
+                                              ),
+                                              child: BookSmallTile(
+                                                key: UniqueKey(),
+                                                book:
+                                                    widget.chat.myBooks[index],
+                                              ),
+                                            ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 280,
+                                  child: VerticalDivider(
+                                    width: 10,
+                                    thickness: 1,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                                Column(
+                                  children: [
+                                    Padding(
+                                      padding: EdgeInsets.only(bottom: 10),
+                                      child: Row(
+                                        children: [
+                                          CircleAvatar(
+                                            backgroundImage:
+                                                widget.chat.user.profileImage
+                                                    .build(),
+                                            radius: 16,
+                                          ),
+                                          SizedBox(width: 8),
+                                          Text(
+                                            (widget.chat.otherReady)
+                                                ? "✅ pronto!"
+                                                : "",
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 120,
+                                      height: 250,
+                                      child: ListView.builder(
+                                        itemCount:
+                                            widget.chat.otherBooks.length,
+                                        itemBuilder:
+                                            (context, index) => Padding(
+                                              padding: EdgeInsets.only(
+                                                bottom: 15,
+                                              ),
+                                              child: BookSmallTile(
+                                                book:
+                                                    widget
+                                                        .chat
+                                                        .otherBooks[index],
+                                              ),
+                                            ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                            Divider(
+                              height: 20,
+                              color: Color.fromARGB(0, 0, 0, 0),
+                            ),
+                            Expanded(
+                              child: Padding(
+                                padding: EdgeInsets.only(bottom: 20),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    TextButton(
+                                      style: TextButton.styleFrom(
+                                        backgroundColor: const Color.fromARGB(
+                                          255,
+                                          221,
+                                          212,
+                                          192,
+                                        ),
+                                        minimumSize: Size(120, 50),
+                                      ),
+                                      onPressed: () {
+                                        List<Widget>
+                                        bookWidgets = List.generate(
+                                          currentUser.books.length,
+                                          (index) {
+                                            return BookSmallButton(
+                                              book: currentUser.books[index],
+                                              selected: booksToAdd.contains(
+                                                currentUser.books[index],
+                                              ),
+                                              onSelectChange: (selected) {
+                                                if (selected) {
+                                                  booksToAdd.add(
+                                                    currentUser.books[index],
+                                                  );
+                                                } else {
+                                                  booksToAdd.remove(
+                                                    currentUser.books[index],
+                                                  );
+                                                }
+                                              },
+                                            );
                                           },
                                         );
-                                      });
-                                      booksToAddBackup.clear();
-                                      booksToAddBackup.addAll(booksToAdd);
-                                      showDialog(
-                                        context: context,
-                                        builder: (context) {
-                                          return StatefulBuilder(
-                                            builder: (context, setStateDialog) {
-                                              AlertDialog dialog = AlertDialog(
-                                                title: const Text("Adicionar livros"),
-                                                content: SizedBox(
-                                                  width: double.maxFinite,
-                                                  height: 500,
-                                                  child: GridView.count(
-                                                    // crossAxisCount is the number of columns
-                                                    crossAxisCount: 2,
-                                                    crossAxisSpacing: 12,
-                                                    // This creates two columns with two items in each column
-                                                    children: bookWidgets
-                                                  )
-                                                ),
-                                                actions: [
-                                                  TextButton(
-                                                    onPressed: () {
-                                                      setState(() {
-                                                        widget.chat.myBooks.clear();
-                                                        widget.chat.myBooks.addAll(booksToAddBackup);
-                                                        booksToAdd.clear(); booksToAdd.addAll(booksToAddBackup);
-                                                      });
-                                                      Navigator.of(context).pop();
-                                                    },
-                                                    child: const Text('Cancelar'),
+                                        booksToAddBackup.clear();
+                                        booksToAddBackup.addAll(booksToAdd);
+                                        showDialog(
+                                          context: context,
+                                          builder: (context) {
+                                            return StatefulBuilder(
+                                              builder: (
+                                                context,
+                                                setStateDialog,
+                                              ) {
+                                                AlertDialog
+                                                dialog = AlertDialog(
+                                                  title: const Text(
+                                                    "Adicionar livros",
                                                   ),
-                                                  ElevatedButton(
-                                                    style: ButtonStyle(
-                                                      backgroundColor: WidgetStateProperty.all(Colors.green.shade200),
+                                                  content: SizedBox(
+                                                    width: double.maxFinite,
+                                                    height: 500,
+                                                    child: GridView.count(
+                                                      // crossAxisCount is the number of columns
+                                                      crossAxisCount: 2,
+                                                      crossAxisSpacing: 12,
+                                                      // This creates two columns with two items in each column
+                                                      children: bookWidgets,
                                                     ),
-                                                    onPressed: () {
-                                                      setState(() {
-                                                        widget.chat.myBooks.clear();
-                                                        widget.chat.myBooks.addAll(booksToAdd);
-                                                        widget.chat.ready = false;
-                                                        widget.chat.otherReady = false;
-                                                      });
-                                                      Navigator.of(context).pop();
-                                                    },
-                                                    child: const Text('Guardar'),
                                                   ),
-                                                ],
-                                              );
-                                              return dialog;
-                                            }
-                                          );
-                                        }
-                                      );
-                                      setState(() {});
-                                      booksToAdd.clear();
-                                    },
-                                    child: Text("Adicionar livros"),
-                                  ),
-                                  TextButton(
-                                    style: TextButton.styleFrom(
-                                      backgroundColor: (!widget.chat.ready)?Colors.green.shade200:Colors.red.shade200,
-                                      minimumSize: Size(120, 50),
+                                                  actions: [
+                                                    TextButton(
+                                                      onPressed: () {
+                                                        setState(() {
+                                                          widget.chat.myBooks
+                                                              .clear();
+                                                          widget.chat.myBooks
+                                                              .addAll(
+                                                                booksToAddBackup,
+                                                              );
+                                                          booksToAdd.clear();
+                                                          booksToAdd.addAll(
+                                                            booksToAddBackup,
+                                                          );
+                                                        });
+                                                        Navigator.of(
+                                                          context,
+                                                        ).pop();
+                                                      },
+                                                      child: const Text(
+                                                        'Cancelar',
+                                                      ),
+                                                    ),
+                                                    ElevatedButton(
+                                                      style: ButtonStyle(
+                                                        backgroundColor:
+                                                            WidgetStateProperty.all(
+                                                              Colors
+                                                                  .green
+                                                                  .shade200,
+                                                            ),
+                                                      ),
+                                                      onPressed: () {
+                                                        setState(() {
+                                                          widget.chat.myBooks
+                                                              .clear();
+                                                          widget.chat.myBooks
+                                                              .addAll(
+                                                                booksToAdd,
+                                                              );
+                                                          widget.chat.ready =
+                                                              false;
+                                                          widget
+                                                                  .chat
+                                                                  .otherReady =
+                                                              false;
+                                                        });
+                                                        Navigator.of(
+                                                          context,
+                                                        ).pop();
+                                                      },
+                                                      child: const Text(
+                                                        'Guardar',
+                                                      ),
+                                                    ),
+                                                  ],
+                                                );
+                                                return dialog;
+                                              },
+                                            );
+                                          },
+                                        );
+                                        setState(() {});
+                                        booksToAdd.clear();
+                                      },
+                                      child: Text("Adicionar livros"),
                                     ),
-                                    onPressed: () {
-                                      bool newReady = !widget.chat.ready;
+                                    TextButton(
+                                      style: TextButton.styleFrom(
+                                        backgroundColor:
+                                            (!widget.chat.ready)
+                                                ? Colors.green.shade200
+                                                : Colors.red.shade200,
+                                        minimumSize: Size(120, 50),
+                                      ),
+                                      onPressed: () {
+                                        bool newReady = !widget.chat.ready;
 
-                                      setState(() {
-                                        widget.chat.ready = newReady;
-                                      });
-
-                                      _scheduleEmmaFollowUp(
-                                        message: "Olá, esse livro parece-me muito interessante! Acho que vou querer lê-lo",
-                                      );
-
-                                      // Simulate Emma confirming after 3 seconds
-                                      if (newReady) {
-                                        Timer(Duration(seconds: 2), () {
-                                          if (!mounted) return;
-                                          setState(() {
-                                            widget.chat.otherReady = true;
-                                          });
-                                        });
-                                      } else {
-                                        // If user unchecks readiness, Emma "unconfirms" too
                                         setState(() {
-                                          widget.chat.otherReady = false;
+                                          widget.chat.ready = newReady;
                                         });
-                                      }
-                                    },
-                                    child: Text((!widget.chat.ready)?"Aceitar troca":"Rejeitar troca"),
-                                  )
-                                ],
-                              )
-                            )
-                          )
-                        ],
-                      )),
+
+                                        _scheduleEmmaFollowUp(
+                                          message:
+                                              "Olá, esse livro parece-me muito interessante! Acho que vou querer lê-lo",
+                                        );
+
+                                        // Simulate Emma confirming after 3 seconds
+                                        if (newReady) {
+                                          Timer(Duration(seconds: 2), () {
+                                            if (!mounted) return;
+                                            setState(() {
+                                              widget.chat.otherReady = true;
+                                            });
+                                          });
+                                        } else {
+                                          // If user unchecks readiness, Emma "unconfirms" too
+                                          setState(() {
+                                            widget.chat.otherReady = false;
+                                          });
+                                        }
+                                      },
+                                      child: Text(
+                                        (!widget.chat.ready)
+                                            ? "Aceitar troca"
+                                            : "Rejeitar troca",
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
-                  )
-                )
+                  ),
+                ),
               ),
-            )
+            ),
           ],
         ),
       ),
-      
+
       bottomNavigationBar: Padding(
-        padding: EdgeInsets.only(left: 8.0, right: 8.0, bottom: MediaQuery.of(context).viewInsets.bottom + 30),
+        padding: EdgeInsets.only(
+          left: 8.0,
+          right: 8.0,
+          bottom: MediaQuery.of(context).viewInsets.bottom + 30,
+        ),
         child: Row(
           children: <Widget>[
             Expanded(
@@ -452,7 +557,7 @@ class _MainState extends State<ChatDetailScreen> {
               },
             ),
           ],
-        ), 
+        ),
       ),
     );
   }
