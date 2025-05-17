@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:read_cycle/bar_stuff.dart';
 import 'package:read_cycle/classes/post.dart';
 import 'package:read_cycle/components/search_result.dart';
 import 'package:read_cycle/components/wishlist.dart';
@@ -67,6 +68,8 @@ class _MainState extends State<SearchScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final bool isKeyboardOpen = MediaQuery.of(context).viewInsets.bottom > 0;
+
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(65),
@@ -174,6 +177,12 @@ class _MainState extends State<SearchScreen> {
           },
         )
       ),
+    
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: isKeyboardOpen
+          ? null
+          : const CreatePostButton(),
+      bottomNavigationBar: MainBar(),
     );
   }
 }

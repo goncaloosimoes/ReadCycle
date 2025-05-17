@@ -569,7 +569,7 @@ class _PostScreenState extends State<PostScreen> {
                   ),
                   const SizedBox(height: 10),
                   // Mapa
-                  Container(
+                  SizedBox(
                     height: 360,
                     child: FlutterLocationPicker(
                       // coordenadas iniciais no deti :)
@@ -881,7 +881,7 @@ class _PostScreenState extends State<PostScreen> {
                   _buildSectionTitle(
                     'Fotografias (${_selectedImages.length}/6)',
                   ),
-                  Container(
+                  SizedBox(
                     height: 120,
                     child:
                         _selectedImages.isEmpty

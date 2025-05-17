@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:read_cycle/bar_stuff.dart';
 import 'package:read_cycle/classes/post.dart';
 import 'package:read_cycle/data/chats.dart';
 import 'package:read_cycle/data/time.dart';
@@ -24,6 +25,7 @@ class _BookDetailsScreen extends State<BookDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     final Post post = widget.post;
+    final bool isKeyboardOpen = MediaQuery.of(context).viewInsets.bottom > 0;
 
     return Scaffold(
       appBar: AppBar(
@@ -358,6 +360,13 @@ class _BookDetailsScreen extends State<BookDetailsScreen> {
           ],
         ),
       ),
+    
+      
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: isKeyboardOpen
+          ? null
+          : const CreatePostButton(),
+      bottomNavigationBar: MainBar(),
     );
   }
 }
