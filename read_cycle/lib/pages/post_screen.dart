@@ -58,9 +58,41 @@ class _PostScreenState extends State<PostScreen> {
   }
 
   void goToNextScreen() async {
+    bool hasInternet = false;
+
+    try {
+      final result = await InternetAddress.lookup('example.com');
+      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+        hasInternet = true;
+      }
+    } on SocketException catch (_) {
+      hasInternet = false;
+    }
+
     late final http.Response response;
     late final http.Response responseWorks;
     if (!_isbnConfirmationScreen && _currentScreen == 1) {
+      if (!hasInternet) {
+        if (mounted) {
+          showDialog(
+            context: context,
+            builder: (context) {
+            return AlertDialog(
+              title: Text("Sem internet!"),
+              content: Text("Não há conexão à internet!"),
+              actions: [
+                ElevatedButton(
+                  child: const Text('Ok'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          });
+        }
+        return;
+      }
       setState(() {
         isLoading = true;
       });
