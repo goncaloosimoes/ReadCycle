@@ -60,6 +60,8 @@ class _PostScreenState extends State<PostScreen> {
   }
 
   void goToNextScreen() async {
+    FocusScope.of(context).unfocus();
+    
     bool hasInternet = false;
 
     try {
@@ -292,6 +294,8 @@ class _PostScreenState extends State<PostScreen> {
   }
 
   void goBack() {
+    FocusScope.of(context).unfocus();
+
     setState(() {
       if (_isbnConfirmationScreen) {
         _isbnConfirmationScreen = false;

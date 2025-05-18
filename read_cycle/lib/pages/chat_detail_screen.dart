@@ -27,7 +27,6 @@ class _MainState extends State<ChatDetailScreen> {
 
   Timer? _replyTimer;
   Timer? _typingTimer;
-  DateTime? _lastUserMessageTime;
   bool _emmaReplied = false;
 
   @override
@@ -75,7 +74,6 @@ class _MainState extends State<ChatDetailScreen> {
         Message(text: _textController.text, fromUser: true),
       );
       _showHelpText = false;
-      _lastUserMessageTime = DateTime.now();
       _emmaReplied = false;
     });
 

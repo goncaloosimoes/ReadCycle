@@ -8,55 +8,79 @@ class IsbnInputFormatter extends TextInputFormatter {
     TextEditingValue oldValue,
     TextEditingValue newValue,
   ) {
+    final oldText = oldValue.text;
     final newText = newValue.text;
 
-    // Extract digits only
-    String digits = newText.replaceAll(RegExp(r'\D'), '');
+    String newDigits = newText.replaceAll(RegExp(r'\D'), '');
 
-    // Calculate how many digits were before the original cursor
-    int rawCursorPosition = newValue.selection.baseOffset;
+    final oldCursor = oldValue.selection.baseOffset;
+    final newCursor = newValue.selection.baseOffset;
+
+    bool isDeleting = newText.length < oldText.length;
+
     int digitsBeforeCursor = 0;
-    for (int i = 0; i < rawCursorPosition && i < newText.length; i++) {
+    for (int i = 0; i < newCursor && i < newText.length; i++) {
       if (RegExp(r'\d').hasMatch(newText[i])) {
         digitsBeforeCursor++;
       }
     }
 
-    // Format digits into groups
-    StringBuffer formatted = StringBuffer();
-    int usedDigits = 0;
-    int cursorPosition = 0;
-    int digitCount = 0;
-
-    for (int i = 0; i < _groupSizes.length && usedDigits < digits.length; i++) {
-      int groupSize = _groupSizes[i];
-      int remaining = digits.length - usedDigits;
-      int count = remaining >= groupSize ? groupSize : remaining;
-
-      String group = digits.substring(usedDigits, usedDigits + count);
-      formatted.write(group);
-
-      for (int j = 0; j < group.length; j++) {
-        if (digitCount < digitsBeforeCursor) {
-          cursorPosition++;
-          digitCount++;
+    // If dash was deleted, remove previous digit from raw digits
+    if (isDeleting && oldCursor > 0 && oldCursor <= oldText.length) {
+      if (oldText[oldCursor - 1] == '-') {
+        int digitIndexToRemove = _getDigitIndexBefore(oldText, oldCursor - 1);
+        if (digitIndexToRemove != -1 && digitIndexToRemove < newDigits.length) {
+          newDigits = newDigits.substring(0, digitIndexToRemove) + newDigits.substring(digitIndexToRemove + 1);
+          digitsBeforeCursor = digitIndexToRemove; // move cursor after previous digit
         }
       }
+    }
 
-      usedDigits += count;
+    // Rebuild the formatted string
+    final buffer = StringBuffer();
+    int digitIndex = 0;
+    int cursorPosition = 0;
+    int writtenDigits = 0;
 
-      // Add dash if group is full and more digits exist
-      if (count == groupSize && i < _groupSizes.length - 1 && usedDigits < digits.length + 1) {
-        formatted.write('-');
-        if (digitCount < digitsBeforeCursor) {
-          cursorPosition++; // Move cursor after dash too
+    for (int groupIndex = 0; groupIndex < _groupSizes.length && digitIndex < newDigits.length; groupIndex++) {
+      final groupSize = _groupSizes[groupIndex];
+      final remaining = newDigits.length - digitIndex;
+      final take = remaining >= groupSize ? groupSize : remaining;
+
+      final group = newDigits.substring(digitIndex, digitIndex + take);
+      buffer.write(group);
+
+      for (int i = 0; i < group.length; i++) {
+        if (writtenDigits < digitsBeforeCursor) {
+          cursorPosition++;
+        }
+        writtenDigits++;
+      }
+
+      digitIndex += take;
+
+      // Insert dash if not last group and group is full
+      if (take == groupSize && groupIndex < _groupSizes.length - 1) {
+        buffer.write('-');
+        if (writtenDigits <= digitsBeforeCursor) {
+          cursorPosition++;
         }
       }
     }
 
     return TextEditingValue(
-      text: formatted.toString(),
+      text: buffer.toString(),
       selection: TextSelection.collapsed(offset: cursorPosition),
     );
+  }
+
+  int _getDigitIndexBefore(String formattedText, int dashIndex) {
+    int digitCount = 0;
+    for (int i = 0; i < dashIndex; i++) {
+      if (RegExp(r'\d').hasMatch(formattedText[i])) {
+        digitCount++;
+      }
+    }
+    return digitCount - 1;
   }
 }
