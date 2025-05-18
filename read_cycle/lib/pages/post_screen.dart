@@ -11,6 +11,8 @@ import 'package:read_cycle/classes/post.dart';
 import 'package:read_cycle/data/posts.dart';
 import 'package:read_cycle/data/users.dart';
 import 'package:read_cycle/components/step_indicator.dart';
+import 'package:read_cycle/classes/isbn_input_formatter.dart';
+import 'package:flutter/services.dart';
 
 class PostScreen extends StatefulWidget {
   const PostScreen({super.key});
@@ -436,11 +438,15 @@ class _PostScreenState extends State<PostScreen> {
                 const SizedBox(height: 10),
                 TextField(
                   controller: _isbnController,
+                  keyboardType: TextInputType.number,
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     hintText: 'Digite o ISBN do livro',
                   ),
-                  keyboardType: TextInputType.number,
+                  inputFormatters: [
+                    FilteringTextInputFormatter.digitsOnly,
+                    IsbnInputFormatter(),
+                  ],
                 ),
                 const SizedBox(height: 20),
                 const Text(
