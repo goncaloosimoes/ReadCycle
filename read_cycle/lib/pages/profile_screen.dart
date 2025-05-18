@@ -227,7 +227,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         )
                       ),
                     ),
-                    child: Icon(Icons.edit, size: 17,)
+                    child: Icon(Icons.edit, size: 20,)
                   ),
                 ),
               ],
@@ -336,7 +336,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             )
                           ),
                         ),
-                        child: Icon(Icons.edit, size: 17,)
+                        child: Icon(Icons.edit, size: 20,)
                       ),
                     ),
                   ],
@@ -438,7 +438,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         )
                       ),
                     ),
-                    child: Icon(Icons.edit, size: 17,)
+                    child: Icon(Icons.edit, size: 20,)
                   ),
                 ),
               ],
@@ -496,7 +496,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         )
                       ),
                     ),
-                    child: Icon(Icons.edit, size: 17,)
+                    child: Icon(Icons.edit, size: 20,)
                   ),
                 )
               ],
