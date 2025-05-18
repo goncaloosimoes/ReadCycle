@@ -285,7 +285,7 @@ List<Post> poetryPosts = [
 ];
 
 
-List<PostTile> fictionTiles = fictionPosts.map((post) => PostTile(post: post)).toList().sublist(5);
+List<PostTile> fictionTiles = fictionPosts.map((post) => PostTile(post: post)).toList().sublist(6);
 List<PostTile> thrillerTiles = thrillerPosts.map((post) => PostTile(post: post)).toList();
 List<PostTile> romanceTiles = romancePosts.map((post) => PostTile(post: post)).toList();
 List<PostTile> poetryTiles = poetryPosts.map((post) => PostTile(post: post)).toList();
