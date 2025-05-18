@@ -57,6 +57,7 @@ class _MainState extends State<HomeScreen> {
     }
 
     final uniqueBooks = books.toSet().toList()..sort();
+    uniqueBooks.add("O Hobbit");
     print('Total de livros únicos: ${uniqueBooks.length}');
     print('Livros: $uniqueBooks');
     return uniqueBooks;
@@ -120,7 +121,7 @@ class _MainState extends State<HomeScreen> {
 
         for (String queryWord in queryWords) {
           if (queryWord.length >= 15) {
-            // Pelo menos 15 caracteres na pesquisa (se for mais ele vai parar de acompanhar e destacar 
+            // Pelo menos 15 caracteres na pesquisa (se for mais ele vai parar de acompanhar e destacar
             // as palavras mesmo se derem match com o que está na caixa de pesquisa)
             for (int i = 0; i < bookWords.length; i++) {
               if (bookWords[i].startsWith(queryWord) ||
@@ -425,7 +426,12 @@ class _MainState extends State<HomeScreen> {
                                 children: [
                                   Icon(
                                     Icons.book,
-                                    color: const Color.fromARGB(255, 160, 102, 16),
+                                    color: const Color.fromARGB(
+                                      255,
+                                      160,
+                                      102,
+                                      16,
+                                    ),
                                     size: 22,
                                   ),
                                   SizedBox(width: 12),
