@@ -602,8 +602,12 @@ class _PostScreenState extends State<PostScreen> {
                   const SizedBox(height: 10),
                   // Mapa
                   SizedBox(
-                    height: 360,
+                    height: 420,
                     child: FlutterLocationPicker(
+                      searchBarHintText: "Pesquisar local",
+                      showSelectLocationButton: false,
+                      showZoomController: false,
+
                       // coordenadas iniciais no deti :)
                       initPosition: LatLong(
                         40.63330334401945,
@@ -613,6 +617,16 @@ class _PostScreenState extends State<PostScreen> {
                       minZoomLevel: 5,
                       maxZoomLevel: 16,
                       trackMyPosition: false,
+                      onChanged: (pickedData) {
+                        print(
+                          'Localização selecionada: ${pickedData.latLong.latitude}, ${pickedData.latLong.longitude}',
+                        );
+
+                        setState(() {
+                          _locationController.text = pickedData.address;
+                          // Continua preenchendo o _locationController se precisar enviar depois
+                        });
+                      },
                       onPicked: (pickedData) {
                         print(
                           'Localização selecionada: ${pickedData.latLong.latitude}, ${pickedData.latLong.longitude}',
@@ -643,7 +657,7 @@ class _PostScreenState extends State<PostScreen> {
                     //   ),
                     // ),
                   //const Spacer(),
-                 const SizedBox(height: 90),
+                 const SizedBox(height: 30),
                   _buildNavigationButtons(),
                 ],
               ),
