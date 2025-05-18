@@ -443,8 +443,8 @@ class _MainState extends State<ChatDetailScreen> {
                                       style: TextButton.styleFrom(
                                         backgroundColor:
                                             (!widget.chat.ready)
-                                                ? Colors.green.shade600
-                                                : Colors.red.shade600,
+                                                ? Colors.green.shade400
+                                                : Colors.red.shade300,
                                         minimumSize: Size(120, 50),
                                       ),
                                       onPressed: () {
