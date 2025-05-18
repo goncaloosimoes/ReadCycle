@@ -18,6 +18,7 @@ class _MainState extends State<HomeScreen> {
   final TextEditingController _controller = TextEditingController();
   final FocusNode _focusNode = FocusNode();
   List<String> bookSuggestions = [];
+  List<String> recentSearches = [];
   bool showSuggestions = false;
 
   List<String> get allBooks {
@@ -59,7 +60,10 @@ class _MainState extends State<HomeScreen> {
     final uniqueBooks = books.toSet().toList()..sort();
     uniqueBooks.add("O Hobbit");
     print('Total de livros únicos: ${uniqueBooks.length}');
+    int numPesquisas = recentSearches.length;
+    print('Histórico de pesquisas ($numPesquisas): $recentSearches');
     print('Livros: $uniqueBooks');
+
     return uniqueBooks;
   }
 
@@ -173,6 +177,18 @@ class _MainState extends State<HomeScreen> {
     return normalized;
   }
 
+  List<String> get listToShow {
+    // Para mostrar o histórico de pesquisas ou as sugestões
+    final isTyping = _controller.text.isNotEmpty;
+    return isTyping ? bookSuggestions : recentSearches;
+  }
+
+  void _removeFromRecentSearches(String item) {
+    setState(() {
+      recentSearches.remove(item);
+    });
+  }
+
   void searchButtonFunctionality() {
     if (!searchBarVisible) {
       setState(() {
@@ -187,6 +203,15 @@ class _MainState extends State<HomeScreen> {
   }
 
   void _performSearch(String query) {
+    if (query.isNotEmpty && !recentSearches.contains(query)) {
+      setState(() {
+        recentSearches.insert(0, query); // Adiciona no topo
+        if (recentSearches.length > 8) {
+          recentSearches = recentSearches.sublist(0, 8); // Limite de 8
+        }
+      });
+    }
+
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => SearchScreen(query)),
@@ -381,7 +406,9 @@ class _MainState extends State<HomeScreen> {
             ),
 
             // Sugestões do autocomplete
-            if (showSuggestions && searchBarVisible)
+            if (searchBarVisible &&
+                (_controller.text.isEmpty && recentSearches.isNotEmpty ||
+                    showSuggestions))
               Positioned(
                 top: 10,
                 left: 25,
@@ -406,52 +433,61 @@ class _MainState extends State<HomeScreen> {
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(12),
                       child: ListView.separated(
+                        padding: EdgeInsets.symmetric(
+                          vertical: 6,
+                          horizontal: 12,
+                        ),
                         shrinkWrap: true,
-                        itemCount: bookSuggestions.length,
+                        itemCount: listToShow.length,
                         separatorBuilder:
                             (context, index) =>
                                 Divider(height: 1, color: Colors.grey.shade100),
                         itemBuilder: (context, index) {
-                          final suggestion = bookSuggestions[index];
+                          final suggestion = listToShow[index];
                           final query = _controller.text.trim();
 
                           return InkWell(
                             onTap: () => _selectSuggestion(suggestion),
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(
-                                horizontal: 16,
-                                vertical: 12,
-                              ),
-                              child: Row(
-                                children: [
-                                  Icon(
-                                    Icons.book,
-                                    color: const Color.fromARGB(
-                                      255,
-                                      160,
-                                      102,
-                                      16,
-                                    ),
-                                    size: 22,
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.book,
+                                  color: const Color.fromARGB(
+                                    255,
+                                    160,
+                                    102,
+                                    16,
                                   ),
-                                  SizedBox(width: 12),
-                                  Expanded(
-                                    child: RichText(
-                                      text: TextSpan(
-                                        children: _buildHighlightedText(
-                                          suggestion,
-                                          query,
-                                        ),
+                                  size: 22,
+                                ),
+                                SizedBox(width: 12),
+                                Expanded(
+                                  child: RichText(
+                                    text: TextSpan(
+                                      children: _buildHighlightedText(
+                                        suggestion,
+                                        query,
                                       ),
                                     ),
                                   ),
-                                  Icon(
-                                    Icons.search,
+                                ),
+                                // Mostrar botão de apagar se for histórico
+                                IconButton(
+                                  icon: Icon(
+                                    _controller.text.isEmpty
+                                        ? Icons.close
+                                        : Icons.search,
                                     color: Colors.grey[400],
                                     size: 18,
                                   ),
-                                ],
-                              ),
+                                  onPressed:
+                                      _controller.text.isEmpty
+                                          ? () => _removeFromRecentSearches(
+                                            suggestion,
+                                          )
+                                          : null, // Desativa o botão se for sugestão
+                                ),
+                              ],
                             ),
                           );
                         },
