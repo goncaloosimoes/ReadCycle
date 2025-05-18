@@ -6,9 +6,9 @@ import 'package:read_cycle/data/posts.dart';
 import 'package:read_cycle/data/users.dart';
 import 'package:read_cycle/pages/search_screen.dart';
 
+
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
-
 
   @override
   State<HomeScreen> createState() => _MainState();
@@ -48,12 +48,11 @@ class _MainState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     final List<PostTile> suggestionTiles = [
       fictionTiles[2],
       thrillerTiles[0],
       romanceTiles[4],
-      thrillerTiles[2]
+      thrillerTiles[2],
     ];
 
     final List<BooksTile> bookTiles = [
@@ -88,19 +87,26 @@ class _MainState extends State<HomeScreen> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     SizedBox(
-                      width: 200, // enough width for interaction
+                      width: 200,
                       height: 60,
                       child: Stack(
                         alignment: AlignmentDirectional.centerStart,
                         clipBehavior: Clip.none,
                         children: [
-                          Text(
-                            'ReadCycle',
-                            style: TextStyle(color: Colors.black, fontSize: 25),
+                          Visibility(
+                            visible:
+                                !searchBarVisible,
+                            child: Text(
+                              'ReadCycle',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 25,
+                              ),
+                            ),
                           ),
                           Positioned(
                             left: 20,
-                            width: 180,
+                            width: 280,
                             child: Visibility(
                               visible: searchBarVisible,
                               maintainSize: true,
@@ -113,15 +119,21 @@ class _MainState extends State<HomeScreen> {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => SearchScreen(_controller.text),
+                                      builder:
+                                          (context) =>
+                                              SearchScreen(_controller.text),
                                     ),
                                   );
                                 },
                                 decoration: InputDecoration(
-                                  border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(20))),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(30),
+                                    ),
+                                  ),
                                   fillColor: Color.fromARGB(255, 241, 241, 241),
                                   filled: true,
-                                  hintText: 'Pesquisa...',
+                                  hintText: 'Pesquisa um livro...',
                                 ),
                               ),
                             ),
