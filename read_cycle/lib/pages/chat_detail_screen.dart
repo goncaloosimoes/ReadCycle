@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:read_cycle/bar_stuff.dart';
 import 'package:read_cycle/classes/book.dart';
 import 'package:read_cycle/classes/chat.dart';
 import 'package:read_cycle/classes/message.dart';
@@ -517,43 +518,51 @@ class _MainState extends State<ChatDetailScreen> {
         ),
       ),
 
-      bottomNavigationBar: Padding(
-        padding: EdgeInsets.only(
-          left: 8.0,
-          right: 8.0,
-          bottom: MediaQuery.of(context).viewInsets.bottom + 30,
-        ),
-        child: Row(
-          children: <Widget>[
-            Expanded(
-              child: TextField(
-                controller: _textController,
-                decoration: InputDecoration(
-                  hintText: 'Escreva uma mensagem...',
-                  border: OutlineInputBorder(),
+      bottomNavigationBar: Column(
+        verticalDirection: VerticalDirection.up,
+        children: [
+          MainBar(),
+          
+          Padding(
+            padding: EdgeInsets.only(
+              left: 8.0,
+              right: 8.0,
+              bottom: MediaQuery.of(context).viewInsets.bottom + 10,
+            ),
+            child: Row(
+              children: <Widget>[
+                Expanded(
+                  child: TextField(
+                    controller: _textController,
+                    decoration: InputDecoration(
+                      hintText: 'Escreva uma mensagem...',
+                      border: OutlineInputBorder(),
+                    ),
+                    onChanged: (_) {
+                      _startTypingTimeout();
+                    },
+                    onTap: () {
+                      setState(() {
+                        _tradeMenuOpen = false;
+                      });
+                    },
+                    onSubmitted: (value) {
+                      sendMessage();
+                    },
+                  ),
                 ),
-                onChanged: (_) {
-                  _startTypingTimeout();
-                },
-                onTap: () {
-                  setState(() {
-                    _tradeMenuOpen = false;
-                  });
-                },
-                onSubmitted: (value) {
-                  sendMessage();
-                },
-              ),
+                IconButton(
+                  icon: Icon(Icons.send),
+                  onPressed: () {
+                    sendMessage();
+                  },
+                ),
+              ],
             ),
-            IconButton(
-              icon: Icon(Icons.send),
-              onPressed: () {
-                sendMessage();
-              },
-            ),
-          ],
-        ),
-      ),
+          ),
+
+        ]
+      )
     );
   }
 }
