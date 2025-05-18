@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:read_cycle/bar_stuff.dart';
 import 'package:read_cycle/classes/post.dart';
+import 'package:read_cycle/classes/sort_mode.dart';
 import 'package:read_cycle/components/search_result.dart';
 import 'package:read_cycle/components/wishlist.dart';
 import 'package:read_cycle/data/posts.dart';
@@ -20,6 +21,7 @@ class _MainState extends State<SearchScreen> {
   bool addedToWishlist = false;
   final TextEditingController _controller = TextEditingController();
   List<SearchResult> searchResults = [];
+  SortMode sortMode = SortMode.classification;
 
   _MainState();
 
@@ -45,6 +47,13 @@ class _MainState extends State<SearchScreen> {
       else if (post.book.title.toLowerCase().contains(searchText.toLowerCase())) {
         searchResults.add(SearchResult(post: post));
       }
+    }
+
+    // ordenar
+    if (sortMode == SortMode.classification) {
+      searchResults.sort((a, b) => b.post.user.rating.compareTo(a.post.user.rating));
+    } else if (sortMode == SortMode.recent) {
+      searchResults.sort((a, b) => b.post.date.compareTo(a.post.date));
     }
   }
 
@@ -80,11 +89,11 @@ class _MainState extends State<SearchScreen> {
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 45),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.end,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     SizedBox(
-                      width: 180,
+                      width: 160,
                       child: TextField(
                         controller: _controller,
                         onSubmitted: (value) {
@@ -96,12 +105,45 @@ class _MainState extends State<SearchScreen> {
                           filled: true,
                           hintText: 'Pesquisa...',
                         ),
-                      )
+                      ),
                     ),
                     IconButton(
                       onPressed: reloadPage,
-                      icon: const Icon(Icons.search)
+                      icon: const Icon(Icons.search),
                     ),
+                    PopupMenuButton<SortMode>(
+                      icon: Icon(Icons.sort),
+                      onSelected: (SortMode selectedMode) {
+                        setState(() {
+                          sortMode = selectedMode;
+                          getRelevantPosts();
+                        });
+                      },
+                      itemBuilder: (BuildContext context) => <PopupMenuEntry<SortMode>>[
+                        PopupMenuItem<SortMode>(
+                          value: SortMode.classification,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text('Ordenar por classificação'),
+                              if (sortMode == SortMode.classification)
+                                Icon(Icons.check, size: 18, color: Colors.black),
+                            ],
+                          ),
+                        ),
+                        PopupMenuItem<SortMode>(
+                          value: SortMode.recent,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text('Ordenar por mais recentes'),
+                              if (sortMode == SortMode.recent)
+                                Icon(Icons.check, size: 18, color: Colors.black),
+                            ],
+                          ),
+                        ),
+                      ],
+                    )
                   ],
                 ),
             )

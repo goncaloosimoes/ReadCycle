@@ -119,7 +119,6 @@ class _MainState extends State<HomeScreen> {
                                 },
                                 decoration: InputDecoration(
                                   border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(20))),
-                                  
                                   fillColor: Color.fromARGB(255, 241, 241, 241),
                                   filled: true,
                                   hintText: 'Pesquisa...',
@@ -127,7 +126,6 @@ class _MainState extends State<HomeScreen> {
                               ),
                             ),
                           ),
-
                         ],
                       ),
                     ),

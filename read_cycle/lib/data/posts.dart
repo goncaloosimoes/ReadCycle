@@ -66,16 +66,6 @@ List<Post> fictionPosts = [
     notes: '',
   ),
 
-  // Emma
-  Post(
-    user: appUsers[0],
-    book: fictionBooks[2],
-    location: 'Aveiro',
-    date: DateTime.now(),
-    images: [AppImage.asset('assets/images/placeholder.jpg'), AppImage.asset('assets/images/placeholder.jpg'), AppImage.asset('assets/images/placeholder.jpg')],
-    notes: '',
-  ),
-
   // António Santos
   Post(
     user: appUsers[2],
@@ -109,6 +99,15 @@ List<Post> fictionPosts = [
     location: 'Aveiro',
     date: xDaysAgo(2),
     images: [AppImage.asset('assets/images/placeholder.jpg')],
+    notes: '',
+  ),
+  // Emma
+  Post(
+    user: appUsers[0],
+    book: fictionBooks[2],
+    location: 'Aveiro',
+    date: DateTime.now(),
+    images: [AppImage.asset('assets/images/placeholder.jpg'), AppImage.asset('assets/images/placeholder.jpg'), AppImage.asset('assets/images/placeholder.jpg')],
     notes: '',
   ),
 ];
