@@ -142,6 +142,7 @@ class _MainState extends State<ChatDetailScreen> {
                 setState(() {
                   _tradeMenuOpen = !_tradeMenuOpen;
                 });
+                FocusScope.of(context).unfocus();
               },
               style: ButtonStyle(
                 backgroundColor: WidgetStateProperty.all(
@@ -164,6 +165,7 @@ class _MainState extends State<ChatDetailScreen> {
           setState(() {
             _tradeMenuOpen = false;
           });
+          FocusScope.of(context).unfocus();
         },
         child: Stack(
           children: [
@@ -203,6 +205,7 @@ class _MainState extends State<ChatDetailScreen> {
               ],
             ),
 
+            // Menu de selecionar livros
             Positioned(
               top: 0,
               left: 0,
@@ -398,56 +401,31 @@ class _MainState extends State<ChatDetailScreen> {
                                                     TextButton(
                                                       onPressed: () {
                                                         setState(() {
-                                                          widget.chat.myBooks
-                                                              .clear();
-                                                          widget.chat.myBooks
-                                                              .addAll(
-                                                                booksToAddBackup,
-                                                              );
+                                                          widget.chat.myBooks.clear();
+                                                          widget.chat.myBooks.addAll(booksToAddBackup);
                                                           booksToAdd.clear();
-                                                          booksToAdd.addAll(
-                                                            booksToAddBackup,
-                                                          );
+                                                          booksToAdd.addAll(booksToAddBackup);
                                                         });
-                                                        Navigator.of(
-                                                          context,
-                                                        ).pop();
+                                                        Navigator.of(context).pop();
+                                                        FocusScope.of(context).unfocus();
                                                       },
-                                                      child: const Text(
-                                                        'Cancelar',
-                                                      ),
+                                                      child: const Text('Cancelar'),
                                                     ),
                                                     ElevatedButton(
                                                       style: ButtonStyle(
-                                                        backgroundColor:
-                                                            WidgetStateProperty.all(
-                                                              Colors
-                                                                  .green
-                                                                  .shade200,
-                                                            ),
+                                                        backgroundColor: WidgetStateProperty.all(Colors.green.shade200),
                                                       ),
                                                       onPressed: () {
                                                         setState(() {
-                                                          widget.chat.myBooks
-                                                              .clear();
-                                                          widget.chat.myBooks
-                                                              .addAll(
-                                                                booksToAdd,
-                                                              );
-                                                          widget.chat.ready =
-                                                              false;
-                                                          widget
-                                                                  .chat
-                                                                  .otherReady =
-                                                              false;
+                                                          widget.chat.myBooks.clear();
+                                                          widget.chat.myBooks.addAll(booksToAdd);
+                                                          widget.chat.ready = false;
+                                                          widget.chat.otherReady = false;
                                                         });
-                                                        Navigator.of(
-                                                          context,
-                                                        ).pop();
+                                                        Navigator.of(context).pop();
+                                                        FocusScope.of(context).unfocus();
                                                       },
-                                                      child: const Text(
-                                                        'Guardar',
-                                                      ),
+                                                      child: const Text('Guardar'),
                                                     ),
                                                   ],
                                                 );
@@ -465,8 +443,8 @@ class _MainState extends State<ChatDetailScreen> {
                                       style: TextButton.styleFrom(
                                         backgroundColor:
                                             (!widget.chat.ready)
-                                                ? Colors.green.shade200
-                                                : Colors.red.shade200,
+                                                ? Colors.green.shade600
+                                                : Colors.red.shade600,
                                         minimumSize: Size(120, 50),
                                       ),
                                       onPressed: () {
@@ -514,52 +492,55 @@ class _MainState extends State<ChatDetailScreen> {
                 ),
               ),
             ),
+            
+            Positioned(
+              left: 0,
+              right: 0,
+              bottom: 10,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: TextField(
+                        controller: _textController,
+                        decoration: InputDecoration(
+                          hintText: 'Escreva uma mensagem...',
+                          border: OutlineInputBorder(),
+                        ),
+                        onChanged: (_) {
+                          _startTypingTimeout();
+                        },
+                        onTap: () {
+                          setState(() {
+                            _tradeMenuOpen = false;
+                          });
+                        },
+                        onSubmitted: (value) {
+                          sendMessage();
+                        },
+                      ),
+                    ),
+                    IconButton(
+                      icon: Icon(Icons.send),
+                      onPressed: () {
+                        sendMessage();
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            ),
           ],
         ),
       ),
 
       bottomNavigationBar: Column(
         verticalDirection: VerticalDirection.up,
+        mainAxisSize: MainAxisSize.min,
         children: [
           MainBar(),
           
-          Padding(
-            padding: EdgeInsets.only(
-              left: 8.0,
-              right: 8.0,
-              bottom: MediaQuery.of(context).viewInsets.bottom + 10,
-            ),
-            child: Row(
-              children: <Widget>[
-                Expanded(
-                  child: TextField(
-                    controller: _textController,
-                    decoration: InputDecoration(
-                      hintText: 'Escreva uma mensagem...',
-                      border: OutlineInputBorder(),
-                    ),
-                    onChanged: (_) {
-                      _startTypingTimeout();
-                    },
-                    onTap: () {
-                      setState(() {
-                        _tradeMenuOpen = false;
-                      });
-                    },
-                    onSubmitted: (value) {
-                      sendMessage();
-                    },
-                  ),
-                ),
-                IconButton(
-                  icon: Icon(Icons.send),
-                  onPressed: () {
-                    sendMessage();
-                  },
-                ),
-              ],
-            ),
-          ),
 
         ]
       )
