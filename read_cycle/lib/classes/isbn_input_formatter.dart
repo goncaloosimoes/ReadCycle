@@ -1,34 +1,62 @@
 import 'package:flutter/services.dart';
 
 class IsbnInputFormatter extends TextInputFormatter {
-  static const _groupSizes = [3, 4, 3, 3]; // 978-0345-371-485
+  static const List<int> _groupSizes = [3, 4, 3, 3]; // 978-0345-371-485
 
   @override
   TextEditingValue formatEditUpdate(
     TextEditingValue oldValue,
     TextEditingValue newValue,
   ) {
-    String digitsOnly = newValue.text.replaceAll(RegExp(r'\D'), '');
-    String formatted = '';
-    int selectionIndex = newValue.selection.baseOffset;
+    final newText = newValue.text;
 
-    for (int i = 0; i < _groupSizes.length && digitsOnly.isNotEmpty; i++) {
-      int groupSize = _groupSizes[i];
-      int end = (digitsOnly.length < groupSize) ? digitsOnly.length : groupSize;
+    // Extract digits only
+    String digits = newText.replaceAll(RegExp(r'\D'), '');
 
-      formatted += digitsOnly.substring(0, end);
-      digitsOnly = digitsOnly.substring(end);
-
-      if (i < _groupSizes.length - 1 && digitsOnly.isNotEmpty) {
-        formatted += '-';
+    // Calculate how many digits were before the original cursor
+    int rawCursorPosition = newValue.selection.baseOffset;
+    int digitsBeforeCursor = 0;
+    for (int i = 0; i < rawCursorPosition && i < newText.length; i++) {
+      if (RegExp(r'\d').hasMatch(newText[i])) {
+        digitsBeforeCursor++;
       }
     }
 
-    selectionIndex = formatted.length;
+    // Format digits into groups
+    StringBuffer formatted = StringBuffer();
+    int usedDigits = 0;
+    int cursorPosition = 0;
+    int digitCount = 0;
+
+    for (int i = 0; i < _groupSizes.length && usedDigits < digits.length; i++) {
+      int groupSize = _groupSizes[i];
+      int remaining = digits.length - usedDigits;
+      int count = remaining >= groupSize ? groupSize : remaining;
+
+      String group = digits.substring(usedDigits, usedDigits + count);
+      formatted.write(group);
+
+      for (int j = 0; j < group.length; j++) {
+        if (digitCount < digitsBeforeCursor) {
+          cursorPosition++;
+          digitCount++;
+        }
+      }
+
+      usedDigits += count;
+
+      // Add dash if group is full and more digits exist
+      if (count == groupSize && i < _groupSizes.length - 1 && usedDigits < digits.length + 1) {
+        formatted.write('-');
+        if (digitCount < digitsBeforeCursor) {
+          cursorPosition++; // Move cursor after dash too
+        }
+      }
+    }
 
     return TextEditingValue(
-      text: formatted,
-      selection: TextSelection.collapsed(offset: selectionIndex),
+      text: formatted.toString(),
+      selection: TextSelection.collapsed(offset: cursorPosition),
     );
   }
 }

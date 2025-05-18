@@ -444,7 +444,6 @@ class _PostScreenState extends State<PostScreen> {
                     hintText: 'Digite o ISBN do livro',
                   ),
                   inputFormatters: [
-                    FilteringTextInputFormatter.digitsOnly,
                     IsbnInputFormatter(),
                   ],
                 ),
