@@ -79,6 +79,7 @@ class CreatePostButton extends StatelessWidget {
       height: 70,
       width: 70,
       child: FloatingActionButton(
+        heroTag: null,
         onPressed: () => _changeIdx(1, context),
         backgroundColor: const Color.fromARGB(255, 199, 156, 28),
         shape: CircleBorder(),
