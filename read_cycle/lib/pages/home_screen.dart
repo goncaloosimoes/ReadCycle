@@ -450,15 +450,19 @@ class _MainState extends State<HomeScreen> {
                             onTap: () => _selectSuggestion(suggestion),
                             child: Row(
                               children: [
-                                Icon(
-                                  Icons.book,
-                                  color: const Color.fromARGB(
-                                    255,
-                                    160,
-                                    102,
-                                    16,
+                                Container(
+                                  width: 36,
+                                  height: 52,
+                                  margin: const EdgeInsets.symmetric(
+                                    vertical: 6,
                                   ),
-                                  size: 22,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(6),
+                                    image: DecorationImage(
+                                      image: _getCoverImageForBook(suggestion),
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
                                 ),
                                 SizedBox(width: 12),
                                 Expanded(
@@ -500,6 +504,32 @@ class _MainState extends State<HomeScreen> {
         ),
       ),
     );
+  }
+
+  ImageProvider _getCoverImageForBook(String title) {
+    final lowerTitle = title.toLowerCase();
+
+    if (lowerTitle == "o hobbit") {
+      return const AssetImage('assets/books/fiction/hobbit.jpg');
+    }
+
+    final allPosts = [
+      ...fictionTiles,
+      ...romanceTiles,
+      ...thrillerTiles,
+      ...poetryTiles,
+    ];
+
+    for (final postTile in allPosts) {
+      final post = postTile.post;
+      if (post.book.title.toLowerCase() == title.toLowerCase()) {
+        return post.book.coverImage
+            .build();
+      }
+    }
+
+    // Imagem padrão caso não encontre
+    return const AssetImage('assets/books/cover_not_available.jpg');
   }
 
   List<TextSpan> _buildHighlightedText(String text, String query) {

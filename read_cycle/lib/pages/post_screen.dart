@@ -12,7 +12,6 @@ import 'package:read_cycle/data/posts.dart';
 import 'package:read_cycle/data/users.dart';
 import 'package:read_cycle/components/step_indicator.dart';
 import 'package:read_cycle/classes/isbn_input_formatter.dart';
-import 'package:flutter/services.dart';
 
 class PostScreen extends StatefulWidget {
   const PostScreen({super.key});
@@ -61,7 +60,7 @@ class _PostScreenState extends State<PostScreen> {
 
   void goToNextScreen() async {
     FocusScope.of(context).unfocus();
-    
+
     bool hasInternet = false;
 
     try {
@@ -81,19 +80,20 @@ class _PostScreenState extends State<PostScreen> {
           showDialog(
             context: context,
             builder: (context) {
-            return AlertDialog(
-              title: Text("Sem internet!"),
-              content: Text("Não há conexão à internet!"),
-              actions: [
-                ElevatedButton(
-                  child: const Text('Ok'),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                ),
-              ],
-            );
-          });
+              return AlertDialog(
+                title: Text("Sem internet!"),
+                content: Text("Não há conexão à internet!"),
+                actions: [
+                  ElevatedButton(
+                    child: const Text('Ok'),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              );
+            },
+          );
         }
         return;
       }
@@ -110,22 +110,23 @@ class _PostScreenState extends State<PostScreen> {
         ),
       );
 
-
       // Colocar a imagem de cover (não pode ser no setState porque não dá para fazer await lá)
-      if (response.statusCode == 200 && response.body != '{}' && jsonDecode(response.body) != null) {
+      if (response.statusCode == 200 &&
+          response.body != '{}' &&
+          jsonDecode(response.body) != null) {
         final Map<String, dynamic> jsonResponse =
             (jsonDecode(response.body) as Map<String, dynamic>)["ISBN:$isbn"];
 
         // Obter resposta da book edition API
         var responseEdition = await http.get(
-          Uri.parse(
-            'https://openlibrary.org${jsonResponse["key"]}.json',
-          ),
+          Uri.parse('https://openlibrary.org${jsonResponse["key"]}.json'),
         );
 
-        if (responseEdition.statusCode == 200 && responseEdition.body != '{}' && jsonDecode(responseEdition.body) != null) {
+        if (responseEdition.statusCode == 200 &&
+            responseEdition.body != '{}' &&
+            jsonDecode(responseEdition.body) != null) {
           final Map<String, dynamic> jsonResponseEdition =
-            (jsonDecode(responseEdition.body) as Map<String, dynamic>);
+              (jsonDecode(responseEdition.body) as Map<String, dynamic>);
 
           // Obter resposta da works API
           responseWorks = await http.get(
@@ -137,10 +138,10 @@ class _PostScreenState extends State<PostScreen> {
 
         List<String> urlList =
             jsonResponse["cover"].values
-              .toList(growable: false)
-              .reversed
-              .toList(growable: false)
-              .cast<String>();
+                .toList(growable: false)
+                .reversed
+                .toList(growable: false)
+                .cast<String>();
 
         if (_selectedImages.isEmpty) {
           _selectedImages.add(AppImage.url(await _findWorkingCover(urlList)));
@@ -181,9 +182,11 @@ class _PostScreenState extends State<PostScreen> {
           _authorController.text =
               jsonResponse['authors'][0]['name']; // Usar este como primeiro autor
 
-          if (responseWorks.statusCode == 200 && responseWorks.body != '{}' && jsonDecode(responseWorks.body) != null) {
+          if (responseWorks.statusCode == 200 &&
+              responseWorks.body != '{}' &&
+              jsonDecode(responseWorks.body) != null) {
             final Map<String, dynamic> jsonResponseWorks =
-            (jsonDecode(responseWorks.body) as Map<String, dynamic>);
+                (jsonDecode(responseWorks.body) as Map<String, dynamic>);
 
             // Se tem descrição, colocar
             if (jsonResponseWorks["description"] != null) {
@@ -232,7 +235,7 @@ class _PostScreenState extends State<PostScreen> {
         }
 
         // usar 00 para ser mais rapido testar
-        //if (_isbnController.text == '9780345371485' || _isbnController.text == '00') {
+        //if (_isbnController.text == '978 0345 371 485' || _isbnController.text == '00') {
         //  _titleController.text = _perryMasonBook['title']!;
         //  _authorController.text = _perryMasonBook['author']!;
         //  _descriptionController.text = _perryMasonBook['description']!;
@@ -380,44 +383,43 @@ class _PostScreenState extends State<PostScreen> {
   }
 
   Widget _buildMethodSelectionScreen() {
-  return Padding(
-    padding: const EdgeInsets.all(25),
-    child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        const Text(
-          'Selecione o método de\npostagem',
-          textAlign: TextAlign.center,
-          style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-        ),
-        const SizedBox(height: 20),
-        RadioListTile<String>(
-          title: const Text('Inserir dados manualmente'),
-          value: 'manual',
-          groupValue: selectedOption,
-          onChanged: (String? value) {
-            setState(() {
-              selectedOption = value!;
-            });
-          },
-        ),
-        RadioListTile<String>(
-          title: const Text('Inserir ISBN'),
-          value: 'isbn',
-          groupValue: selectedOption,
-          onChanged: (String? value) {
-            setState(() {
-              selectedOption = value!;
-            });
-          },
-        ),
-        const Spacer(),
-        _buildNavigationButtons(),
-      ],
-    ),
-  );
+    return Padding(
+      padding: const EdgeInsets.all(25),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          const Text(
+            'Selecione o método de\npostagem',
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 20),
+          RadioListTile<String>(
+            title: const Text('Inserir dados manualmente'),
+            value: 'manual',
+            groupValue: selectedOption,
+            onChanged: (String? value) {
+              setState(() {
+                selectedOption = value!;
+              });
+            },
+          ),
+          RadioListTile<String>(
+            title: const Text('Inserir ISBN'),
+            value: 'isbn',
+            groupValue: selectedOption,
+            onChanged: (String? value) {
+              setState(() {
+                selectedOption = value!;
+              });
+            },
+          ),
+          const Spacer(),
+          _buildNavigationButtons(),
+        ],
+      ),
+    );
   }
-
 
   Widget _buildIsbnScreen() {
     return Column(
@@ -447,9 +449,7 @@ class _PostScreenState extends State<PostScreen> {
                     border: OutlineInputBorder(),
                     hintText: 'Digite o ISBN do livro',
                   ),
-                  inputFormatters: [
-                    IsbnInputFormatter(),
-                  ],
+                  inputFormatters: [IsbnInputFormatter()],
                 ),
                 const SizedBox(height: 20),
                 const Text(
@@ -588,9 +588,7 @@ class _PostScreenState extends State<PostScreen> {
         return SingleChildScrollView(
           padding: const EdgeInsets.only(left: 25, right: 25, bottom: 25),
           child: ConstrainedBox(
-            constraints: BoxConstraints(
-              minHeight: constraints.maxHeight,
-            ),
+            constraints: BoxConstraints(minHeight: constraints.maxHeight),
             child: IntrinsicHeight(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -600,13 +598,10 @@ class _PostScreenState extends State<PostScreen> {
                     currentPage: _getStepIndex(),
                     totalPages: _getTotalSteps(),
                   ),
-      
+
                   const Text(
                     'Localização',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 10),
                   // Mapa
@@ -648,25 +643,25 @@ class _PostScreenState extends State<PostScreen> {
                       },
                     ),
                   ),
-                    // const Text(
-                    //   'Notas adicionais (opcional)',
-                    //   style: TextStyle(
-                    //     fontSize: 16,
-                    //     fontWeight: FontWeight.bold,
-                    //   ),
-                    // ),
-                    // TextField(
-                    //   controller: _notesController,
-                    //   maxLines: 3,
-                    //   decoration: const InputDecoration(
-                    //     border: OutlineInputBorder(),
-                    //     hintText:
-                    //         'Ex: Estado do livro, condições de troca...',
-                    //     hintStyle: TextStyle(color: Colors.grey),
-                    //   ),
-                    // ),
+                  // const Text(
+                  //   'Notas adicionais (opcional)',
+                  //   style: TextStyle(
+                  //     fontSize: 16,
+                  //     fontWeight: FontWeight.bold,
+                  //   ),
+                  // ),
+                  // TextField(
+                  //   controller: _notesController,
+                  //   maxLines: 3,
+                  //   decoration: const InputDecoration(
+                  //     border: OutlineInputBorder(),
+                  //     hintText:
+                  //         'Ex: Estado do livro, condições de troca...',
+                  //     hintStyle: TextStyle(color: Colors.grey),
+                  //   ),
+                  // ),
                   //const Spacer(),
-                 const SizedBox(height: 30),
+                  const SizedBox(height: 30),
                   _buildNavigationButtons(),
                 ],
               ),
@@ -846,18 +841,14 @@ class _PostScreenState extends State<PostScreen> {
                 ),
                 const Text(
                   'Notas adicionais (opcional)',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                 ),
                 TextField(
                   controller: _notesController,
                   maxLines: 3,
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
-                    hintText:
-                        'Ex: Estado do livro, condições de troca...',
+                    hintText: 'Ex: Estado do livro, condições de troca...',
                     hintStyle: TextStyle(color: Colors.grey),
                   ),
                 ),
@@ -925,7 +916,6 @@ class _PostScreenState extends State<PostScreen> {
                       ),
                     ],
                   ),
-
 
                   if (_notesController.text.isNotEmpty) ...[
                     _buildSectionTitle('Notas adicionais'),
@@ -1041,9 +1031,7 @@ class _PostScreenState extends State<PostScreen> {
         return SingleChildScrollView(
           padding: const EdgeInsets.only(left: 25, right: 25, bottom: 25),
           child: ConstrainedBox(
-            constraints: BoxConstraints(
-              minHeight: constraints.maxHeight,
-            ),
+            constraints: BoxConstraints(minHeight: constraints.maxHeight),
             child: IntrinsicHeight(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -1155,14 +1143,12 @@ class _PostScreenState extends State<PostScreen> {
     );
   }
 
-
   int _getTotalSteps() {
     if (selectedOption == 'isbn') {
       return 5;
     }
     return 4;
   }
-
 
   int _getStepIndex() {
     if (_isbnConfirmationScreen) {
@@ -1216,7 +1202,7 @@ class _PostScreenState extends State<PostScreen> {
               : _currentScreen == 4
               ? _buildPhotosScreen()
               : _buildFinalConfirmationScreen(),
-          
+
           if (isLoading)
             Positioned.fill(
               child: Container(
@@ -1230,14 +1216,11 @@ class _PostScreenState extends State<PostScreen> {
                       padding: EdgeInsets.only(top: 10),
                       child: Text(
                         "A procurar informações sobre o livro...",
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: Colors.grey[200],
-                        ),
+                        style: TextStyle(fontSize: 12, color: Colors.grey[200]),
                       ),
-                    )
+                    ),
                   ],
-                )
+                ),
               ),
             ),
         ],
