@@ -5,6 +5,7 @@ import 'package:location_picker_flutter_map/location_picker_flutter_map.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:http/http.dart' as http;
+import 'package:read_cycle/bar_stuff.dart';
 import 'package:read_cycle/classes/app_image.dart';
 import 'package:read_cycle/classes/book.dart';
 import 'package:read_cycle/classes/post.dart';
@@ -12,6 +13,8 @@ import 'package:read_cycle/data/posts.dart';
 import 'package:read_cycle/data/users.dart';
 import 'package:read_cycle/components/step_indicator.dart';
 import 'package:read_cycle/classes/isbn_input_formatter.dart';
+import 'package:read_cycle/main.dart';
+import 'package:read_cycle/pages/home_screen.dart';
 
 class PostScreen extends StatefulWidget {
   const PostScreen({super.key});
@@ -278,9 +281,41 @@ class _PostScreenState extends State<PostScreen> {
         );
         currentUser.books.add(bookToAdd);
 
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Livro postado com sucesso!')),
-        );
+       showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          Future.delayed(const Duration(seconds: 2), () {
+            Navigator.of(context).pop();
+
+            selectedIdx = 0;
+            mainScreenKey.currentState?.update();
+          });
+
+          return AlertDialog(
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+            title: Row(
+              children: [
+                Icon(Icons.check_circle, color: Colors.green),
+                SizedBox(width: 8),
+                Expanded( 
+                  child: Text(
+                    'Livro postado com sucesso!',
+                    style: TextStyle(fontSize: 18),
+                    softWrap: true,
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
+      );
+
+        // Volta para a tela inicial após o dialog
+        setState(() {
+          _currentScreen = 0;
+        });
+
         // Limpar campos
         _isbnController.clear();
         _titleController.clear();
@@ -296,7 +331,7 @@ class _PostScreenState extends State<PostScreen> {
     });
   }
 
-  void goBack() {
+  void goBack() { 
     FocusScope.of(context).unfocus();
 
     setState(() {
