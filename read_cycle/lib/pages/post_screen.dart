@@ -484,6 +484,9 @@ class _PostScreenState extends State<PostScreen> {
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     hintText: 'XXX-XXXX-XXX-XXX',
+                    hintStyle: TextStyle(
+                      color: Colors.grey
+                    )
                   ),
                   inputFormatters: [IsbnInputFormatter()],
                 ),

@@ -306,7 +306,6 @@ class _MainState extends State<HomeScreen> {
                                       borderRadius: BorderRadius.all(
                                         Radius.circular(30),
                                       ),
-                                      borderSide: BorderSide.none,
                                     ),
                                     fillColor: Color.fromARGB(
                                       255,
@@ -435,7 +434,7 @@ class _MainState extends State<HomeScreen> {
                           horizontal: 12,
                         ),
                         shrinkWrap: true,
-                        itemCount: listToShow.length,
+                        itemCount: listToShow.length, // TODO: por aqui "não há resultados"
                         separatorBuilder:
                             (context, index) =>
                                 Divider(height: 1, color: Colors.grey.shade100),

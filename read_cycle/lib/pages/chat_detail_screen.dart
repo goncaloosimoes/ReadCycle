@@ -486,8 +486,8 @@ class _MainState extends State<ChatDetailScreen> {
                                       },
                                       child: Text(
                                         (!widget.chat.ready)
-                                            ? "Aceitar troca"
-                                            : "Rejeitar troca",
+                                            ? "Propor troca"
+                                            : "Rejeitar troca", // TODO: trocar 
                                       ),
                                     ),
                                   ],
