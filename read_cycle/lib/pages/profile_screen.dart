@@ -564,7 +564,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             const Divider(),
             const SizedBox(height: 20,),
             const Text(
-              'Livros',
+              'Os meus livros',
               style: TextStyle(
                 fontSize: 17,
               ),
@@ -582,14 +582,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 )
               : SizedBox(
                   height: 220,
-                  child: ListView.builder(
-                    scrollDirection: Axis.vertical,
-                    itemCount: currentUser.books.length,
-                    itemBuilder: (context, index) => BookTile(
-                      book: currentUser.books[index],
-                      user: currentUser,
+                  child: Scrollbar(
+                    thumbVisibility: true,
+                    child: ListView.builder(
+                      scrollDirection: Axis.vertical,
+                      itemCount: currentUser.books.length,
+                      itemBuilder: (context, index) => BookTile(
+                        book: currentUser.books[index],
+                        user: currentUser,
+                      ),
                     ),
-                  ),
+                  )
                 ),
           ],
         ),

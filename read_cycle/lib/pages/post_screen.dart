@@ -483,7 +483,7 @@ class _PostScreenState extends State<PostScreen> {
                   keyboardType: TextInputType.number,
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
-                    hintText: 'Digite o ISBN do livro',
+                    hintText: 'XXX-XXXX-XXX-XXX',
                   ),
                   inputFormatters: [IsbnInputFormatter()],
                 ),
