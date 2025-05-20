@@ -87,13 +87,14 @@ class _MainState extends State<SearchScreen> {
             elevation: 0,
             flexibleSpace: SafeArea(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 45),
+                padding: const EdgeInsets.symmetric(horizontal: 45, vertical: 5),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     SizedBox(
-                      width: 160,
+                      width: 220,
+                      height: 50,
                       child: TextField(
                         controller: _controller,
                         onSubmitted: (value) {
@@ -103,10 +104,10 @@ class _MainState extends State<SearchScreen> {
                           reloadPage();
                         },
                         decoration: InputDecoration(
-                          border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(20))),
+                          border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(30)), borderSide: BorderSide.none),
                           fillColor: Color.fromARGB(255, 241, 241, 241),
                           filled: true,
-                          hintText: 'Pesquisa...',
+                          hintText: 'Pesquisa um livro...',
                         ),
                       ),
                     ),
