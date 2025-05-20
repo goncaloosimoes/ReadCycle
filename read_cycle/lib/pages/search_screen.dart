@@ -98,7 +98,7 @@ class _MainState extends State<SearchScreen> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   SizedBox(
-                    width: 220,
+                    width: 170,
                     height: 50,
                     child: TextField(
                       controller: _controller,
