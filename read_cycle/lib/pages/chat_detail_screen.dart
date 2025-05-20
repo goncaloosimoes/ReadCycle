@@ -233,22 +233,28 @@ class _MainState extends State<ChatDetailScreen> {
                                   children: [
                                     Padding(
                                       padding: EdgeInsets.only(bottom: 10),
-                                      child: Row(
+                                      child: Column(
                                         children: [
-                                          CircleAvatar(
-                                            backgroundImage:
-                                                currentUser.profileImage
-                                                    .build(),
-                                            radius: 16,
+                                          Row(
+                                            children: [
+                                              CircleAvatar(
+                                                backgroundImage:
+                                                    currentUser.profileImage
+                                                        .build(),
+                                                radius: 16,
+                                              ),
+                                              if (widget.chat.ready)
+                                                SizedBox(width: 8),
+                                              Text(
+                                                (widget.chat.ready)
+                                                    ? "✅ pronto!"
+                                                    : "",
+                                              ),
+                                            ],
                                           ),
-                                          SizedBox(width: 8),
-                                          Text(
-                                            (widget.chat.ready)
-                                                ? "✅ pronto!"
-                                                : "",
-                                          ),
+                                          Text(currentUser.name),
                                         ],
-                                      ),
+                                      )
                                     ),
                                     SizedBox(
                                       width: 120,
@@ -282,22 +288,28 @@ class _MainState extends State<ChatDetailScreen> {
                                   children: [
                                     Padding(
                                       padding: EdgeInsets.only(bottom: 10),
-                                      child: Row(
+                                      child: Column(
                                         children: [
-                                          CircleAvatar(
-                                            backgroundImage:
-                                                widget.chat.user.profileImage
-                                                    .build(),
-                                            radius: 16,
+                                          Row(
+                                            children: [
+                                              CircleAvatar(
+                                                backgroundImage:
+                                                    widget.chat.user.profileImage
+                                                        .build(),
+                                                radius: 16,
+                                              ),
+                                              if (widget.chat.otherReady)
+                                                SizedBox(width: 8),
+                                              Text(
+                                                (widget.chat.otherReady)
+                                                    ? "✅ pronto!"
+                                                    : "",
+                                              ),
+                                            ],
                                           ),
-                                          SizedBox(width: 8),
-                                          Text(
-                                            (widget.chat.otherReady)
-                                                ? "✅ pronto!"
-                                                : "",
-                                          ),
+                                          Text(widget.chat.user.name),
                                         ],
-                                      ),
+                                      )
                                     ),
                                     SizedBox(
                                       width: 120,
