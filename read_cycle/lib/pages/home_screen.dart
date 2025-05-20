@@ -59,10 +59,6 @@ class _MainState extends State<HomeScreen> {
 
     final uniqueBooks = books.toSet().toList()..sort();
     uniqueBooks.add("O Hobbit");
-    print('Total de livros únicos: ${uniqueBooks.length}');
-    int numPesquisas = recentSearches.length;
-    print('Histórico de pesquisas ($numPesquisas): $recentSearches');
-    print('Livros: $uniqueBooks');
 
     return uniqueBooks;
   }
@@ -424,7 +420,7 @@ class _MainState extends State<HomeScreen> {
                       border: Border.all(color: Colors.grey.shade200),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withOpacity(0.1),
+                          color: Colors.black.withAlpha(25),
                           blurRadius: 10,
                           offset: Offset(0, 4),
                         ),

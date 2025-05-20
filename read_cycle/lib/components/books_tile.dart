@@ -26,14 +26,12 @@ class BooksTile extends StatelessWidget {
           ),
           SizedBox(
             height: 220,
-            child: Expanded(
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
                 itemCount: postTiles.length,
                 itemBuilder: (context, index) => postTiles[index],
               ),
             ),
-          ),
           SizedBox(height: 5,),
         ],
       );
