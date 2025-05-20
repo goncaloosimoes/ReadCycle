@@ -310,6 +310,7 @@ class _MainState extends State<HomeScreen> {
                                       borderRadius: BorderRadius.all(
                                         Radius.circular(30),
                                       ),
+                                      borderSide: BorderSide.none,
                                     ),
                                     fillColor: Color.fromARGB(
                                       255,

@@ -14,7 +14,6 @@ import 'package:read_cycle/data/users.dart';
 import 'package:read_cycle/components/step_indicator.dart';
 import 'package:read_cycle/classes/isbn_input_formatter.dart';
 import 'package:read_cycle/main.dart';
-import 'package:read_cycle/pages/home_screen.dart';
 
 class PostScreen extends StatefulWidget {
   const PostScreen({super.key});
