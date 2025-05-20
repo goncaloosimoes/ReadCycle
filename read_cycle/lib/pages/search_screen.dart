@@ -99,6 +99,9 @@ class _MainState extends State<SearchScreen> {
                         onSubmitted: (value) {
                           reloadPage();
                         },
+                        onChanged: (value) {
+                          reloadPage();
+                        },
                         decoration: InputDecoration(
                           border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(20))),
                           fillColor: Color.fromARGB(255, 241, 241, 241),
