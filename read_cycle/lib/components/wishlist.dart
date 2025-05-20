@@ -46,8 +46,8 @@ class WishList extends StatelessWidget {
           child: const Text('Guardar'),
           onPressed: () {
             currentUser.wishlist.add(_controller.text);
-            afterSave();
             Navigator.of(context).pop();
+            afterSave();
           },
         )
       ],

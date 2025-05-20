@@ -280,35 +280,37 @@ class _PostScreenState extends State<PostScreen> {
         );
         currentUser.books.add(bookToAdd);
 
-       showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (BuildContext context) {
-          Future.delayed(const Duration(seconds: 2), () {
-            Navigator.of(context).pop();
+        showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (BuildContext context) {
+            Future.delayed(const Duration(seconds: 2), () {
+              Navigator.of(context).pop();
 
-            selectedIdx = 0;
-            mainScreenKey.currentState?.update();
-          });
+              selectedIdx = 0;
+              mainScreenKey.currentState?.update();
+            });
 
-          return AlertDialog(
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-            title: Row(
-              children: [
-                Icon(Icons.check_circle, color: Colors.green),
-                SizedBox(width: 8),
-                Expanded( 
-                  child: Text(
-                    'Livro postado com sucesso!',
-                    style: TextStyle(fontSize: 18),
-                    softWrap: true,
+            return AlertDialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+              ),
+              title: Row(
+                children: [
+                  Icon(Icons.check_circle, color: Colors.green),
+                  SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      'Livro postado com sucesso!',
+                      style: TextStyle(fontSize: 18),
+                      softWrap: true,
+                    ),
                   ),
-                ),
-              ],
-            ),
-          );
-        },
-      );
+                ],
+              ),
+            );
+          },
+        );
 
         // Volta para a tela inicial após o dialog
         setState(() {
@@ -330,7 +332,7 @@ class _PostScreenState extends State<PostScreen> {
     });
   }
 
-  void goBack() { 
+  void goBack() {
     FocusScope.of(context).unfocus();
 
     setState(() {
