@@ -91,52 +91,41 @@ class _MainState extends State<SearchScreen> {
           backgroundColor: Theme.of(context).colorScheme.inversePrimary,
           elevation: 0,
           actions: [
-            IconButton(
-                    onPressed: reloadPage,
-                    icon: const Icon(Icons.search),
-                  ),
-                  PopupMenuButton<SortMode>(
-                    icon: Icon(Icons.sort),
-                    onSelected: (SortMode selectedMode) {
-                      setState(() {
-                        sortMode = selectedMode;
-                        getRelevantPosts();
-                      });
-                    },
-                    itemBuilder:
-                        (BuildContext context) => <PopupMenuEntry<SortMode>>[
-                          PopupMenuItem<SortMode>(
-                            value: SortMode.classification,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text('Ordenar por classificação'),
-                                if (sortMode == SortMode.classification)
-                                  Icon(
-                                    Icons.check,
-                                    size: 18,
-                                    color: Colors.black,
-                                  ),
-                              ],
-                            ),
-                          ),
-                          PopupMenuItem<SortMode>(
-                            value: SortMode.recent,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text('Ordenar por mais recentes'),
-                                if (sortMode == SortMode.recent)
-                                  Icon(
-                                    Icons.check,
-                                    size: 18,
-                                    color: Colors.black,
-                                  ),
-                              ],
-                            ),
-                          ),
+            IconButton(onPressed: reloadPage, icon: const Icon(Icons.search)),
+            PopupMenuButton<SortMode>(
+              icon: Icon(Icons.sort),
+              onSelected: (SortMode selectedMode) {
+                setState(() {
+                  sortMode = selectedMode;
+                  getRelevantPosts();
+                });
+              },
+              itemBuilder:
+                  (BuildContext context) => <PopupMenuEntry<SortMode>>[
+                    PopupMenuItem<SortMode>(
+                      value: SortMode.classification,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text('Ordenar por classificação'),
+                          if (sortMode == SortMode.classification)
+                            Icon(Icons.check, size: 18, color: Colors.black),
                         ],
-                  ),
+                      ),
+                    ),
+                    PopupMenuItem<SortMode>(
+                      value: SortMode.recent,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text('Ordenar por mais recentes'),
+                          if (sortMode == SortMode.recent)
+                            Icon(Icons.check, size: 18, color: Colors.black),
+                        ],
+                      ),
+                    ),
+                  ],
+            ),
           ],
           flexibleSpace: SafeArea(
             child: Padding(
@@ -167,7 +156,6 @@ class _MainState extends State<SearchScreen> {
                       ),
                     ),
                   ),
-                  
                 ],
               ),
             ),
@@ -197,75 +185,153 @@ class _MainState extends State<SearchScreen> {
             }
             // Quando não há resultados, mostrar opção da lista de desejos
             if (searchResults.isEmpty) {
-              return GestureDetector(
-                onTap: () {
-                  showDialog(
-                    context: context,
-                    builder:
-                        (context) => WishList(
-                          bookName: searchText,
-                          afterSave: () {
-                            setState(() {
-                              addedToWishlist = true;
-                            });
-                            showDialog(
-                              context: context,
-                              barrierDismissible: false,
-                              builder: (BuildContext context) {
-                                Future.delayed(const Duration(seconds: 2), () {
-                                  Navigator.of(context).pop();
+              return Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 15,
+                ),
+                child: GestureDetector(
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      builder:
+                          (context) => WishList(
+                            bookName: searchText,
+                            afterSave: () {
+                              setState(() {
+                                addedToWishlist = true;
+                              });
+                              showDialog(
+                                context: context,
+                                barrierDismissible: false,
+                                builder: (BuildContext context) {
+                                  Future.delayed(
+                                    const Duration(seconds: 2),
+                                    () {
+                                      Navigator.of(context).pop();
 
-                                  selectedIdx = 0;
-                                  mainScreenKey.currentState?.update();
-                                });
+                                      selectedIdx = 0;
+                                      mainScreenKey.currentState?.update();
+                                    },
+                                  );
 
-                                return AlertDialog(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20),
-                                  ),
-                                  title: Row(
-                                    children: [
-                                      Icon(
-                                        Icons.check_circle,
-                                        color: Colors.green,
-                                      ),
-                                      SizedBox(width: 8),
-                                      Expanded(
-                                        child: Text(
-                                          'Livro adicionado à lista de desejos!',
-                                          style: TextStyle(fontSize: 18),
-                                          softWrap: true,
+                                  return AlertDialog(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(20),
+                                    ),
+                                    title: Row(
+                                      children: [
+                                        Icon(
+                                          Icons.check_circle,
+                                          color: Colors.green,
                                         ),
-                                      ),
-                                    ],
-                                  ),
-                                );
-                              },
-                            );
-                          },
-                        ),
-                  );
-                },
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      child: Text(
-                        (addedToWishlist)
-                            ? "\"$searchText\" adicionado à lista de desejos!"
-                            : "Adicionar \"$searchText\" à lista de desejos?",
+                                        SizedBox(width: 8),
+                                        Expanded(
+                                          child: Text(
+                                            'Livro adicionado à lista de desejos!',
+                                            style: TextStyle(fontSize: 18),
+                                            softWrap: true,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                },
+                              );
+                            },
+                          ),
+                    );
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color:
+                          addedToWishlist
+                              ? Color.fromARGB(255, 240, 249, 255)
+                              : Color.fromARGB(255, 245, 245, 245),
+                      borderRadius: BorderRadius.circular(15),
+                      border: Border.all(
+                        color:
+                            addedToWishlist
+                                ? Theme.of(
+                                  context,
+                                ).colorScheme.primary.withOpacity(0.5)
+                                : Colors.grey.withOpacity(0.3),
+                        width: 1.5,
                       ),
-                    ),
-                    Stack(
-                      alignment: Alignment.center,
-                      children: [
-                        Icon(Icons.bookmark_outline, size: 26),
-                        if (addedToWishlist) Icon(Icons.check, size: 12),
-                        if (!addedToWishlist) Icon(Icons.add, size: 12),
+                      boxShadow: [
+                        BoxShadow(
+                          color:
+                              addedToWishlist
+                                  ? Theme.of(
+                                    context,
+                                  ).colorScheme.primary.withOpacity(0.15)
+                                  : Colors.grey.withOpacity(0.1),
+                          blurRadius: 5,
+                          offset: Offset(0, 2),
+                        ),
                       ],
                     ),
-                  ],
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 20,
+                      vertical: 15,
+                    ),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: Text(
+                            (addedToWishlist)
+                                ? "\"$searchText\" adicionado à lista de desejos!"
+                                : "Adicionar \"$searchText\" à lista de desejos?",
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight:
+                                  addedToWishlist
+                                      ? FontWeight.bold
+                                      : FontWeight.normal,
+                              color:
+                                  addedToWishlist
+                                      ? Theme.of(context).colorScheme.primary
+                                      : Colors.black87,
+                            ),
+                          ),
+                        ),
+                        Container(
+                          decoration: BoxDecoration(
+                            color:
+                                addedToWishlist
+                                    ? Theme.of(context).colorScheme.primary
+                                    : Theme.of(context).colorScheme.secondary,
+                            shape: BoxShape.circle,
+                            boxShadow: [
+                              BoxShadow(
+                                color:
+                                    addedToWishlist
+                                        ? Theme.of(
+                                          context,
+                                        ).colorScheme.primary.withOpacity(0.3)
+                                        : Theme.of(context)
+                                            .colorScheme
+                                            .secondary
+                                            .withOpacity(0.3),
+                                blurRadius: 5,
+                                offset: Offset(0, 2),
+                              ),
+                            ],
+                          ),
+                          padding: const EdgeInsets.all(10),
+                          child: Icon(
+                            addedToWishlist
+                                ? Icons.bookmark
+                                : Icons.bookmark_add_outlined,
+                            color: Colors.white,
+                            size: 24,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
               );
             }
