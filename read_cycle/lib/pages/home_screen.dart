@@ -404,7 +404,7 @@ class _MainState extends State<HomeScreen> {
             // Sugestões do autocomplete
             if (searchBarVisible &&
                 (_controller.text.isEmpty && recentSearches.isNotEmpty ||
-                    showSuggestions))
+                    _controller.text.isNotEmpty)) // Adicionamos esta condição
               Positioned(
                 top: 10,
                 left: 25,
@@ -427,71 +427,121 @@ class _MainState extends State<HomeScreen> {
                       ],
                     ),
                     child: ClipRRect(
-                      borderRadius: BorderRadius.circular(12),
-                      child: ListView.separated(
-                        padding: EdgeInsets.symmetric(
-                          vertical: 6,
-                          horizontal: 12,
-                        ),
-                        shrinkWrap: true,
-                        itemCount: listToShow.length, // TODO: por aqui "não há resultados"
-                        separatorBuilder:
-                            (context, index) =>
-                                Divider(height: 1, color: Colors.grey.shade100),
-                        itemBuilder: (context, index) {
-                          final suggestion = listToShow[index];
-                          final query = _controller.text.trim();
-
-                          return InkWell(
-                            onTap: () => _selectSuggestion(suggestion),
-                            child: Row(
-                              children: [
-                                Container(
-                                  width: 36,
-                                  height: 52,
-                                  margin: const EdgeInsets.symmetric(
-                                    vertical: 6,
+                      borderRadius: BorderRadius.circular(14),
+                      child:
+                          listToShow.isEmpty
+                              ? Center(
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 20,
                                   ),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(6),
-                                    image: DecorationImage(
-                                      image: _getCoverImageForBook(suggestion),
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(width: 12),
-                                Expanded(
-                                  child: RichText(
-                                    text: TextSpan(
-                                      children: _buildHighlightedText(
-                                        suggestion,
-                                        query,
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Icon(
+                                        Icons.search_off,
+                                        size: 60,
+                                        color: Colors.grey[400],
                                       ),
+                                      const SizedBox(height: 12),
+                                      Text(
+                                        _controller.text.isEmpty
+                                            ? 'Histórico de pesquisas vazio'
+                                            : 'Nenhum resultado encontrado',
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          color: Colors.grey[600],
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                      if (_controller.text.isNotEmpty)
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                            top: 8,
+                                          ),
+                                          child: Text(
+                                            'Tente com outras palavras-chave',
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                              color: Colors.grey[500],
+                                            ),
+                                          ),
+                                        ),
+                                    ],
+                                  ),
+                                ),
+                              )
+                              : ListView.separated(
+                                padding: EdgeInsets.symmetric(
+                                  vertical: 6,
+                                  horizontal: 12,
+                                ),
+                                shrinkWrap: true,
+                                itemCount: listToShow.length,
+                                separatorBuilder:
+                                    (context, index) => Divider(
+                                      height: 1,
+                                      color: Colors.grey.shade100,
                                     ),
-                                  ),
-                                ),
-                                // Mostrar botão de apagar se for histórico
-                                IconButton(
-                                  icon: Icon(
-                                    _controller.text.isEmpty
-                                        ? Icons.close
-                                        : Icons.search,
-                                    color: Colors.grey[400],
-                                    size: 18,
-                                  ),
-                                  onPressed:
-                                      _controller.text.isEmpty
-                                          ? () => _removeFromRecentSearches(
-                                            suggestion,
-                                          )
-                                          : null, // Desativa o botão se for sugestão
-                                ),
-                              ],
-                            ),
-                          );
-                        },
-                      ),
+                                itemBuilder: (context, index) {
+                                  final suggestion = listToShow[index];
+                                  final query = _controller.text.trim();
+
+                                  return InkWell(
+                                    onTap: () => _selectSuggestion(suggestion),
+                                    child: Row(
+                                      children: [
+                                        Container(
+                                          width: 36,
+                                          height: 52,
+                                          margin: const EdgeInsets.symmetric(
+                                            vertical: 6,
+                                          ),
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(
+                                              6,
+                                            ),
+                                            image: DecorationImage(
+                                              image: _getCoverImageForBook(
+                                                suggestion,
+                                              ),
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(width: 12),
+                                        Expanded(
+                                          child: RichText(
+                                            text: TextSpan(
+                                              children: _buildHighlightedText(
+                                                suggestion,
+                                                query,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        // Mostrar botão de apagar se for histórico
+                                        IconButton(
+                                          icon: Icon(
+                                            _controller.text.isEmpty
+                                                ? Icons.close
+                                                : Icons.search,
+                                            color: Colors.grey[400],
+                                            size: 18,
+                                          ),
+                                          onPressed:
+                                              _controller.text.isEmpty
+                                                  ? () =>
+                                                      _removeFromRecentSearches(
+                                                        suggestion,
+                                                      )
+                                                  : null, // Desativa o botão se for sugestão
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                },
+                              ),
                     ),
                   ),
                 ),
@@ -519,8 +569,7 @@ class _MainState extends State<HomeScreen> {
     for (final postTile in allPosts) {
       final post = postTile.post;
       if (post.book.title.toLowerCase() == title.toLowerCase()) {
-        return post.book.coverImage
-            .build();
+        return post.book.coverImage.build();
       }
     }
 
