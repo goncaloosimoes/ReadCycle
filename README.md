@@ -28,3 +28,24 @@ Depois é só copiar e colar no seu terminal UNIX 📝
    git clone https://github.com/goncaloosimoes/readcycle.git
    cd readcycle/read_cycle
    flutter run
+```
+
+## Previews 👁️
+
+<div align="center">
+
+  <!-- Primeira linha -->
+  <img src="preview/home.png" style="width:20%; margin: 10px; border: 1px solid #ccc; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
+  <img src="preview/post.png" style="width:20%; margin: 10px; border: 1px solid #ccc; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
+  <img src="preview/profile.png" style="width:20%; margin: 10px; border: 1px solid #ccc; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
+  <img src="preview/search.png" style="width:20%; margin: 10px; border: 1px solid #ccc; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
+
+  <!-- Segunda linha -->
+  <img src="preview/trade.png" style="width:20%; margin: 10px; border: 1px solid #ccc; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
+  <img src="preview/location.png" style="width:20%; margin: 10px; border: 1px solid #ccc; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
+  <img src="preview/confirmation.png" style="width:20%; margin: 10px; border: 1px solid #ccc; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
+  <img src="preview/chat.png" style="width:20%; margin: 10px; border: 1px solid #ccc; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
+
+</div>
+
+
